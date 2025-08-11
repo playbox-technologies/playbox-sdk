@@ -65,7 +65,7 @@ namespace Playbox
             sendPurchaseRequest.SetRequestHeader("Content-Type", "application/json");
             sendPurchaseRequest.SetRequestHeader("x-api-token", xApiToken);
         
-            var sendObject = CreateSendObjectJson(productID, receipt, sendPurchaseRequest);
+            var sendObject = CreateSendObjectJson(productID, receipt);
 
             var bodyRaw = System.Text.Encoding.UTF8.GetBytes(sendObject.ToString());
 
@@ -102,7 +102,7 @@ namespace Playbox
         
         }
 
-        private JObject CreateSendObjectJson(string productID, string receipt, UnityWebRequest unityWebRequest)
+        private JObject CreateSendObjectJson(string productID, string receipt)
         {
             //TimeZoneInfo localZone = TimeZoneInfo.Local;
             
