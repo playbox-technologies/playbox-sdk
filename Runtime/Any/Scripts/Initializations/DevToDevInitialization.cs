@@ -26,6 +26,7 @@ namespace Playbox
             DTDAnalytics.Initialize(DevToDevConfiguration.IOSKey);
             
 #endif
+            
             DTDAnalytics.SetLogLevel(DevToDevConfiguration.LOGLevel);
             
             DTDAnalytics.SetTrackingAvailability(true);

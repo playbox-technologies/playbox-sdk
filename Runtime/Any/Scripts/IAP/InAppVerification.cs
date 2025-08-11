@@ -104,20 +104,21 @@ namespace Playbox
 
         private JObject CreateSendObjectJson(string productID, string receipt, UnityWebRequest unityWebRequest)
         {
-            TimeZoneInfo localZone = TimeZoneInfo.Local;
+            //TimeZoneInfo localZone = TimeZoneInfo.Local;
             
-            JObject sendObject = new();
-            
-            sendObject["os_version"] = SystemInfo.operatingSystem;
-            sendObject["device_name"] = SystemInfo.deviceName;
-            sendObject["device_model"] = SystemInfo.deviceModel;
-            sendObject["device_locale"] = CultureInfo.CurrentCulture.Name;
-            sendObject["time_zone"] = localZone.DisplayName;
-            sendObject["app_version"] = Data.Playbox.AppVersion;
-            sendObject["product_id"] = productID;
-            sendObject["game_id"] = Data.Playbox.GameId;
-            sendObject["version"] = Data.Playbox.AppVersion;
-            sendObject["receipt"] = receipt;
+            JObject sendObject = new()
+            {
+                ["os_version"] = SystemInfo.operatingSystem,
+                ["device_name"] = SystemInfo.deviceName,
+                ["device_model"] = SystemInfo.deviceModel,
+                //["device_locale"] = CultureInfo.CurrentCulture.Name,
+                //["time_zone"] = localZone.DisplayName,
+                ["app_version"] = Data.Playbox.AppVersion,
+                ["product_id"] = productID,
+                ["game_id"] = Data.Playbox.GameId,
+                ["version"] = Data.Playbox.AppVersion,
+                ["receipt"] = receipt
+            };
 
 #if UNITY_ANDROID
             sendObject["platform"] = "android";
