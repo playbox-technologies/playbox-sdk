@@ -74,9 +74,7 @@ namespace Playbox
         
             yield return sendPurchaseRequest.SendWebRequest();
 
-            if (sendPurchaseRequest.result == UnityWebRequest.Result.ProtocolError ||
-                sendPurchaseRequest.result == UnityWebRequest.Result.ConnectionError || 
-                sendPurchaseRequest.result == UnityWebRequest.Result.DataProcessingError)
+            if (sendPurchaseRequest.result is UnityWebRequest.Result.ProtocolError or UnityWebRequest.Result.ConnectionError or UnityWebRequest.Result.DataProcessingError)
             {
                 $"Request Failed: {sendPurchaseRequest.error}".PlayboxError();
             }
@@ -143,7 +141,7 @@ namespace Playbox
             {
                 foreach (var item in keyBuffer)
                 {
-                    verificationQueue.Add(item.TicketId, item);
+                    verificationQueue[item.TicketId] = item;
                 }
             
                 keyBuffer.Clear();
@@ -189,6 +187,8 @@ namespace Playbox
                 $"Request Failed: {getStausRequest.error}".PlayboxError();
             }
             
+            Debug.Log($"{purchaseDataItem.Key}: {purchaseDataItem.Value.ProductId}");
+            
             if (getStausRequest.isDone)
             {
                 JObject json = JObject.Parse(getStausRequest.downloadHandler.text);
@@ -232,10 +232,14 @@ namespace Playbox
                         
                         removeFromQueueCallback?.Invoke(true);
                         break;
+                    
+                    default:
+                        purchaseDataItem.Value.OnValidateCallback?.Invoke(false);
+                        removeFromQueueCallback?.Invoke(true);
+                        break;
                 }
             
-                purchaseDataItem.Value.OnValidateCallback?.Invoke(false);
-                removeFromQueueCallback?.Invoke(true);
+               
             }
         }
     }
