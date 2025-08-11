@@ -101,7 +101,6 @@ namespace Playbox
             behaviours.Add(AddToGameObject<AppLovinInitialization>(gameObject,true,true));
             behaviours.Add(AddToGameObject<AppsFlyerInitialization>(gameObject,true,true));
             behaviours.Add(AddToGameObject<FacebookSdkInitialization>(gameObject,true,true));
-            behaviours.Add(AddToGameObject<IAP>(gameObject, usePlayboxIAP,true));
             
             InitStatus[nameof(PlayboxSplashUGUILogger)] = false;
             InitStatus[nameof(FirebaseInitialization)] = false;
@@ -110,7 +109,6 @@ namespace Playbox
             InitStatus[nameof(FacebookSdkInitialization)] = false;
             InitStatus[nameof(AppLovinInitialization)] = false;
             InitStatus[nameof(InAppVerification)] = false;
-            InitStatus[nameof(IAP)] = false;
             
             string debugString = "";
             
