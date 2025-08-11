@@ -142,11 +142,12 @@ namespace Playbox
         {
             if (args != null)
             {
+                LogPurchase(args.purchasedProduct, onValidate);
+            }
+            else
+            {
                 if(isFirebaseInit)
                     Crashlytics.LogException(new Exception("[PlayboxLogging] purchase Args is null"));
-                    
-                    
-                LogPurchase(args.purchasedProduct, onValidate);
             }
         }
 
