@@ -35,20 +35,6 @@ namespace Playbox.SdkWindow
             name = DevToDevConfiguration.Name;
         }
 
-        public override void Header()
-        {
-            base.Header();
-
-            GUILayout.BeginVertical();
-        }
-
-        public override void Footer()
-        {
-            base.Footer();
-            
-            GUILayout.EndVertical();
-        }
-
         public override void Body()
         {
             if (!active)
@@ -57,20 +43,28 @@ namespace Playbox.SdkWindow
             prev_ios_version = ios_key;
             prev_android_version = android_key;
 
-            logLevel = (DTDLogLevel)EditorGUILayout.Popup("LogLevel", (int)logLevel, _options.ToArray(), GUILayout.Width(300));
+            GUILayout.BeginHorizontal();
+            
+            GUILayout.Label("LogLevel",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+            
+            logLevel = (DTDLogLevel)EditorGUILayout.Popup("", (int)logLevel, _options.ToArray(), GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
 
+            GUILayout.EndHorizontal();
+            
+            EditorGUILayout.Separator();
+            
             GUILayout.BeginHorizontal();
         
-            GUILayout.Label("IOS : ");
+            GUILayout.Label("IOS : ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
             ios_key = GUILayout.TextField(ios_key, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
         
             GUILayout.EndHorizontal();
             
-            GUILayout.Space(5);
+            EditorGUILayout.Separator();
         
             GUILayout.BeginHorizontal();
         
-            GUILayout.Label("Android : ");
+            GUILayout.Label("Android : ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
             android_key = GUILayout.TextField(android_key, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
         
             GUILayout.EndHorizontal();

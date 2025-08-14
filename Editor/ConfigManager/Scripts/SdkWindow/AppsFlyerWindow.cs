@@ -1,5 +1,6 @@
 ﻿using System;
 using Playbox.SdkConfigurations;
+using UnityEditor;
 
 
 #if UNITY_EDITOR
@@ -38,37 +39,39 @@ namespace Playbox.SdkWindow
         
             GUILayout.BeginHorizontal();
         
-            GUILayout.Label("ios sdk key: ");
+            GUILayout.Label("ios sdk key: ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
             ios_key = GUILayout.TextField(ios_key, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
         
             GUILayout.EndHorizontal();
             
-            GUILayout.Space(5);
+            EditorGUILayout.Separator();
             
             GUILayout.BeginHorizontal();
         
-            GUILayout.Label("ios app id : ");
+            GUILayout.Label("ios app id : ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
             ios_app_id = GUILayout.TextField(ios_app_id, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
         
             GUILayout.EndHorizontal();
             
-            GUILayout.Space(5);
+            EditorGUILayout.Separator();
         
             GUILayout.BeginHorizontal();
         
-            GUILayout.Label("android sdk key: ");
+            GUILayout.Label("android sdk key: ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
             android_key = GUILayout.TextField(android_key, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
         
             GUILayout.EndHorizontal();
             
+            EditorGUILayout.Separator();
+            
             GUILayout.BeginHorizontal();
         
-            GUILayout.Label("android app id : ");
+            GUILayout.Label("android app id : ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
             android_app_id = GUILayout.TextField(android_app_id, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
         
             GUILayout.EndHorizontal();
             
-            GUILayout.Space(5);
+            EditorGUILayout.Separator();
         
             hasUnsavedChanges = !(string.Equals(prev_ios_version, ios_key, StringComparison.OrdinalIgnoreCase) &&
                                   string.Equals(prev_android_version, android_key, StringComparison.OrdinalIgnoreCase) &&

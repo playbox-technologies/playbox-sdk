@@ -1,5 +1,6 @@
 ﻿using System;
 using Playbox.SdkConfigurations;
+using UnityEditor;
 
 #if UNITY_EDITOR
 
@@ -35,25 +36,25 @@ namespace Playbox.SdkWindow
             
             GUILayout.BeginHorizontal();
         
-            GUILayout.Label("Advertisement SDK key (Only AppLovin Integration Manager) : ");
+            GUILayout.Label("Advertisement SDK key (Only AppLovin Integration Manager) : ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
             advertisementSdk = GUILayout.TextField(advertisementSdk, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
             
             GUILayout.EndHorizontal();
             
-            GUILayout.Space(5);
+            EditorGUILayout.Separator();
             
             GUILayout.BeginHorizontal();
         
-            GUILayout.Label("IOS unit id : ");
+            GUILayout.Label("IOS unit id : ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
             ios_key = GUILayout.TextField(ios_key, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
         
             GUILayout.EndHorizontal();
         
-            GUILayout.Space(5);
+            EditorGUILayout.Separator();
             
             GUILayout.BeginHorizontal();
         
-            GUILayout.Label("Android unit id : ");
+            GUILayout.Label("Android unit id : ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
             android_key = GUILayout.TextField(android_key, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
         
             GUILayout.EndHorizontal();

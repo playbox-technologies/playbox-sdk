@@ -40,13 +40,19 @@ namespace Playbox.SdkWindow
 
         public virtual void HasRenderToggle()
         {
-            active = EditorGUILayout.Toggle(name, active);
-            GUILayout.Space(5);
+            GUILayout.BeginHorizontal();
+            
+            GUILayout.Label(name,GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+            active = EditorGUILayout.Toggle("", active,GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+            
+            GUILayout.EndHorizontal();
+            
+            EditorGUILayout.Separator();
         }
 
         public virtual void Title()
         {
-            //GUILayout.Label(name);
+           
         }
 
         public virtual void Header()
@@ -56,11 +62,13 @@ namespace Playbox.SdkWindow
 
         public virtual void Body()
         {
+         
         }
 
         public virtual void Footer()
         {
             GUILayout.Space(footerSpace);
+          
         }
 
         public virtual void Save()

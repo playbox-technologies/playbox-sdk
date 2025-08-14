@@ -10,13 +10,11 @@ namespace Playbox.SdkWindow
 {
     public class ConfigurationWindow : EditorWindow
     {
-        DrawableWindow[] drawableWindow;
-    
-        List<DrawableWindow> drawableWindowList = new();
-    
-        ConfigurationWindow configurationWindow;
-        
-        Vector2 scrollPosition;
+        private List<DrawableWindow> drawableWindowList = new();
+        private Vector2 scrollPosition;
+
+        private float FieldHeight = EditorGUIUtility.singleLineHeight * 1.02f;
+        private float FieldWidth => position.width * 0.488f;
     
         [MenuItem("Playbox/Configuration")]
         public static void ShowWindow()
@@ -39,8 +37,6 @@ namespace Playbox.SdkWindow
             {
                 item.InitName();
                 item.Load();
-                item.FieldHeight = EditorGUIUtility.singleLineHeight;
-                item.FieldWidth = 450;
             }
         
             hasUnsavedChanges = false;
@@ -48,16 +44,23 @@ namespace Playbox.SdkWindow
 
         private void OnGUI()
         {
-            scrollPosition = GUILayout.BeginScrollView(scrollPosition);
-            
-            GUILayout.Space(20f);
-            
-            GUILayout.Label(titleContent, EditorStyles.boldLabel);
-        
-            GUILayout.Space(10f);
+            GUILayout.BeginVertical();
 
+            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+            
+            EditorGUILayout.Separator();
+            
+            GUILayout.Label(titleContent, EditorStyles.boldLabel,GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+        
+            EditorGUILayout.Separator();
+            
             foreach (var item in drawableWindowList)
             {
+                item.FieldHeight = FieldHeight;
+                item.FieldWidth = FieldWidth;
+                
+                GUILayout.BeginVertical();
+                
                 item.HasRenderToggle();
                 
                 item.Title();
@@ -66,9 +69,15 @@ namespace Playbox.SdkWindow
                 item.Footer();
 
                 hasUnsavedChanges = hasUnsavedChanges || item.hasUnsavedChanges;
+                
+                GUILayout.EndVertical();
             }
 
-            if (GUILayout.Button("Save Configuration"))
+            GUILayout.BeginHorizontal();
+            
+            GUILayout.Label("",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+            
+            if (GUILayout.Button("Save Configuration",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth)))
             {
                 GlobalPlayboxConfig.Clear();
             
@@ -82,7 +91,11 @@ namespace Playbox.SdkWindow
                 hasUnsavedChanges = false;
             }
             
-            GUILayout.EndScrollView();
+            GUILayout.EndHorizontal();
+            
+            EditorGUILayout.EndScrollView();
+            
+            GUILayout.EndVertical();
         }
 
         public override void SaveChanges()

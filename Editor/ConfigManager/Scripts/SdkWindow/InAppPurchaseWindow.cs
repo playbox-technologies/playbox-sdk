@@ -9,6 +9,9 @@ namespace Playbox.SdkWindow
     public class InAppPurchaseWindow : DrawableWindow
     {
         bool useCustom = false;
+
+        private string uri;
+        private string token;
         
         public override void InitName()
         {
@@ -22,11 +25,21 @@ namespace Playbox.SdkWindow
             if (!active)
                 return;
             
+            GUILayout.Label("IAP Verification Module",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+            
             GUILayout.BeginHorizontal();
             
-            GUILayout.Label("Use Custom In App Purchases");
+            GUILayout.Label("URL: ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+            uri = EditorGUILayout.TextField("", uri, GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
             
-            useCustom = EditorGUILayout.Toggle("", useCustom, GUILayout.ExpandWidth(false));
+            GUILayout.EndHorizontal();
+            
+            EditorGUILayout.Separator();
+            
+            GUILayout.BeginHorizontal();
+            
+            GUILayout.Label("Token: ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+            token = EditorGUILayout.TextField("", token, GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
             
             GUILayout.EndHorizontal();
         }

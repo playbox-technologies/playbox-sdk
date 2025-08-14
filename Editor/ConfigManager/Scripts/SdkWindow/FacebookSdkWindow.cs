@@ -1,6 +1,10 @@
 ﻿#if UNITY_EDITOR
 using System;
+using System.IO;
+using Facebook.Unity.Editor;
+using Facebook.Unity.Settings;
 using Playbox.SdkConfigurations;
+using UnityEditor;
 using UnityEngine;
 
 namespace Playbox.SdkWindow
@@ -33,35 +37,28 @@ namespace Playbox.SdkWindow
             
             GUILayout.BeginHorizontal();
         
-            GUILayout.Label("app Label : ");
+            GUILayout.Label("app Label : ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
             appLabel = GUILayout.TextField(appLabel, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
         
             GUILayout.EndHorizontal();
             
-            GUILayout.Space(5);
+            EditorGUILayout.Separator();
             
             GUILayout.BeginHorizontal();
         
-            GUILayout.Label("client Token : ");
+            GUILayout.Label("client Token : ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
             clientToken = GUILayout.TextField(clientToken, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
             
             GUILayout.EndHorizontal();
         
-            GUILayout.Space(5);
+            EditorGUILayout.Separator();
             
             GUILayout.BeginHorizontal();
         
-            GUILayout.Label("app id : ");
+            GUILayout.Label("app id : ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
             appId = GUILayout.TextField(appId, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
         
             GUILayout.EndHorizontal();
-
-            if (GUILayout.Button("Load from Facebook Settings"))
-            {
-                appId = Facebook.Unity.Settings.FacebookSettings.AppId;
-                clientToken = Facebook.Unity.Settings.FacebookSettings.ClientToken;
-                appLabel = Facebook.Unity.Settings.FacebookSettings.AppLabels[0];
-            }
         
             hasUnsavedChanges = !(string.Equals(prev_appLabel, appLabel, StringComparison.OrdinalIgnoreCase) && 
                                   string.Equals(prev_appId, appId, StringComparison.OrdinalIgnoreCase) && 
@@ -71,6 +68,8 @@ namespace Playbox.SdkWindow
 
         public override void Save()
         {
+            SaveToFacebookSettings();
+            
             FacebookSdkConfiguration.Active = active;
             FacebookSdkConfiguration.AppLabel = appLabel;
             FacebookSdkConfiguration.AppID = appId;
@@ -91,6 +90,40 @@ namespace Playbox.SdkWindow
             clientToken = FacebookSdkConfiguration.ClientToken;
             
             base.Load();
+        }
+
+        private void SaveToFacebookSettings()
+        {
+            var labels = FacebookSettings.AppLabels;
+            var appIds = FacebookSettings.AppIds;
+            var clientTokens = FacebookSettings.ClientTokens;
+
+            if (labels.Count > 0)
+            {
+                labels[0] = appLabel;
+            }
+            else
+            {
+                labels.Add(appLabel);
+            }
+                
+            if (appIds.Count > 0)
+            {
+                appIds[0] = appId;
+            }
+            else
+            {
+                appIds.Add(appId);
+            }
+                
+            if (clientTokens.Count > 0)
+            {
+                clientTokens[0] = clientToken;
+            }
+            else
+            {
+                clientTokens.Add(clientToken);
+            }
         }
     }
 }
