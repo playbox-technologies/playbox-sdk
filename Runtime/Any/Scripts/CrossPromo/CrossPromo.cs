@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using AppsFlyerSDK;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Playbox
 {
@@ -27,7 +28,7 @@ namespace Playbox
         public static void Initialize()
         {
             if (inviteLinkGenerator == null)
-                inviteLinkGenerator = GameObject.FindObjectOfType<InviteLinkGenerator>();
+                inviteLinkGenerator = Object.FindFirstObjectByType<InviteLinkGenerator>();
         }
 
         /// <summary>

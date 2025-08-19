@@ -26,14 +26,14 @@ namespace Playbox.Consent
         public static bool HasUserConsent = true;
         public static bool HasDoNotSell = false;
         
-        private static ConsentDebugSettings debugSettings = new ConsentDebugSettings();
+        private static ConsentDebugSettings _debugSettings = new();
 
-        private static Action consentCallback;
+        private static Action _consentCallback;
 
         public static ConsentDebugSettings DebugSettings
         {
-            get => debugSettings;
-            set => debugSettings = value;
+            get => _debugSettings;
+            set => _debugSettings = value;
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
@@ -68,7 +68,7 @@ namespace Playbox.Consent
             //consentCallback?.Invoke(false);
         }
 
-        static IEnumerator consentUpdate(Action consentComplete)
+        private static IEnumerator ConsentUpdate(Action consentComplete)
         {
             "Starting Consent Update".PlayboxInfo();
             
@@ -85,51 +85,38 @@ namespace Playbox.Consent
         }
         
         // ReSharper disable Unity.PerformanceAnalysis
+        // ReSharper disable Unity.PerformanceAnalysis
+        // ReSharper disable Unity.PerformanceAnalysis
+        // ReSharper disable Unity.PerformanceAnalysis
         public static void ShowConsent(MonoBehaviour mono, Action callback, bool isDebug = false)
         {
             if(isDebug)
-                GoogleUmpManager.RequestConsentInfoDebug(debugSettings);
+                GoogleUmpManager.RequestConsentInfoDebug(_debugSettings);
             else
                 GoogleUmpManager.RequestConsentInfo();
             
-            mono.StartCoroutine(consentUpdate(() =>
+            mono.StartCoroutine(ConsentUpdate(() =>
             {
                 
 #if PBX_DEVELOPMENT || UNITY_IOS
 
-                bool isATTComplete = false;
+                bool isAttComplete = false;
                 
                 IOSConsent.ShowATTUI(mono, (result) =>
                 {
-                    isATTComplete = true;
+                    isAttComplete = true;
                     callback?.Invoke();
                     
                     ATE = Device.advertisingTrackingEnabled && result;
                 });
                 
-                if (isATTComplete)
+                if (isAttComplete)
                     return;
 #endif
-                
-                //block for getting tracking status
-                
-                bool requestDone = false;
-                bool TrackingEnabled = false;
                 
                 Application.RequestAdvertisingIdentifierAsync((advertisingId, trackingEnabled, errorMsg) =>
                 {
                     AdvertisingId = advertisingId;
-                    
-#if UNITY_IOS
-                    TrackingEnabled = ATTrackingStatusBinding.GetAuthorizationTrackingStatus()
-                                      == ATTrackingStatusBinding.AuthorizationTrackingStatus.AUTHORIZED;
-                    requestDone = true;
-#endif
-                    
-#if UNITY_ANDROID
-                    TrackingEnabled = trackingEnabled;
-                    requestDone = true;
-#endif
                 });
 
 #if UNITY_ANDROID || UNITY_EDITOR

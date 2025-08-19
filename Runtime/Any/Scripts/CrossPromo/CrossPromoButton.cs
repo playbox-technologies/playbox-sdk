@@ -8,8 +8,8 @@ namespace Playbox
 {
     public class CrossPromoButton: MonoBehaviour
     {
-        [SerializeField]
-        private string Link = "";
+        //[SerializeField]
+        //private string Link = "";
         
         [SerializeField]
         private string promotedID = "";

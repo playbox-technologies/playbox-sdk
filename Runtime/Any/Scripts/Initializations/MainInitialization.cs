@@ -25,9 +25,9 @@ namespace Playbox
     {
         [SerializeField] private bool isAutoInitialize = true;
         [SerializeField] private bool useInAppValidation = true;
-        [SerializeField] private bool useLinkGenerator = true;
-        [SerializeField] private bool isDebugSplash = false;
-        [SerializeField] private bool usePlayboxIAP = false;
+        //[SerializeField] private bool useLinkGenerator = true;
+        [SerializeField] private bool isDebugSplash;
+        [SerializeField] private bool usePlayboxIAP;
         [SerializeField] private UnityEvent OnPostInitializatioon;
         
         private List<PlayboxBehaviour> behaviours = new();
@@ -110,8 +110,6 @@ namespace Playbox
             InitStatus[nameof(AppLovinInitialization)] = false;
             InitStatus[nameof(InAppVerification)] = false;
             
-            string debugString = "";
-            
             foreach (var item in behaviours)
             {
                 if(item != null)
@@ -162,7 +160,7 @@ namespace Playbox
         
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            var mainInit = FindObjectOfType<MainInitialization>();
+            var mainInit = FindFirstObjectByType<MainInitialization>();
 
             if (mainInit != this)
             {

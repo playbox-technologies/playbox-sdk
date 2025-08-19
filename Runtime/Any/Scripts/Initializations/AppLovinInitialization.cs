@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿#pragma warning disable CS0618
+
+using System.Collections;
 using Playbox.Consent;
 using Playbox.SdkConfigurations;
 using UnityEngine;
@@ -10,7 +12,6 @@ namespace Playbox
 
         public override void Initialization()
         {
-            
             base.Initialization();
             
             if (ConsentData.IsChildUser)
@@ -26,6 +27,7 @@ namespace Playbox
             MaxSdk.SetHasUserConsent(ConsentData.HasUserConsent);
             
             MaxSdk.SetSdkKey(AppLovinConfiguration.AdvertisementSdk);
+        
             MaxSdk.InitializeSdk();
 
             StartCoroutine(initUpd());
@@ -73,3 +75,4 @@ namespace Playbox
         
     }
 }
+#pragma warning restore CS0618
