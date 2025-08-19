@@ -12,6 +12,8 @@ namespace Playbox.SdkConfigurations
     {
         private static JObject jsonConfig = new();
         private static string configFile = "playbox_sdk_config";
+        
+        public static bool IsLoaded => jsonConfig != null;
     
         public static void Load()
         {

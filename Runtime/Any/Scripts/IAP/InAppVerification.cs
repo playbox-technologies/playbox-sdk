@@ -109,8 +109,6 @@ namespace Playbox
                 ["os_version"] = SystemInfo.operatingSystem,
                 ["device_name"] = SystemInfo.deviceName,
                 ["device_model"] = SystemInfo.deviceModel,
-                //["device_locale"] = CultureInfo.CurrentCulture.Name,
-                //["time_zone"] = localZone.DisplayName,
                 ["app_version"] = Data.Playbox.AppVersion,
                 ["product_id"] = productID,
                 ["game_id"] = Data.Playbox.GameId,

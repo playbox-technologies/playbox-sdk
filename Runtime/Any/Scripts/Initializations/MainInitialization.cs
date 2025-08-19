@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Any.Scripts.Initializations;
@@ -10,6 +11,7 @@ using Playbox.Consent;
 #if UNITY_EDITOR
 #endif
 using Playbox.SdkConfigurations;
+using Playbox.Verification;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -34,6 +36,8 @@ namespace Playbox
         
         private const string objectName = "[Global] MainInitialization";
         
+        private static bool isConsent = false;
+        
         private static Dictionary<string,bool> initStatus = new();
 
         public static Dictionary<string, bool> InitStatus
@@ -43,6 +47,7 @@ namespace Playbox
         }
 
         public static Action PostInitialization = delegate { };
+        public static Action OnUpdate = delegate { };
         public static Action PreInitialization = delegate { };
 
 
@@ -73,7 +78,13 @@ namespace Playbox
                 }
             }
         }
-        
+
+        private void Update()
+        {
+            if(isConsent)
+                OnUpdate?.Invoke();
+        }
+
 
         public static bool IsValidate<T>() where T : PlayboxBehaviour
         {
@@ -83,7 +94,8 @@ namespace Playbox
             initStatus.TryGetValue(typeof(T).Name, out bool validate);
                 return validate;
         }
-
+        
+        // ReSharper disable Unity.PerformanceAnalysis
         public override void Initialization()
         {
             GlobalPlayboxConfig.Load();
@@ -121,6 +133,17 @@ namespace Playbox
                     });
             }
             
+            foreach (var item in behaviours)
+            {
+                if (item != null)
+                {
+                    if (!item.ConsentDependency)
+                    {
+                        item.Initialization();
+                    }
+                }
+            }
+            
             ConsentData.ShowConsent(this, () =>
             {
                 foreach (var item in behaviours)
@@ -134,19 +157,12 @@ namespace Playbox
                     }
                 }
                 
+                ClientQueueService.Initialization();
+                
                 PostInitialization?.Invoke();
+                
+                isConsent = true;
             });
-            
-            foreach (var item in behaviours)
-            {
-                if (item != null)
-                {
-                    if (!item.ConsentDependency)
-                    {
-                        item.Initialization();
-                    }
-                }
-            }
         }
 
         private void OnDestroy()
