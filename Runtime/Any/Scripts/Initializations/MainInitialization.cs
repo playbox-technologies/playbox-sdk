@@ -27,7 +27,6 @@ namespace Playbox
     {
         [SerializeField] private bool isAutoInitialize = true;
         [SerializeField] private bool useInAppValidation = true;
-        //[SerializeField] private bool useLinkGenerator = true;
         [SerializeField] private bool isDebugSplash;
         [SerializeField] private bool usePlayboxIAP;
         [SerializeField] private UnityEvent OnPostInitializatioon;
