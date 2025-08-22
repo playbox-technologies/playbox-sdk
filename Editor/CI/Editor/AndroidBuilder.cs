@@ -1,11 +1,10 @@
+
+#if UNITY_EDITOR && UNITY_ANDROID
+
 using System.Linq;
 using CI.Utils.Extentions;
 using UnityEditor.Build;
-
-#if UNITY_EDITOR && UNITY_ANDROID
-using Facebook.Unity;
 using UnityEditor;
-using UnityEditor.Callbacks;
 
 namespace Playbox.CI
 {
