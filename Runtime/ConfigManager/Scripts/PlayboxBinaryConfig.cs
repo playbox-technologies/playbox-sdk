@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using UnityEngine;
 using Utils.Data;
 
 namespace Playbox.SdkConfigurations
@@ -14,21 +15,15 @@ namespace Playbox.SdkConfigurations
             
             var bytes = DataSerializer.Serialize(json);
         
-            File.WriteAllBytes(filePath + ".bin", bytes);
+            File.WriteAllBytes(filePath + ".bytes", bytes);
         }
 
         public static string Load(string configPath)
         {
-            var path = configPath + ".bin";
+            var asset = Resources.Load<TextAsset>("Playbox/PlayboxConfig/playbox_sdk_config.json");
             
-            if (File.Exists(path))
-            {
-                var bytes =  File.ReadAllBytes(path);
+            return DataSerializer.Deserialize<string>(asset.bytes);
                 
-                return DataSerializer.Deserialize<string>(bytes);
-            }
-            
-            return "";
         }
     }
 }

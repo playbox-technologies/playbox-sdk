@@ -11,8 +11,6 @@ namespace Playbox
 {
     public class InAppVerification : PlayboxBehaviour
     {
-        private bool isSandbox => InAppVerificationCongifuration.IsSandbox;
-
         [SerializeField] private float verifyUpdateRate = 0.5f;
 
         private const string uri = "https://api.playbox.network/verify";
@@ -236,8 +234,6 @@ namespace Playbox
                         removeFromQueueCallback?.Invoke(true);
                         break;
                 }
-            
-               
             }
         }
     }

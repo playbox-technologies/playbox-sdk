@@ -19,13 +19,13 @@ namespace Playbox.SdkConfigurations
         private static string configFile = Path.Combine(Application.dataPath, "Resources", "Playbox", "PlayboxConfig",
             "playbox_sdk_config.json");
         
-#if UNITY_EDITOR
-        
         public static void Save()
         {
             PlayboxBinaryConfig.Save(configPath,configFile,jsonConfig.ToString());
             
+#if UNITY_EDITOR
             UnityEditor.AssetDatabase.Refresh();
+#endif
         }
         
         public static void SaveSubconfigs(string name, JObject config)
@@ -41,11 +41,9 @@ namespace Playbox.SdkConfigurations
             jsonConfig = new JObject();
         }
         
-#endif
-        
         public static void Load()
         {
-             if (File.Exists(configFile + ".bin"))
+             if (File.Exists(configFile + ".bytes"))
              {
                  jsonConfig = JObject.Parse(PlayboxBinaryConfig.Load(configFile));
              }
@@ -57,10 +55,7 @@ namespace Playbox.SdkConfigurations
 
         public static JObject LoadSubconfigs(string name)
         {
-            if (jsonConfig[name] == null)
-                return null;
-            
-            return jsonConfig[name].ToObject<JObject>();
+            return jsonConfig[name]!.ToObject<JObject>();
         }
     }
 }
