@@ -137,32 +137,28 @@ namespace Playbox
                     });
             }
             
-            foreach (var item in behaviours)
-            {
-                if (item != null)
-                {
-                    if (!item.ConsentDependency)
-                    {
-                        item.Initialization();
-                    }
-                }
-            }
-            
             ConsentData.ShowConsent(this, () =>
             {
                 foreach (var item in behaviours)
                 {
-                    if (item != null)
+                    
+                    if (item.ConsentDependency)
                     {
-                        if (item.ConsentDependency)
-                        {
-                            item.Initialization();
-                        }
+                        item.Initialization();
                     }
+                    
                 }
                 
                 PostInitialization?.Invoke();
             });
+            
+            foreach (var item in behaviours)
+            {
+                if (!item.ConsentDependency)
+                {
+                    item.Initialization();
+                }
+            }
         }
 
         private void OnDestroy()
