@@ -79,6 +79,8 @@ namespace Playbox
         
         public override void Initialization()
         {
+            $"Initialization {nameof(MainInitialization)}".PlayboxSplashLogUGUI();
+            
             GlobalPlayboxConfig.Load();
             
             if(Application.isPlaying)
