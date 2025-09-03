@@ -134,6 +134,14 @@ namespace Playbox
                 {
                     Events.RealCurrencyPayment(orderId, (double)price, productId, currency);
                     Events.AppsFlyerPayment(eventValues);
+                    
+                    FirebaseAnalytics.LogEvent(
+                        FirebaseAnalytics.EventPurchase,
+                        new Parameter(FirebaseAnalytics.ParameterItemID, orderId),
+                        new Parameter(FirebaseAnalytics.ParameterPrice, price.ToString(CultureInfo.InvariantCulture)),
+                        new Parameter(FirebaseAnalytics.ParameterCurrency, currency)
+                    );
+                    
                 }
             });
         }
@@ -154,6 +162,21 @@ namespace Playbox
         public static void TrackAd(MaxSdkBase.AdInfo impressionData)
         {
             Events.AdImpression(impressionData.NetworkName, impressionData.Revenue, impressionData.Placement, impressionData.AdUnitIdentifier);
+
+            if (isFirebaseInit)
+            {
+                double revenue = impressionData.Revenue;
+                var impressionParameters = new[]
+                {
+                    new Parameter("ad_platform", "AppLovin"),
+                    new Parameter("ad_source", impressionData.NetworkName),
+                    new Parameter("ad_unit_name", impressionData.AdUnitIdentifier),
+                    new Parameter("ad_format", impressionData.AdFormat),
+                    new Parameter("value", revenue.ToString(CultureInfo.InvariantCulture)),
+                    new Parameter("currency", "USD")
+                };
+                FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventAdImpression, impressionParameters);
+            }
         }
         
         public static class Events
