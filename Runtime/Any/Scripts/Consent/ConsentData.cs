@@ -3,6 +3,12 @@ using System.Collections;
 using CI.Utils.Extentions;
 using GoogleMobileAds.Ump.Api;
 using UnityEngine;
+using Utils.Timer;
+
+#if UNITY_IOS
+using Unity.Advertisement.IosSupport;
+using UnityEngine.iOS;
+#endif
 
 namespace Playbox.Consent
 {
@@ -14,6 +20,7 @@ namespace Playbox.Consent
         public static bool ConsentForAdsPersonalized = false;
         public static bool ConsentForAdStogare = false;
         public static bool ATE = false;
+        public static string AdvertisingId = "";
 
         public static bool IsChildUser = false;
         public static bool HasUserConsent = true;
@@ -64,7 +71,6 @@ namespace Playbox.Consent
         private static IEnumerator ConsentUpdate(Action consentComplete)
         {
             "Starting Consent Update".PlayboxInfo();
-            "Starting Consent Update".PlayboxSplashLogUGUI();
             
             while (true)
             {
@@ -80,29 +86,34 @@ namespace Playbox.Consent
         
         public static void ShowConsent(MonoBehaviour mono, Action callback, bool isDebug = false)
         {
-            "Show Consent Method".PlayboxSplashLogUGUI();
-            
             if(isDebug)
                 GoogleUmpManager.RequestConsentInfoDebug(_debugSettings);
             else
                 GoogleUmpManager.RequestConsentInfo();
             
-            
             mono.StartCoroutine(ConsentUpdate(() =>
             {
                 
-#if UNITY_IOS
+#if PBX_DEVELOPMENT || UNITY_IOS
+
+                bool isAttComplete = false;
                 
                 IOSConsent.ShowATTUI(mono, (result) =>
                 {
-                    
-                    "ATT Callback".PlayboxSplashLogUGUI();
+                    isAttComplete = true;
                     callback?.Invoke();
                     
-                    ATE = result;
+                    ATE = Device.advertisingTrackingEnabled && result;
                 });
+                
+                if (isAttComplete)
+                    return;
 #endif
                 
+                Application.RequestAdvertisingIdentifierAsync((advertisingId, trackingEnabled, errorMsg) =>
+                {
+                    AdvertisingId = advertisingId;
+                });
 
 #if UNITY_ANDROID || UNITY_EDITOR
                 callback?.Invoke();
