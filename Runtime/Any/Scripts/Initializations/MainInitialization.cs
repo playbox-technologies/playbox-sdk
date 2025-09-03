@@ -124,33 +124,19 @@ namespace Playbox
             
             "Pre Consent".PlayboxSplashLogUGUI();
             
-            /*
             foreach (var item in behaviours)
             {
-                if (item != null)
-                {
-                    if (!item.ConsentDependency)
+                if(item != null)
+                    item.GetInitStatus(() =>
                     {
-                        item.Initialization();
-                    }
-                }
-            }
-            */
-
-            for (int i = 0; i < behaviours.Count; i++)
-            {
-                var behaviour = behaviours[i];
-
-                if (behaviour != null)
-                {
-                    behaviour.Initialization();
-                }
+                        item.playboxName.PlayboxInfo("INITIALIZED");
+                        InitStatus[item.playboxName] = true;
+                        
+                    });
             }
             
             ConsentData.ShowConsent(this, () =>
             {
-                "Show Consent".PlayboxSplashLogUGUI();
-                
                 foreach (var item in behaviours)
                 {
                     if (item != null)
@@ -162,10 +148,19 @@ namespace Playbox
                     }
                 }
                 
-                //ClientQueueService.Initialization();
-                
                 PostInitialization?.Invoke();
             });
+            
+            foreach (var item in behaviours)
+            {
+                if (item != null)
+                {
+                    if (!item.ConsentDependency)
+                    {
+                        item.Initialization();
+                    }
+                }
+            }
         }
 
         private void OnDestroy()
