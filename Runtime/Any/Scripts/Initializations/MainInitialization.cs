@@ -68,7 +68,7 @@ namespace Playbox
             }
             catch (Exception e)
             {
-                if (IsValidate<FirebaseInitialization> ())
+                if (IsValidate<FirebaseInitialization>())
                 {
                     Crashlytics.LogException(e);
                 }
@@ -92,6 +92,8 @@ namespace Playbox
             
             if(Application.isPlaying)
                 DontDestroyOnLoad(gameObject);
+            
+            ApproveInitialization();
             
             PreInitialization?.Invoke();
             
@@ -137,6 +139,8 @@ namespace Playbox
             
             ConsentData.ShowConsent(this, () =>
             {
+                "Show Consent".PlayboxSplashLogUGUI();
+                
                 foreach (var item in behaviours)
                 {
                     if (item != null)
@@ -148,7 +152,7 @@ namespace Playbox
                     }
                 }
                 
-                ClientQueueService.Initialization();
+                //ClientQueueService.Initialization();
                 
                 PostInitialization?.Invoke();
             });

@@ -91,6 +91,7 @@ namespace Playbox
         public override void Initialization()
         {
             Init();
+            ApproveInitialization();
         }
 
         private void Init()

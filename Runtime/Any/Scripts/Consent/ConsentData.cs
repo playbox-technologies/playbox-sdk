@@ -90,6 +90,8 @@ namespace Playbox.Consent
             else
                 GoogleUmpManager.RequestConsentInfo();
             
+            "Show Consent Method".PlayboxSplashLogUGUI();
+            
             mono.StartCoroutine(ConsentUpdate(() =>
             {
                 
@@ -97,6 +99,8 @@ namespace Playbox.Consent
                 
                 IOSConsent.ShowATTUI(mono, (result) =>
                 {
+                    
+                    "ATT Callback".PlayboxSplashLogUGUI();
                     callback?.Invoke();
                     
                     ATE = result;
