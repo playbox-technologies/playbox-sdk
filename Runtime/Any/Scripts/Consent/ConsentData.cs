@@ -20,7 +20,6 @@ namespace Playbox.Consent
         public static bool ConsentForAdsPersonalized = false;
         public static bool ConsentForAdStogare = false;
         public static bool ATE = false;
-        public static string AdvertisingId = "";
 
         public static bool IsChildUser = false;
         public static bool HasUserConsent = true;
@@ -84,10 +83,6 @@ namespace Playbox.Consent
             }
         }
         
-        // ReSharper disable Unity.PerformanceAnalysis
-        // ReSharper disable Unity.PerformanceAnalysis
-        // ReSharper disable Unity.PerformanceAnalysis
-        // ReSharper disable Unity.PerformanceAnalysis
         public static void ShowConsent(MonoBehaviour mono, Action callback, bool isDebug = false)
         {
             if(isDebug)
@@ -98,26 +93,16 @@ namespace Playbox.Consent
             mono.StartCoroutine(ConsentUpdate(() =>
             {
                 
-#if PBX_DEVELOPMENT || UNITY_IOS
-
-                bool isAttComplete = false;
+#if UNITY_IOS
                 
                 IOSConsent.ShowATTUI(mono, (result) =>
                 {
-                    isAttComplete = true;
                     callback?.Invoke();
                     
-                    ATE = Device.advertisingTrackingEnabled && result;
+                    ATE = result;
                 });
-                
-                if (isAttComplete)
-                    return;
 #endif
                 
-                Application.RequestAdvertisingIdentifierAsync((advertisingId, trackingEnabled, errorMsg) =>
-                {
-                    AdvertisingId = advertisingId;
-                });
 
 #if UNITY_ANDROID || UNITY_EDITOR
                 callback?.Invoke();
