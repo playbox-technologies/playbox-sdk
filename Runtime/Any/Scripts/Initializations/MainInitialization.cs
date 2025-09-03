@@ -121,16 +121,6 @@ namespace Playbox
             
             "Post Initialized".PlayboxSplashLogUGUI();
             
-            foreach (var item in behaviours)
-            {
-                if (item != null)
-                {
-                    if (!item.ConsentDependency)
-                    {
-                        item.Initialization();
-                    }
-                }
-            }
             
             "Pre Consent".PlayboxSplashLogUGUI();
             
@@ -153,6 +143,18 @@ namespace Playbox
                 
                 PostInitialization?.Invoke();
             });
+            
+            foreach (var item in behaviours)
+            {
+                if (item != null)
+                {
+                    if (!item.ConsentDependency)
+                    {
+                        item.Initialization();
+                    }
+                }
+            }
+            
         }
 
         private void OnDestroy()
