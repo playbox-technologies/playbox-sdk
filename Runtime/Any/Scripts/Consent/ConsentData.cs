@@ -86,6 +86,8 @@ namespace Playbox.Consent
         
         public static void ShowConsent(MonoBehaviour mono, Action callback, bool isDebug = false)
         {
+            isDebug = Debug.isDebugBuild;
+            
             if(isDebug)
                 GoogleUmpManager.RequestConsentInfoDebug(_debugSettings);
             else
