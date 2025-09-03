@@ -114,6 +114,8 @@ namespace Playbox
             InitStatus[nameof(AppLovinInitialization)] = false;
             InitStatus[nameof(InAppVerification)] = false;
             
+            "Pre Initialized".PlayboxSplashLogUGUI();
+            
             foreach (var item in behaviours)
             {
                 if(item != null)
@@ -125,6 +127,8 @@ namespace Playbox
                         
                     });
             }
+            
+            "Post Initialized".PlayboxSplashLogUGUI();
             
             foreach (var item in behaviours)
             {
