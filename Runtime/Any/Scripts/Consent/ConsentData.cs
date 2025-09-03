@@ -70,6 +70,7 @@ namespace Playbox.Consent
         private static IEnumerator ConsentUpdate(Action consentComplete)
         {
             "Starting Consent Update".PlayboxInfo();
+            "Starting Consent Update".PlayboxSplashLogUGUI();
             
             while (true)
             {
