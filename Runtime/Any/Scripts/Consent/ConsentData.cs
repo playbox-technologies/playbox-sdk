@@ -86,12 +86,13 @@ namespace Playbox.Consent
         
         public static void ShowConsent(MonoBehaviour mono, Action callback, bool isDebug = false)
         {
+            "Show Consent Method".PlayboxSplashLogUGUI();
+            
             if(isDebug)
                 GoogleUmpManager.RequestConsentInfoDebug(_debugSettings);
             else
                 GoogleUmpManager.RequestConsentInfo();
             
-            "Show Consent Method".PlayboxSplashLogUGUI();
             
             mono.StartCoroutine(ConsentUpdate(() =>
             {
