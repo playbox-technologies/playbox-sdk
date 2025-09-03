@@ -1,10 +1,73 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Utils.Timer;
 
 namespace Playbox
 {
+    [Serializable]
+    public class ConsoleUGUIMessage
+    {
+        public string text = "";
+        public float time = 5f;
+        public bool hasDelete;
+
+        public void Update()
+        {
+            time -= Time.deltaTime;
+            
+            hasDelete = time < 0f;
+        }
+    }
+
+    [Serializable]
+    public class MessagePool
+    {
+        [SerializeField]
+        private List<ConsoleUGUIMessage> messages = new();
+
+        public void PushMessage(ConsoleUGUIMessage message)
+        {
+            messages.Add(message);
+        }
+
+        public string GetString()
+        {
+            string output = "";
+
+            foreach (ConsoleUGUIMessage message in messages)
+            {
+                output += message.text + "\n";
+            }
+
+            return output;
+        }
+
+        public void Update()
+        {
+            foreach (var item in messages)
+            {
+                item.Update();
+            }
+            
+            List<ConsoleUGUIMessage> messagesToRemove = new();
+            
+            foreach (var item in messages)
+            {
+                if (item.hasDelete)
+                {
+                    messagesToRemove.Add(item);
+                }
+            }
+
+            foreach (var item in messagesToRemove)
+            {
+                messages.Remove(item);
+            }
+        }
+    }
+
     public class PlayboxSplashUGUILogger : PlayboxBehaviour
     {
         public static UnityAction<string> SplashEvent;
@@ -13,10 +76,13 @@ namespace Playbox
         private string text = "";
         
         [SerializeField]
+        MessagePool messagePool = new();
+        
+        [SerializeField]
         private GUIStyle style = new ();
         private Texture2D texture;
 
-        private float splashTime = 8;
+        private float splashTime = 25;
         
         private PlayboxTimer timer;
         private bool isEnabled = false;
@@ -62,7 +128,8 @@ namespace Playbox
 
         private void OnText(string text)
         {
-            this.text = text;
+            //this.text = text;
+            messagePool.PushMessage(new ConsoleUGUIMessage { text = text });
             timer.Start();
         }
 
@@ -71,9 +138,13 @@ namespace Playbox
             if(!isEnabled)
                 return;
             
-            var rect = style.CalcSize(new GUIContent(text));
+            messagePool.Update();
+
+            var message = messagePool.GetString();
             
-            GUI.Label(new Rect(new Vector2(200,200), rect), text, style);
+            var rect = style.CalcSize(new GUIContent(message));
+            
+            GUI.Label(new Rect(new Vector2(200,200), rect), message, style);
         }
 
         private void Update()

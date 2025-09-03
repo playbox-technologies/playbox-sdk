@@ -35,8 +35,6 @@ namespace Playbox
         
         private const string objectName = "[Global] MainInitialization";
         
-        private static bool isConsent = false;
-        
         private static Dictionary<string,bool> initStatus = new();
 
         public static Dictionary<string, bool> InitStatus
@@ -46,7 +44,6 @@ namespace Playbox
         }
 
         public static Action PostInitialization = delegate { };
-        public static Action OnUpdate = delegate { };
         public static Action PreInitialization = delegate { };
 
 
@@ -76,12 +73,6 @@ namespace Playbox
                     Crashlytics.LogException(e);
                 }
             }
-        }
-
-        private void Update()
-        {
-            if(isConsent)
-                OnUpdate?.Invoke();
         }
 
 
@@ -127,6 +118,7 @@ namespace Playbox
                     item.GetInitStatus(() =>
                     {
                         item.playboxName.PlayboxInfo("INITIALIZED");
+                        item.playboxName.PlayboxSplashLogUGUI();
                         InitStatus[item.playboxName] = true;
                         
                     });
@@ -159,8 +151,6 @@ namespace Playbox
                 ClientQueueService.Initialization();
                 
                 PostInitialization?.Invoke();
-                
-                isConsent = true;
             });
         }
 
