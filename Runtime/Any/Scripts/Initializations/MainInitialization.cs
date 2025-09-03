@@ -111,7 +111,6 @@ namespace Playbox
             
             foreach (var item in behaviours)
             {
-                if(item != null)
                     item.GetInitStatus(() =>
                     {
                         item.playboxName.PlayboxInfo("INITIALIZED");
@@ -126,27 +125,15 @@ namespace Playbox
             
             "Pre Consent".PlayboxSplashLogUGUI();
             
-            foreach (var item in behaviours)
-            {
-                if(item != null)
-                    item.GetInitStatus(() =>
-                    {
-                        item.playboxName.PlayboxInfo("INITIALIZED");
-                        InitStatus[item.playboxName] = true;
-                        
-                    });
-            }
             
             ConsentData.ShowConsent(this, () =>
             {
                 foreach (var item in behaviours)
                 {
-                    
                     if (item.ConsentDependency)
                     {
                         item.Initialization();
                     }
-                    
                 }
                 
                 PostInitialization?.Invoke();
@@ -165,8 +152,7 @@ namespace Playbox
         {
             foreach (var item in behaviours)
             { 
-                if(item != null)
-                    item.Close();   
+                item.Close();   
             }
         }
         
