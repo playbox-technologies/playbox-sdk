@@ -48,6 +48,8 @@ namespace CI.Utils.Extentions
         public static void PlayboxSplashLogUGUI(this object obj)
         {
             PlayboxSplashUGUILogger.SplashEvent?.Invoke(obj.ToString());
+
+            obj.PlayboxInfo();
         }
 
         private static string PlayboxLogger(Color color,object text,Action<string> action, string predicate = "Playbox",string description = "", bool isException = false)
