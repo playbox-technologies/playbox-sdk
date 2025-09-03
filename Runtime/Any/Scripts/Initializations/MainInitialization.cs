@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
 using Any.Scripts.Initializations;
-using AppsFlyerSDK;
 using CI.Utils.Extentions;
 using Firebase.Crashlytics;
 using Playbox.Consent;
-#if UNITY_EDITOR
-#endif
 using Playbox.SdkConfigurations;
-using Playbox.Verification;
 
 #if UNITY_EDITOR
 using UnityEditor;
