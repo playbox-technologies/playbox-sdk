@@ -5,7 +5,6 @@ using AppsFlyerSDK;
 using CI.Utils.Extentions;
 using Unity.Advertisement.IosSupport;
 using UnityEngine;
-using UnityEngine.iOS;
 
 namespace Playbox.Consent
 {

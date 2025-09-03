@@ -3,12 +3,6 @@ using System.Collections;
 using CI.Utils.Extentions;
 using GoogleMobileAds.Ump.Api;
 using UnityEngine;
-using Utils.Timer;
-
-#if UNITY_IOS
-using Unity.Advertisement.IosSupport;
-using UnityEngine.iOS;
-#endif
 
 namespace Playbox.Consent
 {

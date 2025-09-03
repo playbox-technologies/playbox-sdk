@@ -39,7 +39,6 @@ namespace Playbox
         public static Action PostInitialization = delegate { };
         public static Action PreInitialization = delegate { };
 
-
         private void Awake()
         {
             PostInitialization += () =>
@@ -78,7 +77,6 @@ namespace Playbox
                 return validate;
         }
         
-        // ReSharper disable Unity.PerformanceAnalysis
         public override void Initialization()
         {
             GlobalPlayboxConfig.Load();

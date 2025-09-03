@@ -1,5 +1,3 @@
-using System;
-using System.Runtime.CompilerServices;
 using Firebase;
 using Firebase.Crashlytics;
 using Firebase.Extensions;
