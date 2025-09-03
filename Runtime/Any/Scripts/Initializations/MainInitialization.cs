@@ -137,6 +137,8 @@ namespace Playbox
                 }
             }
             
+            "Pre Consent".PlayboxSplashLogUGUI();
+            
             ConsentData.ShowConsent(this, () =>
             {
                 "Show Consent".PlayboxSplashLogUGUI();
