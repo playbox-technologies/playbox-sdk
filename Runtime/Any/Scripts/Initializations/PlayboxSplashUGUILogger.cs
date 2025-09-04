@@ -87,6 +87,11 @@ namespace Playbox
         private PlayboxTimer timer;
         private bool isEnabled = false;
 
+        private void Start()
+        {
+            if(!isInitialized)
+                Initialization();   
+        }
 
         public override void Initialization()
         {

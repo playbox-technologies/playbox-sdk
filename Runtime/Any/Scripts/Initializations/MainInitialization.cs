@@ -152,7 +152,7 @@ namespace Playbox
         {
             foreach (var item in behaviours)
             { 
-                item.Close();   
+                item?.Close();   
             }
         }
         
