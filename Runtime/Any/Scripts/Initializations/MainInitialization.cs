@@ -111,13 +111,16 @@ namespace Playbox
             
             foreach (var item in behaviours)
             {
-                    item.GetInitStatus(() =>
-                    {
-                        item.playboxName.PlayboxInfo("INITIALIZED");
-                        item.playboxName.PlayboxSplashLogUGUI();
-                        InitStatus[item.playboxName] = true;
+                if(!item)
+                    continue;
+                
+                item.GetInitStatus(() =>
+                {
+                    item.playboxName.PlayboxInfo("INITIALIZED");
+                    item.playboxName.PlayboxSplashLogUGUI();
+                    InitStatus[item.playboxName] = true;
                         
-                    });
+                });
             }
             
             "Post Initialized".PlayboxSplashLogUGUI();
