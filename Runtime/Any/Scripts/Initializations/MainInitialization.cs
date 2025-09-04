@@ -133,6 +133,9 @@ namespace Playbox
             {
                 foreach (var item in behaviours)
                 {
+                    if(!item)
+                        continue;
+                    
                     if (item.ConsentDependency)
                     {
                         item.Initialization();
@@ -144,6 +147,9 @@ namespace Playbox
             
             foreach (var item in behaviours)
             {
+                if(!item)
+                    continue;
+                
                 if (!item.ConsentDependency)
                 {
                     item.Initialization();
@@ -155,7 +161,10 @@ namespace Playbox
         {
             foreach (var item in behaviours)
             { 
-                item?.Close();   
+                if(!item)
+                    continue;
+                
+                item.Close();   
             }
         }
         
