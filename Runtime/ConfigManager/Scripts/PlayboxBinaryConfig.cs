@@ -20,12 +20,11 @@ namespace Playbox.SdkConfigurations
 
         public static string Load(string configPath)
         {
-            var asset = Resources.Load<TextAsset>(configPath + ".bytes");
+            //var asset = Resources.Load<TextAsset>(configPath);
+
+            var bytes = File.ReadAllBytes(configPath);
             
-            if (asset == null)
-                Debug.LogError($"Failed to load playbox binary config file: {configPath}");
-            
-            return DataSerializer.Deserialize<string>(asset.bytes);
+            return DataSerializer.Deserialize<string>(bytes);
                 
         }
     }

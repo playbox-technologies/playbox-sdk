@@ -43,9 +43,11 @@ namespace Playbox.SdkConfigurations
         
         public static void Load()
         {
-             if (File.Exists(configFile + ".bytes"))
+            var binaryPath = configFile + ".bytes";
+            
+             if (File.Exists(binaryPath))
              {
-                 jsonConfig = JObject.Parse(PlayboxBinaryConfig.Load(configFile));
+                 jsonConfig = JObject.Parse(PlayboxBinaryConfig.Load(binaryPath));
                  
                  "Playbox Load Config .bytes".PlayboxSplashLogUGUI();
              }
