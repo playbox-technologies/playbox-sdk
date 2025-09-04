@@ -51,7 +51,7 @@ namespace Playbox.SdkConfigurations
              }
              else
              {
-                 jsonConfig = JObject.Parse(PlayboxJsonConfig.Load(configFile));
+                 jsonConfig = JObject.Parse(PlayboxJsonConfig.Load(configFile + ".bytes"));
                  
                  "Playbox Load Config .json".PlayboxSplashLogUGUI();
              }
