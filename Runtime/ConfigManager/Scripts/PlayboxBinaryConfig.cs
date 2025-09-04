@@ -20,7 +20,7 @@ namespace Playbox.SdkConfigurations
 
         public static string Load(string configPath)
         {
-            var asset = Resources.Load<TextAsset>("Playbox/PlayboxConfig/playbox_sdk_config.json");
+            var asset = Resources.Load<TextAsset>(configPath);
             
             return DataSerializer.Deserialize<string>(asset.bytes);
                 
