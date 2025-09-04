@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Any.Scripts.Initializations;
+using AppsFlyerSDK;
 using CI.Utils.Extentions;
 using Firebase.Crashlytics;
 using Playbox.Consent;
+#if UNITY_EDITOR
+#endif
 using Playbox.SdkConfigurations;
 
 #if UNITY_EDITOR
@@ -20,6 +25,7 @@ namespace Playbox
     {
         [SerializeField] private bool isAutoInitialize = true;
         [SerializeField] private bool useInAppValidation = true;
+        //[SerializeField] private bool useLinkGenerator = true;
         [SerializeField] private bool isDebugSplash;
         [SerializeField] private bool usePlayboxIAP;
         [SerializeField] private UnityEvent OnPostInitializatioon;
@@ -38,6 +44,7 @@ namespace Playbox
 
         public static Action PostInitialization = delegate { };
         public static Action PreInitialization = delegate { };
+
 
         private void Awake()
         {
@@ -60,13 +67,13 @@ namespace Playbox
             }
             catch (Exception e)
             {
-                if (IsValidate<FirebaseInitialization>())
+                if (IsValidate<FirebaseInitialization> ())
                 {
                     Crashlytics.LogException(e);
                 }
             }
         }
-
+        
 
         public static bool IsValidate<T>() where T : PlayboxBehaviour
         {
@@ -76,17 +83,13 @@ namespace Playbox
             initStatus.TryGetValue(typeof(T).Name, out bool validate);
                 return validate;
         }
-        
+
         public override void Initialization()
         {
-            $"Initialization {nameof(MainInitialization)}".PlayboxSplashLogUGUI();
-            
             GlobalPlayboxConfig.Load();
             
             if(Application.isPlaying)
                 DontDestroyOnLoad(gameObject);
-            
-            ApproveInitialization();
             
             PreInitialization?.Invoke();
             
@@ -107,38 +110,27 @@ namespace Playbox
             InitStatus[nameof(AppLovinInitialization)] = false;
             InitStatus[nameof(InAppVerification)] = false;
             
-            "Pre Initialized".PlayboxSplashLogUGUI();
-            
             foreach (var item in behaviours)
             {
-                if(!item)
-                    continue;
-                
-                item.GetInitStatus(() =>
-                {
-                    item.playboxName.PlayboxInfo("INITIALIZED");
-                    item.playboxName.PlayboxSplashLogUGUI();
-                    InitStatus[item.playboxName] = true;
+                if(item != null)
+                    item.GetInitStatus(() =>
+                    {
+                        item.playboxName.PlayboxInfo("INITIALIZED");
+                        InitStatus[item.playboxName] = true;
                         
-                });
+                    });
             }
-            
-            "Post Initialized".PlayboxSplashLogUGUI();
-            
-            
-            "Pre Consent".PlayboxSplashLogUGUI();
-            
             
             ConsentData.ShowConsent(this, () =>
             {
                 foreach (var item in behaviours)
                 {
-                    if(!item)
-                        continue;
-                    
-                    if (item.ConsentDependency)
+                    if (item != null)
                     {
-                        item.Initialization();
+                        if (item.ConsentDependency)
+                        {
+                            item.Initialization();
+                        }
                     }
                 }
                 
@@ -147,12 +139,12 @@ namespace Playbox
             
             foreach (var item in behaviours)
             {
-                if(!item)
-                    continue;
-                
-                if (!item.ConsentDependency)
+                if (item != null)
                 {
-                    item.Initialization();
+                    if (!item.ConsentDependency)
+                    {
+                        item.Initialization();
+                    }
                 }
             }
         }
@@ -161,10 +153,8 @@ namespace Playbox
         {
             foreach (var item in behaviours)
             { 
-                if(!item)
-                    continue;
-                
-                item.Close();   
+                if(item != null)
+                    item.Close();   
             }
         }
         
