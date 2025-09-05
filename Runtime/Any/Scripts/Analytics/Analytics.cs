@@ -175,13 +175,10 @@ namespace Playbox
                     new Parameter("value", revenue),
                     new Parameter("currency", "USD")
                 };
-                revenue.PlayboxSplashLogUGUI();
                 FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventAdImpression, impressionParameters);
             }
             
-            double revenues = impressionData.Revenue;
-         
-            revenues.PlayboxSplashLogUGUI();
+            impressionData.Revenue.PlayboxSplashLogUGUI();
 
             "Track AD".PlayboxInfo();
         }
