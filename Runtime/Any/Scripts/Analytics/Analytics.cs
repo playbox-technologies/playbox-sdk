@@ -172,11 +172,18 @@ namespace Playbox
                     new Parameter("ad_source", impressionData.NetworkName),
                     new Parameter("ad_unit_name", impressionData.AdUnitIdentifier),
                     new Parameter("ad_format", impressionData.AdFormat),
-                    new Parameter("value", revenue.ToString(CultureInfo.InvariantCulture)),
+                    new Parameter("value", revenue),
                     new Parameter("currency", "USD")
                 };
+                revenue.PlayboxSplashLogUGUI();
                 FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventAdImpression, impressionParameters);
             }
+            
+            double revenues = impressionData.Revenue;
+         
+            revenues.PlayboxSplashLogUGUI();
+
+            "Track AD".PlayboxInfo();
         }
         
         public static class Events
