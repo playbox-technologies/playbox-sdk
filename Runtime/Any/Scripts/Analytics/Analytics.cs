@@ -137,8 +137,8 @@ namespace Playbox
                     
                     FirebaseAnalytics.LogEvent(
                         FirebaseAnalytics.EventPurchase,
-                        new Parameter(FirebaseAnalytics.ParameterItemID, orderId),
-                        new Parameter(FirebaseAnalytics.ParameterPrice, price.ToString(CultureInfo.InvariantCulture)),
+                        new Parameter(FirebaseAnalytics.ParameterTransactionID, orderId),
+                        new Parameter(FirebaseAnalytics.ParameterValue, price.ToString(CultureInfo.InvariantCulture)),
                         new Parameter(FirebaseAnalytics.ParameterCurrency, currency)
                     );
                     
