@@ -134,11 +134,23 @@ namespace Playbox
                 {
                     Events.RealCurrencyPayment(orderId, (double)price, productId, currency);
                     Events.AppsFlyerPayment(eventValues);
+
+                    string affiliation = "default";
+                    
+#if UNITY_IOS
+                    affiliation = "App Store";
+#endif
+
+#if UNITY_ANDROID
+                     affiliation = "Google Play Store";
+#endif
                     
                     FirebaseAnalytics.LogEvent(
                         FirebaseAnalytics.EventPurchase,
                         new Parameter(FirebaseAnalytics.ParameterTransactionID, orderId),
+                        new Parameter(FirebaseAnalytics.ParameterAffiliation, affiliation),
                         new Parameter(FirebaseAnalytics.ParameterValue, price.ToString(CultureInfo.InvariantCulture)),
+                        new Parameter(FirebaseAnalytics.ParameterPrice, price.ToString(CultureInfo.InvariantCulture)),
                         new Parameter(FirebaseAnalytics.ParameterCurrency, currency)
                     );
                     
