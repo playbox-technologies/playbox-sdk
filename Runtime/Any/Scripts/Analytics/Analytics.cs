@@ -118,6 +118,7 @@ namespace Playbox
             var price = purchasedProduct.metadata.localizedPrice;
             string currency = purchasedProduct.metadata.isoCurrencyCode;
             
+            
             Dictionary<string, string> eventValues = new ()
             {
                 { "af_currency", currency },
@@ -147,11 +148,13 @@ namespace Playbox
                     
                     FirebaseAnalytics.LogEvent(
                         FirebaseAnalytics.EventPurchase,
-                        new Parameter(FirebaseAnalytics.ParameterTransactionID, orderId),
-                        new Parameter(FirebaseAnalytics.ParameterAffiliation, affiliation),
-                        new Parameter(FirebaseAnalytics.ParameterValue, (double)price),
-                        new Parameter(FirebaseAnalytics.ParameterPrice, (double)price),
-                        new Parameter(FirebaseAnalytics.ParameterCurrency, currency)
+                        new Parameter[]{
+                            new Parameter(FirebaseAnalytics.ParameterTransactionID, orderId),
+                            new Parameter(FirebaseAnalytics.ParameterAffiliation, affiliation),
+                            new Parameter(FirebaseAnalytics.ParameterValue, (double)price),
+                            new Parameter(FirebaseAnalytics.ParameterPrice, (double)price),
+                            new Parameter(FirebaseAnalytics.ParameterCurrency, currency)
+                        }
                     );
                     
                 }
