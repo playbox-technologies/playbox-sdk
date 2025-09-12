@@ -2,6 +2,11 @@ using System.Globalization;
 using System.IO;
 using CI.Utils.Extentions;
 using Newtonsoft.Json.Linq;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 using UnityEngine;
 
 namespace Playbox.SdkConfigurations
@@ -17,14 +22,16 @@ namespace Playbox.SdkConfigurations
         
         private static JObject jsonConfig = new();
         private static string configFile = Path.Combine(Application.dataPath, "Resources", "Playbox", "PlayboxConfig",
-            "playbox_sdk_config.json");
+            "playbox_sdk_config");
+        
+        private static string ResourcesPath = "Playbox/PlayboxConfig/playbox_sdk_config";
         
         public static void Save()
         {
             PlayboxBinaryConfig.Save(configPath,configFile,jsonConfig.ToString());
             
 #if UNITY_EDITOR
-            UnityEditor.AssetDatabase.Refresh();
+            AssetDatabase.Refresh();
 #endif
         }
         
@@ -43,38 +50,19 @@ namespace Playbox.SdkConfigurations
         
         public static void Load()
         {
-            var binaryPath = configFile + ".bytes";
-
-            var files = Directory.EnumerateFiles(configPath);
-
-            string files_string = "";
-            
-            foreach (var file in files)
+            if (Resources.Load<TextAsset>(ResourcesPath + ".json"))
             {
-                files_string += file + "\n";
+                jsonConfig = JObject.Parse(PlayboxBinaryConfig.Load(ResourcesPath + ".json"));
             }
-
-            files_string.PlayboxLog();
-
-            if (File.Exists(binaryPath))
-             {
-                 "Playbox Load Config .bytes".PlayboxSplashLogUGUI();
-                 binaryPath.PlayboxInfo();
-                 
-                 jsonConfig = JObject.Parse(PlayboxBinaryConfig.Load(binaryPath));
-             }
-             else
-             {
-                 "Playbox Load Config .json".PlayboxSplashLogUGUI();
-                 configFile.PlayboxInfo();
-                 
-                 jsonConfig = JObject.Parse(PlayboxJsonConfig.Load(configFile));
-             }
+            else
+            {
+                jsonConfig = JObject.Parse(PlayboxJsonConfig.Load(ResourcesPath));   
+            }
         }
 
         public static JObject LoadSubconfigs(string name)
         {
-            return jsonConfig[name]!.ToObject<JObject>();
+            return jsonConfig[name]?.ToObject<JObject>();
         }
     }
 }

@@ -15,16 +15,15 @@ namespace Playbox.SdkConfigurations
             
             var bytes = DataSerializer.Serialize(json);
         
-            File.WriteAllBytes(filePath + ".bytes", bytes);
+            File.WriteAllBytes(filePath + ".json.bytes", bytes);
         }
 
         public static string Load(string configPath)
         {
-            //var asset = Resources.Load<TextAsset>(configPath);
+            var asset = Resources.Load<TextAsset>(configPath);
 
-            var bytes = File.ReadAllBytes(configPath);
-            
-            return DataSerializer.Deserialize<string>(bytes);
+            //var bytes = File.ReadAllBytes(configPath);
+            return DataSerializer.Deserialize<string>(asset.bytes);
                 
         }
     }

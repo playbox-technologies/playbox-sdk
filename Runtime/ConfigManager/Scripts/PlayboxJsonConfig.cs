@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using UnityEngine;
 
 namespace Playbox.SdkConfigurations
 {
@@ -16,14 +17,9 @@ namespace Playbox.SdkConfigurations
 
         public static string Load(string configPath)
         {
-            string jsonText = "";
+            var asset = Resources.Load<TextAsset>(configPath);
             
-            if (File.Exists(configPath))
-            {
-                jsonText =  File.ReadAllText(configPath);
-            }
-            
-            return jsonText;
+            return asset.text;
         }
     }
 }
