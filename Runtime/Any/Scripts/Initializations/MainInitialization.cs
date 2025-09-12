@@ -60,6 +60,8 @@ namespace Playbox
         {
             if (!isAutoInitialize)
                 return;
+
+            "AutoStarting Playbox SDK".PlayboxInfo();
             
             try
             {
