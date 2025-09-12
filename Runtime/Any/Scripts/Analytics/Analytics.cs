@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -118,6 +118,7 @@ namespace Playbox
             var price = purchasedProduct.metadata.localizedPrice;
             string currency = purchasedProduct.metadata.isoCurrencyCode;
             
+            
             Dictionary<string, string> eventValues = new ()
             {
                 { "af_currency", currency },
@@ -134,12 +135,26 @@ namespace Playbox
                 {
                     Events.RealCurrencyPayment(orderId, (double)price, productId, currency);
                     Events.AppsFlyerPayment(eventValues);
+
+                    string affiliation = "default";
+                    
+#if UNITY_IOS
+                    affiliation = "App Store";
+#endif
+
+#if UNITY_ANDROID
+                     affiliation = "Google Play Store";
+#endif
                     
                     FirebaseAnalytics.LogEvent(
                         FirebaseAnalytics.EventPurchase,
-                        new Parameter(FirebaseAnalytics.ParameterItemID, orderId),
-                        new Parameter(FirebaseAnalytics.ParameterPrice, price.ToString(CultureInfo.InvariantCulture)),
-                        new Parameter(FirebaseAnalytics.ParameterCurrency, currency)
+                        new Parameter[]{
+                            new Parameter(FirebaseAnalytics.ParameterTransactionID, orderId),
+                            new Parameter(FirebaseAnalytics.ParameterAffiliation, affiliation),
+                            new Parameter(FirebaseAnalytics.ParameterValue, (double)price),
+                            new Parameter(FirebaseAnalytics.ParameterPrice, (double)price),
+                            new Parameter(FirebaseAnalytics.ParameterCurrency, currency)
+                        }
                     );
                     
                 }
@@ -172,11 +187,15 @@ namespace Playbox
                     new Parameter("ad_source", impressionData.NetworkName),
                     new Parameter("ad_unit_name", impressionData.AdUnitIdentifier),
                     new Parameter("ad_format", impressionData.AdFormat),
-                    new Parameter("value", revenue.ToString(CultureInfo.InvariantCulture)),
+                    new Parameter("value", revenue),
                     new Parameter("currency", "USD")
                 };
                 FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventAdImpression, impressionParameters);
             }
+            
+            impressionData.Revenue.PlayboxSplashLogUGUI();
+
+            "Track AD".PlayboxInfo();
         }
         
         public static class Events
