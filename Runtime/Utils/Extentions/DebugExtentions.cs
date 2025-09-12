@@ -56,11 +56,11 @@ namespace CI.Utils.Extentions
         {
             //if (!Debug.isDebugBuild) return "";
             
-            string prfx = string.IsNullOrEmpty(currentPrefix) ? "" : $" <color=#{color}>[{currentPrefix}]</color> ";
+            string prfx = string.IsNullOrEmpty(currentPrefix) ? "" : $"[{currentPrefix}] ";
             string desct = string.IsNullOrEmpty(description) ? "" : $" [{description}] ";
             string pred = string.IsNullOrEmpty(predicate) ? "" : $" [{predicate}] ";
             
-            string str = $"<color=#{Color.green}>[Playbox]</color> {prfx}{pred}{desct}: {text}";
+            string str = $"[Playbox] {prfx}{pred}{desct}: {text}";
             
             action?.Invoke(str);
             
