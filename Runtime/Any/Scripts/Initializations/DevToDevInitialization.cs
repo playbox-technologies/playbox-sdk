@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using DevToDev.Analytics;
 using Playbox.SdkConfigurations;
 using UnityEngine;
