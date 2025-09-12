@@ -210,11 +210,16 @@ namespace Playbox
             MaxSdkCallbacks.Rewarded.OnAdHiddenEvent += OnRewardedAdHiddenEvent;
             MaxSdkCallbacks.Rewarded.OnAdDisplayFailedEvent += OnRewardedAdFailedToDisplayEvent;
             MaxSdkCallbacks.Rewarded.OnAdReceivedRewardEvent += OnRewardedAdReceivedRewardEvent;
+            MaxSdkCallbacks.Rewarded.OnAdRevenuePaidEvent += OnAdRevenuePaid;
         }
-        
-        private static void OnRewardedAdReceivedRewardEvent(string arg1, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo info)
+
+        private static void OnAdRevenuePaid(string id, MaxSdkBase.AdInfo info)
         {
             Analytics.TrackAd(info);
+        }
+
+        private static void OnRewardedAdReceivedRewardEvent(string arg1, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo info)
+        {
             OnRewarderedReceived?.Invoke();  
             OnAdReceivedRewardEvent?.Invoke(arg1, reward.ToString());
             
