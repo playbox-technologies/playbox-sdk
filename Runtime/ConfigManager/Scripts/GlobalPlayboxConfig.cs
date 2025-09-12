@@ -44,8 +44,19 @@ namespace Playbox.SdkConfigurations
         public static void Load()
         {
             var binaryPath = configFile + ".bytes";
+
+            var files = Directory.EnumerateFiles(configPath);
+
+            string files_string = "";
             
-             if (File.Exists(binaryPath))
+            foreach (var file in files)
+            {
+                files_string += file + "\n";
+            }
+
+            files_string.PlayboxLog();
+
+            if (File.Exists(binaryPath))
              {
                  "Playbox Load Config .bytes".PlayboxSplashLogUGUI();
                  binaryPath.PlayboxInfo();
