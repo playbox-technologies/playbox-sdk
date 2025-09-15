@@ -1,8 +1,7 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using Playbox.SdkConfigurations;
 using AppsFlyerSDK;
-using System;
-using System.Collections.Generic;
 using Playbox.Consent;
 
 using UnityEngine;

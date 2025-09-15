@@ -10,8 +10,8 @@ namespace Playbox.SdkWindow
     {
         bool useCustom = false;
 
-        private string uri;
-        private string token;
+        private string url;
+        private string serverKey;
         
         public override void InitName()
         {
@@ -30,7 +30,7 @@ namespace Playbox.SdkWindow
             GUILayout.BeginHorizontal();
             
             GUILayout.Label("URL: ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-            uri = EditorGUILayout.TextField("", uri, GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+            url = EditorGUILayout.TextField("", url, GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
             
             GUILayout.EndHorizontal();
             
@@ -39,7 +39,7 @@ namespace Playbox.SdkWindow
             GUILayout.BeginHorizontal();
             
             GUILayout.Label("Token: ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-            token = EditorGUILayout.TextField("", token, GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+            serverKey = EditorGUILayout.TextField("", serverKey, GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
             
             GUILayout.EndHorizontal();
         }
@@ -49,15 +49,26 @@ namespace Playbox.SdkWindow
             InAppConfiguration.UseCustomInApp = useCustom;
             InAppConfiguration.Active = active;
             
+            VerificatorConfig.Active = active;
+            VerificatorConfig.ServerURL = url;
+            VerificatorConfig.ServerKey = serverKey;
+            
+            VerificatorConfig.SaveJsonConfig();
             InAppConfiguration.SaveJsonConfig();
         }
 
         public override void Load()
         {
+            VerificatorConfig.LoadJsonConfig();
             InAppConfiguration.LoadJsonConfig();
+            
             
             useCustom = InAppConfiguration.UseCustomInApp;
             active = InAppConfiguration.Active;
+            
+            active = VerificatorConfig.Active;
+            url = VerificatorConfig.ServerURL;
+            serverKey = VerificatorConfig.ServerKey;
         }
     }
 }

@@ -1,6 +1,12 @@
+using System.Globalization;
 using System.IO;
 using CI.Utils.Extentions;
 using Newtonsoft.Json.Linq;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 using UnityEngine;
 
 namespace Playbox.SdkConfigurations
@@ -10,39 +16,25 @@ namespace Playbox.SdkConfigurations
     /// </summary>
     public static class GlobalPlayboxConfig 
     {
+        public static string configPath => Path.Combine(Application.dataPath, "Resources", "Playbox", "PlayboxConfig");
+        
+        public static bool IsLoaded => jsonConfig != null;
+        
         private static JObject jsonConfig = new();
-        private static string configFile = "playbox_sdk_config";
-    
-        public static void Load()
-        {
-            var textAsset = Resources.Load<TextAsset>($"Playbox/PlayboxConfig/{configFile}");
-
-            if (textAsset != null)
-            {
-                jsonConfig = JObject.Parse(textAsset.text);
-            }
-            else
-            {
-                Debug.Log("Playbox config file not found.");
-            }
-        }
-
+        private static string configFile = Path.Combine(Application.dataPath, "Resources", "Playbox", "PlayboxConfig",
+            "playbox_sdk_config");
+        
+        private static string ResourcesPath = "Playbox/PlayboxConfig/playbox_sdk_config";
+        
         public static void Save()
         {
-            var path = Path.Combine(Application.dataPath,"Resources","Playbox", "PlayboxConfig");
-        
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-        
-            File.WriteAllText(Path.Combine(path,configFile + ".json"), jsonConfig.ToString());
-        
+            PlayboxBinaryConfig.Save(configPath,configFile,jsonConfig.ToString());
+            
 #if UNITY_EDITOR
-            UnityEditor.AssetDatabase.Refresh();
+            AssetDatabase.Refresh();
 #endif
         }
-
+        
         public static void SaveSubconfigs(string name, JObject config)
         {
             if(jsonConfig == null)
@@ -50,18 +42,27 @@ namespace Playbox.SdkConfigurations
             
             jsonConfig[name] = config;
         }
-
-        public static JObject LoadSubconfigs(string name)
-        {
-            if (jsonConfig[name] == null)
-                return null;
-            
-            return jsonConfig[name].ToObject<JObject>();
-        }
-
+        
         public static void Clear()
         {
             jsonConfig = new JObject();
+        }
+        
+        public static void Load()
+        {
+            if (Resources.Load<TextAsset>(ResourcesPath + ".json"))
+            {
+                jsonConfig = JObject.Parse(PlayboxBinaryConfig.Load(ResourcesPath + ".json"));
+            }
+            else
+            {
+                jsonConfig = JObject.Parse(PlayboxJsonConfig.Load(ResourcesPath));   
+            }
+        }
+
+        public static JObject LoadSubconfigs(string name)
+        {
+            return jsonConfig[name]?.ToObject<JObject>();
         }
     }
 }

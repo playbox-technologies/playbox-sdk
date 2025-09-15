@@ -2,7 +2,7 @@
   "name": "playbox",
   "displayName": "Playbox",
   "author": "playbox",
-  "version": "0.0.65",
+  "version": "0.0.71",
   "description": "Support package for SDK and integration of CI/CD functionality, Advertising, in-app purchases, cross promo, consent.",
   "keywords": [
     "utility",
@@ -11,7 +11,8 @@
     "CI/CD",
     "Consent",
     "InApp Purchsases",
-    "CrossPromo"
+    "CrossPromo",
+    "Cryptographycs"
   ],
   "dependencies": {
     "com.unity.nuget.newtonsoft-json": "3.2.1",

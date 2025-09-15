@@ -60,18 +60,11 @@ namespace Playbox
         {
             if (!isAutoInitialize)
                 return;
+
+            "AutoStarting Playbox SDK".PlayboxInfo();
             
-            try
-            {
-                Initialization();
-            }
-            catch (Exception e)
-            {
-                if (IsValidate<FirebaseInitialization> ())
-                {
-                    Crashlytics.LogException(e);
-                }
-            }
+            Initialization();
+         
         }
         
 

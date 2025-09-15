@@ -1,10 +1,10 @@
-using System.Linq;
-using CI.Utils.Extentions;
 
 #if UNITY_EDITOR && UNITY_ANDROID
-using Facebook.Unity;
+
+using System.Linq;
+using CI.Utils.Extentions;
+using UnityEditor.Build;
 using UnityEditor;
-using UnityEditor.Callbacks;
 
 namespace Playbox.CI
 {
@@ -16,7 +16,7 @@ namespace Playbox.CI
             
             var scenes = EditorBuildSettings.scenes.Select(x => x.path).ToArray();
             
-            PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.IL2CPP);
+            PlayerSettings.SetScriptingBackend(NamedBuildTarget.Android, ScriptingImplementation.IL2CPP);
 
             EditorUserBuildSettings.development = SmartCLA.Validations.HasDevelopmentMode || SmartCLA.Validations.HasDebugMode;
 

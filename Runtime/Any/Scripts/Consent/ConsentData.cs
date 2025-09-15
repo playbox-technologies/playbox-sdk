@@ -84,12 +84,9 @@ namespace Playbox.Consent
             }
         }
         
-        // ReSharper disable Unity.PerformanceAnalysis
-        // ReSharper disable Unity.PerformanceAnalysis
-        // ReSharper disable Unity.PerformanceAnalysis
-        // ReSharper disable Unity.PerformanceAnalysis
         public static void ShowConsent(MonoBehaviour mono, Action callback, bool isDebug = false)
         {
+            
             if(isDebug)
                 GoogleUmpManager.RequestConsentInfoDebug(_debugSettings);
             else
