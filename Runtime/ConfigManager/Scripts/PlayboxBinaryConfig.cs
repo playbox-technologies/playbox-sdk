@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Text;
 using UnityEngine;
 using Utils.Data;
 
@@ -13,8 +14,10 @@ namespace Playbox.SdkConfigurations
                 Directory.CreateDirectory(configPath);
             }
             
-            var bytes = DataSerializer.Serialize(json);
-        
+            var сChars = DataSerializer.Serialize(json);
+
+            var bytes = Encoding.UTF8.GetBytes(сChars);
+            
             File.WriteAllBytes(filePath + ".json.bytes", bytes);
         }
 
@@ -22,9 +25,11 @@ namespace Playbox.SdkConfigurations
         {
             var asset = Resources.Load<TextAsset>(configPath);
 
-            //var bytes = File.ReadAllBytes(configPath);
-            return DataSerializer.Deserialize<string>(asset.bytes);
-                
+            var bytes = asset.bytes;
+            
+            var cChars = Encoding.UTF8.GetChars(bytes);
+            
+            return DataSerializer.Deserialize(cChars);
         }
     }
 }
