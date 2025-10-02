@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Playbox.SdkConfigurations;
 using AppsFlyerSDK;
+using CI.Utils.Extentions;
 using Playbox.Consent;
 
 using UnityEngine;
@@ -69,27 +70,6 @@ namespace Playbox
             }
         }
 
-        public void onConversionDataSuccess(string conversionData)
-        {
-            #if UNITY_IOS
-            Dictionary<string, object> data = AppsFlyer.CallbackStringToDictionary(conversionData);
-            
-            if (data.TryGetValue("af_status", out var status))
-            {
-                Debug.Log("Install type: " + status);
-                af_status = (string)status;
-            }
-
-            if (data.TryGetValue("media_source", out var source))
-            {
-                Debug.Log("Media source: " + source);
-                media_source = (string)source;
-            }
-
-            StartCoroutine(PostLog());
-            #endif
-        }
-
         public void onConversionDataFail(string error)
         {
             
@@ -104,13 +84,27 @@ namespace Playbox
         {
             
         }
-
-        private IEnumerator PostLog()
+        
+        public void onConversionDataSuccess(string conversionData)
         {
-            yield return new WaitForSeconds(10);
-            
-            Analytics.Events.FirebaseEvent("af_status",af_status);
-            Analytics.Events.FirebaseEvent("media_source",media_source);
+            var data = AppsFlyer.CallbackStringToDictionary(conversionData);
+
+            string afStatus = GetStr(data, "af_status");
+            string mediaSource = GetStr(data, "media_source");  
+            string siteId = GetStr(data, "af_siteid");         
+            string campaign = GetStr(data, "campaign");
+            string sub1 = GetStr(data, "af_sub1");
+
+            bool fromCrossPromo = afStatus == "Non-organic" && mediaSource == "af_cross_promotion";
+            if (fromCrossPromo)
+            {
+                Debug.Log($"[AF] Cross-promo install from {siteId}, campaign={campaign}, sub1={sub1}");
+                
+                $"[AF] Cross-promo install from {siteId}, campaign={campaign}, sub1={sub1}".PlayboxSplashLogUGUI();
+            }
         }
+        
+        static string GetStr(Dictionary<string, object> d, string key) =>
+            d != null && d.TryGetValue(key, out var v) && v != null ? v.ToString() : null;
     }
 }
