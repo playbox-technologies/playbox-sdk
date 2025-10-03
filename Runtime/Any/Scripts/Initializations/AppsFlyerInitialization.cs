@@ -106,8 +106,11 @@ namespace Playbox
                 $"[AF] Cross-promo install from {siteId}, campaign={campaign}, sub1={sub1}".PlayboxSplashLogUGUI();
             }
 
+            "cross_promo data begin :".PlayboxInfo();
 
             data.toJson().PlayboxSplashLogUGUI();
+            
+            "cross_promo data end :".PlayboxInfo();
         }
         
         static string GetStr(Dictionary<string, object> d, string key) =>
