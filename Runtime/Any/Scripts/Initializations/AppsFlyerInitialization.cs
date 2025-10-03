@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using Playbox.SdkConfigurations;
 using AppsFlyerSDK;
 using CI.Utils.Extentions;
+using Newtonsoft.Json.Linq;
 using Playbox.Consent;
 
 using UnityEngine;
+using UnityEngine.Purchasing.MiniJSON;
 
 
 namespace Playbox
@@ -96,12 +98,16 @@ namespace Playbox
             string sub1 = GetStr(data, "af_sub1");
 
             bool fromCrossPromo = afStatus == "Non-organic" && mediaSource == "af_cross_promotion";
+            
             if (fromCrossPromo)
             {
                 Debug.Log($"[AF] Cross-promo install from {siteId}, campaign={campaign}, sub1={sub1}");
                 
                 $"[AF] Cross-promo install from {siteId}, campaign={campaign}, sub1={sub1}".PlayboxSplashLogUGUI();
             }
+
+
+            data.toJson().PlayboxSplashLogUGUI();
         }
         
         static string GetStr(Dictionary<string, object> d, string key) =>
