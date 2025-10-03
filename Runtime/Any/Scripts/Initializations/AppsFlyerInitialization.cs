@@ -74,17 +74,17 @@ namespace Playbox
 
         public void onConversionDataFail(string error)
         {
-            
+            "onConversionDataFail".PlayboxInfo();
         }
 
         public void onAppOpenAttribution(string attributionData)
         {
-            
+            "onAppOpenAttribution".PlayboxInfo();
         }
 
         public void onAppOpenAttributionFailure(string error)
         {
-            
+            "onAppOpenAttributionFailure".PlayboxInfo();
         }
         
         public void onConversionDataSuccess(string conversionData)
