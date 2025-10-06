@@ -86,9 +86,9 @@ namespace Playbox
                 
                 var appId = CrossPromo.appId(AppsFlyerConfiguration.AndroidAppId,AppsFlyerConfiguration.IOSAppId);
                 
-                AppsFlyer.attributeAndOpenStore(appId, campaign, parameters, monoBehaviour);
+                AppsFlyer.attributeAndOpenStore(promotedID, campaign, parameters, monoBehaviour);
                 
-                Application.OpenURL(storeLink(AppsFlyerConfiguration.AndroidAppId,AppsFlyerConfiguration.IOSAppId));
+                Application.OpenURL(storeLink(promotedID,promotedID));
             }
         }
     }
