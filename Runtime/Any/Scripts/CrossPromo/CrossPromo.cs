@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AppsFlyerSDK;
+using Playbox.SdkConfigurations;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -9,6 +10,32 @@ namespace Playbox
     public static class CrossPromo
     {
         private static InviteLinkGenerator inviteLinkGenerator;
+
+        private static string storeLink(string androidId, string iosId) =>
+
+#if UNITY_IOS
+                
+        $"https://apps.apple.com/app/{iosId}"
+            
+#elif UNITY_ANDROID
+
+        "https://play.google.com/store/apps/details?id={androidId}"
+        
+#endif
+        ;
+        
+        private static string appId(string androidId, string iosId) =>
+
+#if UNITY_IOS
+                
+            iosId
+            
+#elif UNITY_ANDROID
+
+            androidId
+        
+#endif
+        ;
 
         public static InviteLinkGenerator InviteLinkGenerator
         {
@@ -55,7 +82,13 @@ namespace Playbox
         {
             if (Analytics.isAppsFlyerInit)
             {
-                AppsFlyer.attributeAndOpenStore(promotedID, campaign, parameters, monoBehaviour);
+                AppsFlyerConfiguration.LoadJsonConfig();
+                
+                var appId = CrossPromo.appId(AppsFlyerConfiguration.AndroidAppId,AppsFlyerConfiguration.IOSAppId);
+                
+                AppsFlyer.attributeAndOpenStore(appId, campaign, parameters, monoBehaviour);
+                
+                Application.OpenURL(storeLink(AppsFlyerConfiguration.AndroidAppId,AppsFlyerConfiguration.IOSAppId));
             }
         }
     }
