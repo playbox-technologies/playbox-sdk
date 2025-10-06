@@ -19,7 +19,7 @@ namespace Playbox
             
 #elif UNITY_ANDROID
 
-        "https://play.google.com/store/apps/details?id={androidId}"
+        $"https://play.google.com/store/apps/details?id={androidId}"
         
 #endif
         ;
