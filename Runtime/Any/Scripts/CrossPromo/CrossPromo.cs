@@ -23,19 +23,6 @@ namespace Playbox
         
 #endif
         ;
-        
-        private static string appId(string androidId, string iosId) =>
-
-#if UNITY_IOS
-                
-            iosId
-            
-#elif UNITY_ANDROID
-
-            androidId
-        
-#endif
-        ;
 
         public static InviteLinkGenerator InviteLinkGenerator
         {
@@ -83,9 +70,7 @@ namespace Playbox
             if (Analytics.isAppsFlyerInit)
             {
                 AppsFlyerConfiguration.LoadJsonConfig();
-                
-                var appId = CrossPromo.appId(AppsFlyerConfiguration.AndroidAppId,AppsFlyerConfiguration.IOSAppId);
-                
+          
                 AppsFlyer.attributeAndOpenStore(promotedID, campaign, parameters, monoBehaviour);
                 
                 Application.OpenURL(storeLink(promotedID,promotedID));
