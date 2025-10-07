@@ -17,7 +17,6 @@ namespace Utils.Identifier
             obj["generated_uuid"] = Guid.NewGuid().ToString();
             obj["device_id"] = SystemInfo.deviceUniqueIdentifier;
             obj["device_model"] = SystemInfo.deviceModel;
-            obj["device_name"] = SystemInfo.deviceName;
             obj["register_date"] = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
             
             return obj.ToString();
