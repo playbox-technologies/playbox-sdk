@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using AppsFlyerSDK;
+﻿using System.Collections.Generic;
 using CI.Utils.Extentions;
 using UnityEngine;
 
@@ -12,7 +10,23 @@ namespace Playbox
         //private string Link = "";
         
         [SerializeField]
-        private string promotedID = "";
+        private string androidPromoteId = "";
+        
+        [SerializeField]
+        private string iosPromoteId = "";
+
+        private string promotedID =>
+
+#if UNITY_IOS
+
+            iosPromoteId
+
+#elif UNITY_ANDROID
+
+        androidPromoteId
+
+#endif
+        ;
         
         [SerializeField]
         private string campaign = "";
@@ -30,6 +44,16 @@ namespace Playbox
                 s.PlayboxSplashLogUGUI();
                 Application.OpenURL(s);
             };
+        }
+
+        public void RecordCrossPromoImpression()
+        {
+            Dictionary<string,string> properties = new ();
+            
+            properties.Add("campaign", campaign);
+            properties.Add("promoted_id", promotedID);
+            
+            CrossPromo.RecordCrossPromoImpression(promotedID, campaign, properties);
         }
 
         public void Click()
