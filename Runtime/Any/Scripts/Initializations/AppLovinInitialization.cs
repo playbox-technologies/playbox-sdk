@@ -62,15 +62,18 @@ namespace Playbox
         {
 #if UNITY_IOS
             Advertisement.RegisterReward(AppLovinConfiguration.IOSKey, this);
+            InterstitialAd.RegisterReward(AppLovinConfiguration.IOSKey, this);
 #endif
             
 #if UNITY_ANDROID
             Advertisement.RegisterReward(AppLovinConfiguration.AndroidKey, this);
+            InterstitialAd.RegisterReward(AppLovinConfiguration.AndroidKey, this);
 #endif
             
             Debug.Log("AppLovin initialized");
             
             Advertisement.OnSdkInitializedEvent?.Invoke(sdkConfiguration.ToString());
+            InterstitialAd.OnSdkInitializedEvent?.Invoke(sdkConfiguration.ToString());
         }
         
     }
