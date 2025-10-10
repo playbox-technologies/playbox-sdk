@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Playbox.SdkConfigurations;
 using AppsFlyerSDK;
@@ -31,7 +32,7 @@ namespace Playbox
                     ConsentData.ConsentForData,
                     ConsentData.ConsentForAdsPersonalized,
                     ConsentData.ConsentForAdStogare);
-
+            
             AppsFlyer.setConsentData(consent);
             
 
@@ -49,14 +50,11 @@ namespace Playbox
             
             AppsFlyer.startSDK();
             
-            AppsFlyer.setIsDebug(true);      
-
+            AppsFlyer.OnDeepLinkReceived += OnDeepLink;
             
-            AppsFlyer.getConversionData("af_status");
-
+            AppsFlyer.setIsDebug(true);      
             
             StartCoroutine(initUpd());
-
         }
 
         private IEnumerator initUpd()
@@ -89,30 +87,40 @@ namespace Playbox
         
         public void onConversionDataSuccess(string conversionData)
         {
-            var data = AppsFlyer.CallbackStringToDictionary(conversionData);
+            var d = AppsFlyer.CallbackStringToDictionary(conversionData);
+            string status = GetStr(d, "af_status");           
+            string media = GetStr(d, "media_source");          
+            string site  = GetStr(d, "af_siteid");           
+            string camp  = GetStr(d, "campaign");             
+            string dlv   = GetStr(d, "deep_link_value");      
+            string sub1  = GetStr(d, "deep_link_sub1");       
 
-            string afStatus = GetStr(data, "af_status");
-            string mediaSource = GetStr(data, "media_source");  
-            string siteId = GetStr(data, "af_siteid");         
-            string campaign = GetStr(data, "campaign");
-            string sub1 = GetStr(data, "af_sub1");
-
-            bool fromCrossPromo = afStatus == "Non-organic" && mediaSource == "af_cross_promotion";
-            
-            if (fromCrossPromo)
+            bool fromXPromo = status == "Non-organic" && media == "af_cross_promotion";
+            if (fromXPromo)
             {
-                Debug.Log($"[AF] Cross-promo install from {siteId}, campaign={campaign}, sub1={sub1}");
-                
-                $"[AF] Cross-promo install from {siteId}, campaign={campaign}, sub1={sub1}".PlayboxSplashLogUGUI();
+                // Выдай бонус / измени онбординг / отметь источник
+                Debug.Log($"[AF] XPromo install from {site} campaign={camp} dlv={dlv} sub1={sub1}");
             }
+        }
+        
+        private void OnDeepLink(object sender, EventArgs e)
+        {
+            var args = e as DeepLinkEventsArgs;
+            if (args == null || args.status != DeepLinkStatus.FOUND) return;
 
-            "cross_promo data begin :".PlayboxInfo();
+          
+            Dictionary<string, object> payload = null;
+#if UNITY_ANDROID
+        payload = args.deepLink;
+#elif UNITY_IOS
+        if (args.deepLink.TryGetValue("click_event", out var ce) && ce is Dictionary<string, object> ceDict)
+            payload = ceDict;
+#endif
+            if (payload == null) return;
 
-            data.toJson().PlayboxSplashLogUGUI();
-            
-            "cross_promo data end :".PlayboxInfo();
-            
-            
+            string dlv  = GetStr(payload, "deep_link_value");
+            string sub1 = GetStr(payload, "deep_link_sub1");
+            Debug.Log($"[AF] UDL dlv={dlv} sub1={sub1}");
         }
         
         static string GetStr(Dictionary<string, object> d, string key) =>
