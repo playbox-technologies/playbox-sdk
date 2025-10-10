@@ -44,6 +44,8 @@ namespace Playbox
                 s.PlayboxSplashLogUGUI();
                 Application.OpenURL(s);
             };
+            
+            RecordCrossPromoImpression();
         }
 
         public void RecordCrossPromoImpression()
@@ -53,6 +55,7 @@ namespace Playbox
             properties.Add("campaign", campaign);
             properties.Add("promoted_id", promotedID);
             properties.Add("af_siteid", Application.identifier);
+            properties.Add("af_sub1", Application.identifier);
             
             CrossPromo.RecordCrossPromoImpression(promotedID, campaign, properties);
         }
@@ -64,6 +67,7 @@ namespace Playbox
             properties.Add("campaign", campaign);
             properties.Add("promoted_id", promotedID);
             properties.Add("af_siteid", Application.identifier);
+            properties.Add("af_sub1", Application.identifier);
             
             CrossPromo.OpenStore(promotedID,campaign, properties,this);
         }
@@ -75,6 +79,7 @@ namespace Playbox
             properties.Add("campaign", campaign);
             properties.Add("promoted_id", promotedID);
             properties.Add("af_siteid", Application.identifier);
+            properties.Add("af_sub1", Application.identifier);
             
             CrossPromo.GenerateUserInviteLink(properties);
         }
