@@ -53,14 +53,19 @@ namespace Playbox
         public static void OpenStore(string af_link,string promotedID, string campaign, Dictionary<string, string> parameters,
             MonoBehaviour monoBehaviour)
         {
+#if !UNITY_EDITOR
             if (Analytics.isAppsFlyerInit)
             {
+#endif
+            
                 AppsFlyerConfiguration.LoadJsonConfig();
           
                 AppsFlyer.attributeAndOpenStore(promotedID, campaign, parameters, monoBehaviour);
                 
                 Application.OpenURL(af_link);
+#if !UNITY_EDITOR
             }
+#endif
         }
     }
 }

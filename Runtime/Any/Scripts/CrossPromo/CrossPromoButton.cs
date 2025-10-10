@@ -6,13 +6,11 @@ namespace Playbox
 {
     public class CrossPromoButton : MonoBehaviour
     {
+        [SerializeField] private string AfPromoteLink = "";
+        
         [SerializeField] private string androidPromoteId = "";
 
-        [SerializeField] private string androidPromoteLink = "";
-
         [SerializeField] private string iosPromoteId = "";
-
-        [SerializeField] private string iosPromoteLink = "";
 
         private string promotedID =>
 
@@ -28,18 +26,6 @@ namespace Playbox
         ;
 
         [SerializeField] private string campaign = "";
-
-        private string Af_Link(string ios_link, string android_link)
-        {
-#if UNITY_IOS
-            return ios_link;
-#endif
-#if UNITY_ANDROID
-            return android_link;
-#endif
-
-            return android_link;
-        }
 
         private void OnEnable()
         {
@@ -79,7 +65,9 @@ namespace Playbox
             properties.Add("af_siteid", Application.identifier);
             properties.Add("af_sub1", Application.identifier);
 
-            CrossPromo.OpenStore(Af_Link(iosPromoteLink, androidPromoteLink), promotedID, campaign, properties, this);
+            CrossPromo.OpenStore(AfPromoteLink, promotedID, campaign, properties, this);
+
+            promotedID.PlayboxInfo();
         }
 
         public void GenerateLink()
