@@ -52,6 +52,7 @@ namespace Playbox
             
             properties.Add("campaign", campaign);
             properties.Add("promoted_id", promotedID);
+            properties.Add("af_siteid", Application.identifier);
             
             CrossPromo.RecordCrossPromoImpression(promotedID, campaign, properties);
         }
@@ -62,6 +63,7 @@ namespace Playbox
             
             properties.Add("campaign", campaign);
             properties.Add("promoted_id", promotedID);
+            properties.Add("af_siteid", Application.identifier);
             
             CrossPromo.OpenStore(promotedID,campaign, properties,this);
         }
@@ -72,6 +74,7 @@ namespace Playbox
             
             properties.Add("campaign", campaign);
             properties.Add("promoted_id", promotedID);
+            properties.Add("af_siteid", Application.identifier);
             
             CrossPromo.GenerateUserInviteLink(properties);
         }
