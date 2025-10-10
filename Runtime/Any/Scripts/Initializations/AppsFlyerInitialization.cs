@@ -17,6 +17,9 @@ namespace Playbox
     {
         private string af_status;
         private string media_source;
+
+        public static Action<string, string> OnDeepLinkValue;
+        public static Action OnConversionDataSuccess;
         
         public override void Initialization()
         {
@@ -98,8 +101,9 @@ namespace Playbox
             bool fromXPromo = status == "Non-organic" && media == "af_cross_promotion";
             if (fromXPromo)
             {
-                // Выдай бонус / измени онбординг / отметь источник
-                Debug.Log($"[AF] XPromo install from {site} campaign={camp} dlv={dlv} sub1={sub1}");
+                $"[AF] XPromo install from {site} campaign={camp} dlv={dlv} sub1={sub1}".PlayboxInfo("AF");
+                
+                OnConversionDataSuccess.Invoke();
             }
         }
         
@@ -120,7 +124,10 @@ namespace Playbox
 
             string dlv  = GetStr(payload, "deep_link_value");
             string sub1 = GetStr(payload, "deep_link_sub1");
-            Debug.Log($"[AF] UDL dlv={dlv} sub1={sub1}");
+
+            $"UDL dlv={dlv} sub1={sub1}".PlayboxInfo("AF");
+
+            OnDeepLinkValue?.Invoke(dlv, dlv);
         }
         
         static string GetStr(Dictionary<string, object> d, string key) =>
