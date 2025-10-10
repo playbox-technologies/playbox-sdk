@@ -10,19 +10,6 @@ namespace Playbox
     {
         private static InviteLinkGenerator inviteLinkGenerator;
 
-        private static string storeLink(string androidId, string iosId) =>
-
-#if UNITY_IOS
-                
-        $"https://apps.apple.com/app/{iosId}"
-            
-#elif UNITY_ANDROID
-
-        $"https://play.google.com/store/apps/details?id={androidId}"
-        
-#endif
-        ;
-
         public static InviteLinkGenerator InviteLinkGenerator
         {
             get
@@ -63,7 +50,7 @@ namespace Playbox
             if (Analytics.isAppsFlyerInit) AppsFlyer.generateUserInviteLink(parameters,inviteLinkGenerator);
         }
 
-        public static void OpenStore(string promotedID, string campaign, Dictionary<string, string> parameters,
+        public static void OpenStore(string af_link,string promotedID, string campaign, Dictionary<string, string> parameters,
             MonoBehaviour monoBehaviour)
         {
             if (Analytics.isAppsFlyerInit)
@@ -72,7 +59,7 @@ namespace Playbox
           
                 AppsFlyer.attributeAndOpenStore(promotedID, campaign, parameters, monoBehaviour);
                 
-                Application.OpenURL(storeLink(promotedID,promotedID));
+                Application.OpenURL(af_link);
             }
         }
     }
