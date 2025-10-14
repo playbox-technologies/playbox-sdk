@@ -6,7 +6,7 @@ namespace Playbox
 {
     public class CrossPromoButton : MonoBehaviour
     {
-        [SerializeField] private string AfPromoteLink = "";
+        [SerializeField] private string AfPromoteLink = "https://dreamsim.onelink.me/4DPE?af_xp=app&pid=Cross_sale&c=R2R_campaign&af_siteid=R2R_campaign";
         
         [SerializeField] private string androidPromoteId = "";
 
@@ -66,7 +66,6 @@ namespace Playbox
             properties.Add("af_sub1", Application.identifier);
 
             CrossPromo.OpenStore(AfPromoteLink, promotedID, campaign, properties, this);
-
             promotedID.PlayboxInfo();
         }
 
