@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 using AppsFlyerSDK;
+using Newtonsoft.Json.Linq;
 using Playbox.SdkConfigurations;
 using UnityEngine;
 
@@ -17,8 +20,7 @@ namespace Playbox
                 return inviteLinkGenerator;
             }
         }
-
-
+        
         public static Action<string> OnInviteLinkGenerated;
         public static Action<string> OnOpenStoreLinkGenerated;
         public static Action<string> OnConversionDataSucces;
@@ -50,22 +52,80 @@ namespace Playbox
             if (Analytics.isAppsFlyerInit) AppsFlyer.generateUserInviteLink(parameters,inviteLinkGenerator);
         }
 
-        public static void OpenStore(string af_link,string promotedID, string campaign, Dictionary<string, string> parameters,
+        public static void OpenStore(string afLink)
+        {
+#if !UNITY_EDITOR
+            if (Analytics.isAppsFlyerInit)
+            {
+#endif
+                AppsFlyerConfiguration.LoadJsonConfig();
+                
+                Application.OpenURL(afLink);
+#if !UNITY_EDITOR
+            }
+#endif
+        }
+        
+        public static async void LoadLinkAndOpenStore(string promotedID,
             MonoBehaviour monoBehaviour)
         {
 #if !UNITY_EDITOR
             if (Analytics.isAppsFlyerInit)
             {
 #endif
+            string os = GetOS();
+
+            string afLink = await GetPromoURL(promotedID, os);
             
-                AppsFlyerConfiguration.LoadJsonConfig();
-          
-                AppsFlyer.attributeAndOpenStore(promotedID, campaign, parameters, monoBehaviour);
-                
-                Application.OpenURL(af_link);
+            AppsFlyerConfiguration.LoadJsonConfig();
+            
+            Application.OpenURL(afLink);
 #if !UNITY_EDITOR
             }
 #endif
+        }
+        
+        public static async Task<string> GetPromoURL(string bundleID, string os,string placementID = "main")
+        {
+            using var client = new HttpClient();
+        
+            string baseUrl = "https://api.playbox.space/promo/get-link";
+        
+            var query = System.Web.HttpUtility.ParseQueryString(string.Empty);
+            query["placement_id"] = placementID;
+            query["bundle_id"] = bundleID;
+            query["os"] = os;
+        
+            string url = $"{baseUrl}?{query}";
+  
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url);
+            request.Headers.Add("X-Api-Token", Data.Playbox.PlayboxKey);
+        
+            HttpResponseMessage response = await client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+        
+            string result = await response.Content.ReadAsStringAsync();
+        
+            JObject.Parse(result).TryGetValue("appsflyer_link", out JToken jlink);
+        
+            string appsflyerLink = (string)jlink;
+        
+            return appsflyerLink;
+        }
+
+        public static string GetOS()
+        {
+            string os = "windows";
+
+#if UNITY_ANDROID
+            os = "android";
+#endif
+            
+#if UNITY_IOS
+            os = "ios";
+#endif
+            
+            return os;
         }
     }
 }

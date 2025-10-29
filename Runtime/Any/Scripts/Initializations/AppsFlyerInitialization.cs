@@ -40,14 +40,14 @@ namespace Playbox
             
 
 #if UNITY_IOS
-                AppsFlyer.initSDK(AppsFlyerConfiguration.IOSKey, AppsFlyerConfiguration.IOSAppId);
+                AppsFlyer.initSDK(AppsFlyerConfiguration.IOSKey, AppsFlyerConfiguration.IOSAppId, this);
             
 #elif UNITY_ANDROID
             
-            AppsFlyer.initSDK(AppsFlyerConfiguration.AndroidKey, AppsFlyerConfiguration.AndroidAppId);
+            AppsFlyer.initSDK(AppsFlyerConfiguration.AndroidKey, AppsFlyerConfiguration.AndroidAppId, this);
 #endif 
             
-            AppsFlyer.setSharingFilterForPartners(new string[] { });
+            AppsFlyer.setSharingFilterForPartners();
             
             AppsFlyer.enableTCFDataCollection(true);
             

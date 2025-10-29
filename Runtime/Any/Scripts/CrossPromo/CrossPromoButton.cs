@@ -65,7 +65,8 @@ namespace Playbox
             properties.Add("af_siteid", Application.identifier);
             properties.Add("af_sub1", Application.identifier);
 
-            CrossPromo.OpenStore(AfPromoteLink, promotedID, campaign, properties, this);
+            CrossPromo.OpenStore(AfPromoteLink);
+            
             promotedID.PlayboxInfo();
         }
 

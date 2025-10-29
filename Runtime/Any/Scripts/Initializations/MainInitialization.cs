@@ -67,7 +67,6 @@ namespace Playbox
          
         }
         
-
         public static bool IsValidate<T>() where T : PlayboxBehaviour
         {
             if(initStatus == null)

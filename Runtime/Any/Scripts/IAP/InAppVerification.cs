@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using CI.Utils.Extentions;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
@@ -13,21 +12,21 @@ namespace Playbox
     {
         [SerializeField] private float verifyUpdateRate = 0.5f;
 
-        private const string uri = "https://api.playbox.network/verify";
-        private const string uriStatus = "https://api.playbox.network/verify/status";
-        private const string xApiToken = "plx_api_Rm8qTXe7Pzw94v1FujgEKsWD";
+        private const string Uri = "https://api.playbox.network/verify";
+        private const string UriStatus = "https://api.playbox.network/verify/status";
+        private const string XApiToken = Data.Playbox.PlayboxKey;
 
-        private static Dictionary<string, PurchaseData> verificationQueue = new(); 
+        private static Dictionary<string, PurchaseData> _verificationQueue = new(); 
 
-        private static List<PurchaseData> keyBuffer = new();
+        private static List<PurchaseData> _keyBuffer = new();
         
-        private static InAppVerification instance;
+        private static InAppVerification _instance;
 
         public override void Initialization()
         {
-            if (instance == null)
+            if (_instance == null)
             {
-                instance = this;
+                _instance = this;
             }
             else
             {
@@ -42,12 +41,12 @@ namespace Playbox
         
         public static void Validate(string productID,string receipt ,string saveId, Action<bool> callback)
         {
-            if(instance == null) return;
+            if(_instance == null) return;
             if(string.IsNullOrEmpty(productID)) return;
             if(string.IsNullOrEmpty(receipt)) return;
             if(callback == null) return;
             
-            instance.SendRequest(productID, receipt,saveId,callback);
+            _instance.SendRequest(productID, receipt,saveId,callback);
         }
 
         public void SendRequest(string productID,string receipt, string saveId, Action<bool> callback)
@@ -58,10 +57,10 @@ namespace Playbox
         // ReSharper disable Unity.PerformanceAnalysis
         public IEnumerator Request(string productID,string receipt, string saveId, Action<bool> callback)
         {
-            UnityWebRequest sendPurchaseRequest = new UnityWebRequest(uri, "POST");
+            UnityWebRequest sendPurchaseRequest = new UnityWebRequest(Uri, "POST");
             
             sendPurchaseRequest.SetRequestHeader("Content-Type", "application/json");
-            sendPurchaseRequest.SetRequestHeader("x-api-token", xApiToken);
+            sendPurchaseRequest.SetRequestHeader("x-api-token", XApiToken);
         
             var sendObject = CreateSendObjectJson(productID, receipt);
 
@@ -93,7 +92,7 @@ namespace Playbox
                     OnValidateCallback = callback
                 };            
    
-                keyBuffer.Add(data);
+                _keyBuffer.Add(data);
             }
         
         }
@@ -135,14 +134,14 @@ namespace Playbox
             
             while (true)
             {
-                foreach (var item in keyBuffer)
+                foreach (var item in _keyBuffer)
                 {
-                    verificationQueue[item.TicketId] = item;
+                    _verificationQueue[item.TicketId] = item;
                 }
             
-                keyBuffer.Clear();
+                _keyBuffer.Clear();
 
-                foreach (var item in verificationQueue)
+                foreach (var item in _verificationQueue)
                 {
                     yield return GetStatus(item, b => { 
                         if(b)
@@ -154,7 +153,7 @@ namespace Playbox
 
                 foreach (var item in removeFromListByTicket)
                 {
-                    verificationQueue.Remove(item);
+                    _verificationQueue.Remove(item);
                 }
             
                 removeFromListByTicket.Clear();
@@ -167,10 +166,10 @@ namespace Playbox
         private IEnumerator GetStatus(KeyValuePair<string,PurchaseData> purchaseDataItem, Action<bool> removeFromQueueCallback)
         {
             
-            UnityWebRequest getStausRequest = new UnityWebRequest($"{uriStatus}/{purchaseDataItem.Key}", "GET");
+            UnityWebRequest getStausRequest = new UnityWebRequest($"{UriStatus}/{purchaseDataItem.Key}", "GET");
         
             getStausRequest.SetRequestHeader("Content-Type", "application/json");
-            getStausRequest.SetRequestHeader("x-api-token", xApiToken);
+            getStausRequest.SetRequestHeader("x-api-token", XApiToken);
         
             getStausRequest.downloadHandler = new DownloadHandlerBuffer();
         
