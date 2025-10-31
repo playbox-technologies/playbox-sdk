@@ -66,20 +66,18 @@ namespace Playbox
 #endif
         }
         
-        public static async void LoadLinkAndOpenStore(string promotedID,
-            MonoBehaviour monoBehaviour)
+        public static async Task LoadLinkAndOpenStore(string promotedID, string placementID = "main")
         {
+           
 #if !UNITY_EDITOR
             if (Analytics.isAppsFlyerInit)
             {
 #endif
-            string os = GetOS();
+                string os = GetOS();
 
-            string afLink = await GetPromoURL(promotedID, os);
-            
-            AppsFlyerConfiguration.LoadJsonConfig();
-            
-            Application.OpenURL(afLink);
+                string afLink = await GetPromoURL(promotedID, os, placementID);
+          
+                Application.OpenURL(afLink);
 #if !UNITY_EDITOR
             }
 #endif
@@ -88,6 +86,11 @@ namespace Playbox
         public static async Task<string> GetPromoURL(string bundleID, string os,string placementID = "main")
         {
             using var client = new HttpClient();
+            
+            Debug.Log(bundleID);
+            Debug.Log(os);
+            Debug.Log(placementID);
+            
         
             string baseUrl = "https://api.playbox.space/promo/get-link";
         
@@ -115,7 +118,7 @@ namespace Playbox
 
         public static string GetOS()
         {
-            string os = "windows";
+            string os = "ios";
 
 #if UNITY_ANDROID
             os = "android";
