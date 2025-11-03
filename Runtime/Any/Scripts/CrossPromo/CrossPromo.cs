@@ -86,12 +86,6 @@ namespace Playbox
         public static async Task<string> GetPromoURL(string bundleID, string os,string placementID = "main")
         {
             using var client = new HttpClient();
-            
-            Debug.Log(bundleID);
-            Debug.Log(os);
-            Debug.Log(placementID);
-            
-        
             string baseUrl = "https://api.playbox.space/promo/get-link";
         
             var query = System.Web.HttpUtility.ParseQueryString(string.Empty);
