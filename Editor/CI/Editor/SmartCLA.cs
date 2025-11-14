@@ -11,27 +11,27 @@
         public static class Arguments
         {
             /// <summary>Gets the build location path argument.</summary>
-            public static string BuildLocation => SmartEnviroment.GetArgumentValue(Constants.BUILD_LOCATION);
+            public static string BuildLocation => SmartEnviroment.GetArgumentValue(Commands.BUILD_LOCATION);
             /// <summary>Gets the build version argument (e.g., "1.0.0").</summary>
-            public static string BuildVersion => SmartEnviroment.GetArgumentValue(Constants.BUILD_VERSION);
+            public static string BuildVersion => SmartEnviroment.GetArgumentValue(Commands.BUILD_VERSION);
             /// <summary>Alias for BuildVersion (used for bundle version).</summary>
             public static string BundleVersion => BuildVersion;
             /// <summary>Gets the build number argument (e.g., Jenkins build ID).</summary>
-            public static int BuildNumber => SmartEnviroment.GetArgumentIntValue(Constants.BUILD_NUMBER);
+            public static int BuildNumber => SmartEnviroment.GetArgumentIntValue(Commands.BUILD_NUMBER);
             /// <summary>Gets the keystore password for signing.</summary>
-            public static string KeystorePass => SmartEnviroment.GetArgumentValue(Constants.KEYSTORE_PASS);
+            public static string KeystorePass => SmartEnviroment.GetArgumentValue(Commands.KEYSTORE_PASS);
             /// <summary>Gets the key alias name for signing.</summary>
-            public static string KeyaliasName => SmartEnviroment.GetArgumentValue(Constants.KEYALIAS_NAME);
+            public static string KeyaliasName => SmartEnviroment.GetArgumentValue(Commands.KEYALIAS_NAME);
             /// <summary>Gets the key alias password for signing.</summary>
-            public static string KeyaliasPass => SmartEnviroment.GetArgumentValue(Constants.KEYALIAS_PASS);
+            public static string KeyaliasPass => SmartEnviroment.GetArgumentValue(Commands.KEYALIAS_PASS);
             /// <summary>Gets the keystore path for signing.</summary>
-            public static string KeystorePath => SmartEnviroment.GetArgumentValue(Constants.KEYSTORE_PATH);
+            public static string KeystorePath => SmartEnviroment.GetArgumentValue(Commands.KEYSTORE_PATH);
             /// <summary>Gets the iOS provisioning profile argument.</summary>
-            public static string ProvisionProfileIos => SmartEnviroment.GetArgumentValue(Constants.PROVISION_PROFILE_IOS_SIGN);
+            public static string ProvisionProfileIos => SmartEnviroment.GetArgumentValue(Commands.PROVISION_PROFILE_IOS_SIGN);
             /// <summary>Gets the iOS code signing identity argument.</summary>
-            public static string CodeSignIdentity => SmartEnviroment.GetArgumentValue(Constants.CODE_SIGN_IDENTITY);
+            public static string CodeSignIdentity => SmartEnviroment.GetArgumentValue(Commands.CODE_SIGN_IDENTITY);
             
-            public static string TeamID => SmartEnviroment.GetArgumentValue(Constants.TEAM_ID);
+            public static string TeamID => SmartEnviroment.GetArgumentValue(Commands.TEAM_ID);
         }
 
         /// <summary>
@@ -40,45 +40,45 @@
         public static class Validations
         {
             /// <summary>Returns true if development mode argument is present.</summary>
-            public static bool HasDevelopmentMode => SmartEnviroment.HasArgument(Constants.DEVELOPMENT_MODE);
+            public static bool HasDevelopmentMode => SmartEnviroment.HasArgument(Commands.DEVELOPMENT_MODE);
             /// <summary>Returns true if development mode argument is present.</summary>
-            public static bool HasDebugMode => SmartEnviroment.HasArgument(Constants.DEBUG_MODE);
+            public static bool HasDebugMode => SmartEnviroment.HasArgument(Commands.DEBUG_MODE);
             /// <summary>Returns true if build location argument is present.</summary>
-            public static bool HasBuildLocation => SmartEnviroment.HasArgument(Constants.BUILD_LOCATION);
+            public static bool HasBuildLocation => SmartEnviroment.HasArgument(Commands.BUILD_LOCATION);
             /// <summary>Returns true if splash screen argument is present.</summary>
-            public static bool HasSplashScreen => SmartEnviroment.HasArgument(Constants.SPLASH_SCREEN);
+            public static bool HasSplashScreen => SmartEnviroment.HasArgument(Commands.SPLASH_SCREEN);
             /// <summary>Returns true if build version argument is present.</summary>
-            public static bool HasBuildVersion => SmartEnviroment.HasArgument(Constants.BUILD_VERSION);
+            public static bool HasBuildVersion => SmartEnviroment.HasArgument(Commands.BUILD_VERSION);
             /// <summary>Returns true if build number argument is present.</summary>
-            public static bool HasBuildNumber => SmartEnviroment.HasArgument(Constants.BUILD_NUMBER);
+            public static bool HasBuildNumber => SmartEnviroment.HasArgument(Commands.BUILD_NUMBER);
             /// <summary>Returns true if keystore password argument is present.</summary>
-            public static bool HasKeystorePass => SmartEnviroment.HasArgument(Constants.KEYSTORE_PASS);
+            public static bool HasKeystorePass => SmartEnviroment.HasArgument(Commands.KEYSTORE_PASS);
             /// <summary>Returns true if key alias name argument is present.</summary>
-            public static bool HasKeyaliasName => SmartEnviroment.HasArgument(Constants.KEYALIAS_NAME);
+            public static bool HasKeyaliasName => SmartEnviroment.HasArgument(Commands.KEYALIAS_NAME);
             /// <summary>Returns true if key alias password argument is present.</summary>
-            public static bool HasKeyaliasPass => SmartEnviroment.HasArgument(Constants.KEYALIAS_PASS);
+            public static bool HasKeyaliasPass => SmartEnviroment.HasArgument(Commands.KEYALIAS_PASS);
             /// <summary>Returns true if keystore path argument is present.</summary>
-            public static bool HasKeystorePath => SmartEnviroment.HasArgument(Constants.KEYSTORE_PATH);
+            public static bool HasKeystorePath => SmartEnviroment.HasArgument(Commands.KEYSTORE_PATH);
             /// <summary>Returns true if store build argument is present.</summary>
-            public static bool HasStoreBuild => SmartEnviroment.HasArgument(Constants.STORE_BUILD);
+            public static bool HasStoreBuild => SmartEnviroment.HasArgument(Commands.STORE_BUILD);
             /// <summary>Returns true if iOS manual sign argument is present.</summary>
-            public static bool HasIosManualSign => SmartEnviroment.HasArgument(Constants.MANAUL_SIGN);
+            public static bool HasIosManualSign => SmartEnviroment.HasArgument(Commands.MANAUL_SIGN);
             /// <summary>Returns true if iOS provisioning profile argument is present.</summary>
-            public static bool HasProvisionProfileIos => SmartEnviroment.HasArgument(Constants.PROVISION_PROFILE_IOS_SIGN);
+            public static bool HasProvisionProfileIos => SmartEnviroment.HasArgument(Commands.PROVISION_PROFILE_IOS_SIGN);
             /// <summary>Returns true if iOS code signing identity argument is present.</summary>
-            public static bool HasCodeSignIdentity => SmartEnviroment.HasArgument(Constants.CODE_SIGN_IDENTITY);
+            public static bool HasCodeSignIdentity => SmartEnviroment.HasArgument(Commands.CODE_SIGN_IDENTITY);
             /// <summary>Returns true if iOS profile development argument is present.</summary>
-            public static bool HasProfileDevelopment => SmartEnviroment.HasArgument(Constants.PROFILE_DEVELOPMENT);
+            public static bool HasProfileDevelopment => SmartEnviroment.HasArgument(Commands.PROFILE_DEVELOPMENT);
             /// <summary>Returns true if iOS profile distribution argument is present.</summary>
-            public static bool HasProfileDistribution => SmartEnviroment.HasArgument(Constants.PROFILE_DISTRIBUTION);
+            public static bool HasProfileDistribution => SmartEnviroment.HasArgument(Commands.PROFILE_DISTRIBUTION);
             
-            public static bool HasTeamID => SmartEnviroment.HasArgument(Constants.TEAM_ID);
+            public static bool HasTeamID => SmartEnviroment.HasArgument(Commands.TEAM_ID);
         }
 
         /// <summary>
         /// Contains constant argument names used for CI/CD command-line parameters.
         /// </summary>
-        public static class Constants
+        public static class Commands
         {
             public const string DEVELOPMENT_MODE = "-dev"; // Enable development mode
             public const string DEBUG_MODE = "-debug"; // Enable debug mode
