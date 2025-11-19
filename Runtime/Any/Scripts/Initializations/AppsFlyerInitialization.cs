@@ -44,7 +44,7 @@ namespace Playbox
             
 #elif UNITY_ANDROID
             
-            AppsFlyer.initSDK(AppsFlyerConfiguration.AndroidKey_rew, AppsFlyerConfiguration.AndroidAppId, this);
+            AppsFlyer.initSDK(AppsFlyerConfiguration.AndroidKey, AppsFlyerConfiguration.AndroidAppId, this);
 #endif 
             
             AppsFlyer.setSharingFilterForPartners();
