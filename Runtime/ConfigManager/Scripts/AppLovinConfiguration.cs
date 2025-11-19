@@ -8,24 +8,38 @@ namespace Playbox.SdkConfigurations
     /// </summary>
     public static class AppLovinConfiguration{
     
-        private static string ios_key = "";
-        private static string android_key = "";
+        private static string _iosKeyRew = "";
+        private static string _iosKeyInter = "";
+        private static string _androidKeyRew = "";
+        private static string _androidKeyInter = "";
         private static string advertisementSdk = "";
     
         private static bool active = false;
 
         private static string name = "AppLovin";
 
-        public static string IOSKey
+        public static string IOSKey_rew
         {
-            get => ios_key;
-            set => ios_key = value;
+            get => _iosKeyRew;
+            set => _iosKeyRew = value;
+        }
+        
+        public static string IOSKey_inter
+        {
+            get => _iosKeyInter;
+            set => _iosKeyInter = value;
         }
 
-        public static string AndroidKey
+        public static string AndroidKey_rew
         {
-            get => android_key;
-            set => android_key = value;
+            get => _androidKeyRew;
+            set => _androidKeyRew = value;
+        } 
+        
+        public static string AndroidKey_iter
+        {
+            get => _androidKeyInter;
+            set => _androidKeyInter = value;
         }
 
         public static bool Active
@@ -51,8 +65,10 @@ namespace Playbox.SdkConfigurations
         {
             JObject config = new JObject();
         
-            config[nameof(ios_key)] = ios_key;
-            config[nameof(android_key)] = android_key;
+            config[nameof(_iosKeyRew)] = _iosKeyRew;
+            config[nameof(_iosKeyInter)] = _iosKeyInter;
+            config[nameof(_androidKeyRew)] = _androidKeyRew;
+            config[nameof(_androidKeyInter)] = _androidKeyInter;
             config[nameof(advertisementSdk)] = AdvertisementSdk;
             config[nameof(active)] = active;
         
@@ -75,8 +91,10 @@ namespace Playbox.SdkConfigurations
                 return;
             }
         
-            ios_key = (string)obj[nameof(ios_key)];
-            android_key = (string)obj[nameof(android_key)];
+            _iosKeyRew = (string)obj[nameof(_iosKeyRew)];
+            _iosKeyInter = (string)obj[nameof(_iosKeyInter)];
+            _androidKeyRew = (string)obj[nameof(_androidKeyRew)];
+            _androidKeyInter = (string)obj[nameof(_androidKeyInter)];
             advertisementSdk = (string)obj[nameof(advertisementSdk)];
             active = (bool)(obj[nameof(active)] ?? false);
         

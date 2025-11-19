@@ -19,7 +19,7 @@ namespace Playbox
                 return;
 
 #if UNITY_ANDROID
-            DTDAnalytics.Initialize(DevToDevConfiguration.AndroidKey);
+            DTDAnalytics.Initialize(DevToDevConfiguration.AndroidKey_rew);
 #endif
 #if UNITY_IOS
             DTDAnalytics.Initialize(DevToDevConfiguration.IOSKey);
