@@ -2,17 +2,15 @@
     "name": "Playbox",
     "rootNamespace": "",
     "references": [
-        "UnityEngine.Purchasing",
-        "UnityEngine.Purchasing.Apple",
         "AppsFlyer",
         "MaxSdk.Scripts",
         "com.devtodev.sdk.analytics",
-        "Purchasing.Common",
         "Unity.TextMeshPro",
-        "UnityEngine.Purchasing.Stores",
         "Unity.Services.Core",
         "Unity.Services.Core.Environments",
-        "Unity.Advertisement.IosSupport"
+        "Unity.Advertisement.IosSupport",
+        "Unity.Purchasing",
+        "Unity.Purchasing.Apple"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

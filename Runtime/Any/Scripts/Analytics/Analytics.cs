@@ -8,7 +8,6 @@ using CI.Utils.Extentions;
 using DevToDev.Analytics;
 using Firebase.Analytics;
 using Firebase.Crashlytics;
-using UnityEngine;
 using UnityEngine.Purchasing;
 
 /*
@@ -23,6 +22,7 @@ using UnityEngine.Purchasing;
 
 namespace Playbox
 {
+    
     /// <summary>
     /// Clavicular static analytics collection class
     /// </summary>
@@ -93,7 +93,7 @@ namespace Playbox
             message.PlayboxInfo("Analytics");
         }
 
-        public static void LogPurshaseInitiation(UnityEngine.Purchasing.Product product)
+        public static void LogPurshaseInitiation(Product product)
         {
             if(product == null)
                 throw new Exception("Product is null");
@@ -161,19 +161,6 @@ namespace Playbox
             });
         }
 
-        public static void LogPurchase(PurchaseEventArgs args, Action<bool> onValidate  = null)
-        {
-            if (args != null)
-            {
-                LogPurchase(args.purchasedProduct, onValidate);
-            }
-            else
-            {
-                if(isFirebaseInit)
-                    Crashlytics.LogException(new Exception("[PlayboxLogging] purchase Args is null"));
-            }
-        }
-
         public static void TrackAd(MaxSdkBase.AdInfo impressionData)
         {
             Events.AdImpression(impressionData.NetworkName, impressionData.Revenue, impressionData.Placement, impressionData.AdUnitIdentifier);
@@ -212,7 +199,7 @@ namespace Playbox
             {
                 TrackEvent(nameof(LogContentView),new KeyValuePair<string, string>(nameof(LogContentView),content));
             }
-            
+
             public static void LogTutorial(string tutorial, ETutorialState stateLevel = ETutorialState.Complete, string step = "none")
             {
                 switch (stateLevel)

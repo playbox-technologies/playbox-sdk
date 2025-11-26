@@ -4,11 +4,8 @@ using System.Collections.Generic;
 using Playbox.SdkConfigurations;
 using AppsFlyerSDK;
 using CI.Utils.Extentions;
-using Newtonsoft.Json.Linq;
 using Playbox.Consent;
-
 using UnityEngine;
-using UnityEngine.Purchasing.MiniJSON;
 
 
 namespace Playbox
