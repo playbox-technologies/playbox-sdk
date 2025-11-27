@@ -2,12 +2,8 @@
 
 using System;
 using System.Linq;
-using JetBrains.Annotations;
 using UnityEditor;
-using UnityEditor.Callbacks;
-using System.IO;
-using CI.Utils.Extentions;
-using UnityEditor.iOS.Xcode;
+
 
 namespace Playbox.CI
 {
@@ -15,7 +11,6 @@ namespace Playbox.CI
     {
         public const string TeamID = "DEFAULT_TEAMID";
         
-        [UsedImplicitly]
         public static void Build()
         {
             var scenes = EditorBuildSettings.scenes.Select(x => x.path)
