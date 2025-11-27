@@ -13,6 +13,8 @@ namespace Playbox.CI
         
         public static void Build()
         {
+            DependencyGenerator.GenerateApplePodfile();
+            
             var scenes = EditorBuildSettings.scenes.Select(x => x.path)
                 .ToArray();
          
