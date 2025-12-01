@@ -8,7 +8,6 @@ using CI.Utils.Extentions;
 using DevToDev.Analytics;
 using Firebase.Analytics;
 using Firebase.Crashlytics;
-using UnityEngine.Purchasing;
 
 /*
     af_initiated_checkout - инициация покупки
@@ -22,6 +21,14 @@ using UnityEngine.Purchasing;
 
 namespace Playbox
 {
+    public class ProductDataAdapter
+    {
+        public string TransactionId { get; set; }
+        public string DefinitionId { get; set; }
+        public decimal MetadataLocalizedPrice { get; set; }
+        public string MetadataIsoCurrencyCode { get; set; }
+        public string Receipt { get; set; }
+    }
     
     /// <summary>
     /// Clavicular static analytics collection class
@@ -93,18 +100,19 @@ namespace Playbox
             message.PlayboxInfo("Analytics");
         }
 
-        public static void LogPurshaseInitiation(Product product)
+        public static void LogPurshaseInitiation(ProductDataAdapter product)
         {
             if(product == null)
                 throw new Exception("Product is null");
             
-            TrackEvent("purchasing_init",new KeyValuePair<string, string>("purchasing_init",product.definition.id));
+            TrackEvent("purchasing_init",new KeyValuePair<string, string>("purchasing_init",product.DefinitionId));
             
             if (isAppsFlyerInit)
                 AppsFlyer.sendEvent("af_initiated_checkout",new());
         }
         
-        public static void LogPurchase(Product purchasedProduct, Action<bool> onValidate  = null)
+        public static void LogPurchase(ProductDataAdapter
+            purchasedProduct, Action<bool> onValidate  = null)
         {
             if(purchasedProduct == null)
             {
@@ -113,10 +121,10 @@ namespace Playbox
                 return;
             }
 
-            string orderId = purchasedProduct.transactionID;
-            string productId = purchasedProduct.definition.id;
-            var price = purchasedProduct.metadata.localizedPrice;
-            string currency = purchasedProduct.metadata.isoCurrencyCode;
+            string orderId = purchasedProduct.TransactionId;
+            string productId = purchasedProduct.DefinitionId;
+            var price = purchasedProduct.MetadataLocalizedPrice;
+            string currency = purchasedProduct.MetadataIsoCurrencyCode;
             
             
             Dictionary<string, string> eventValues = new ()
@@ -127,7 +135,7 @@ namespace Playbox
                 { "af_content_id", productId }
             };
             
-            InAppVerification.Validate(purchasedProduct.definition.id,purchasedProduct.receipt,"000", (isValid) =>
+            InAppVerification.Validate(purchasedProduct.DefinitionId,purchasedProduct.Receipt, (isValid) =>
             {
                 onValidate?.Invoke(isValid);
                 

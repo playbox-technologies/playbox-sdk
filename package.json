@@ -3,20 +3,18 @@
   "displayName": "Playbox",
   "author": "playbox",
   "version": "0.0.77",
-  "description": "Support package for SDK and integration of CI/CD functionality, Advertising, in-app purchases, cross promo, consent.",
+  "description": "Support package for SDK and integration of CI/CD functionality, Advertising, cross promo, consent.",
   "keywords": [
     "utility",
     "tools",
     "game",
     "CI/CD",
     "Consent",
-    "InApp Purchsases",
     "CrossPromo",
     "Cryptographycs"
   ],
   "dependencies": {
     "com.unity.nuget.newtonsoft-json": "3.2.1",
-    "com.unity.purchasing": "5.0.2",
     "com.devtodev.sdk.analytics": "3.9.1",
     "com.google.ads.mobile": "10.2.0",
     "com.unity.ads.ios-support": "1.0.0"

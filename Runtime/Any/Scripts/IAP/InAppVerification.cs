@@ -39,23 +39,23 @@ namespace Playbox
             StartCoroutine(UpdatePurchases());
         }
         
-        public static void Validate(string productID,string receipt ,string saveId, Action<bool> callback)
+        public static void Validate(string productID,string receipt, Action<bool> callback)
         {
             if(_instance == null) return;
             if(string.IsNullOrEmpty(productID)) return;
             if(string.IsNullOrEmpty(receipt)) return;
             if(callback == null) return;
             
-            _instance.SendRequest(productID, receipt,saveId,callback);
+            _instance.SendRequest(productID, receipt,callback);
         }
 
-        public void SendRequest(string productID,string receipt, string saveId, Action<bool> callback)
+        public void SendRequest(string productID,string receipt, Action<bool> callback)
         {
-            StartCoroutine(Request(productID,receipt, saveId, callback));
+            StartCoroutine(Request(productID,receipt, callback));
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
-        public IEnumerator Request(string productID,string receipt, string saveId, Action<bool> callback)
+        public IEnumerator Request(string productID,string receipt, Action<bool> callback)
         {
             UnityWebRequest sendPurchaseRequest = new UnityWebRequest(Uri, "POST");
             
@@ -88,7 +88,6 @@ namespace Playbox
                 {
                     ProductId = productID,
                     TicketId = ticketID,
-                    SaveIndentifier = saveId,
                     OnValidateCallback = callback
                 };            
    
@@ -99,8 +98,6 @@ namespace Playbox
 
         private JObject CreateSendObjectJson(string productID, string receipt)
         {
-            //TimeZoneInfo localZone = TimeZoneInfo.Local;
-            
             JObject sendObject = new()
             {
                 ["os_version"] = SystemInfo.operatingSystem,
