@@ -35,17 +35,17 @@ namespace Playbox.CI
 
                 writer.WriteStartElement("iosPod");
                 writer.WriteAttributeString("name", "Google-Mobile-Ads-SDK");
-                writer.WriteAttributeString("version", "12.5.0");
+                writer.WriteAttributeString("version", "12.6.0");
                 writer.WriteEndElement();
 
                 writer.WriteStartElement("iosPod");
                 writer.WriteAttributeString("name", "AppLovinMediationGoogleAdapter");
-                writer.WriteAttributeString("version", "12.5.0.0");
+                writer.WriteAttributeString("version", "12.6.0.0");
                 writer.WriteEndElement();
 
                 writer.WriteStartElement("iosPod");
                 writer.WriteAttributeString("name", "AppLovinMediationGoogleAdManagerAdapter");
-                writer.WriteAttributeString("version", "12.5.0.0");
+                writer.WriteAttributeString("version", "12.6.0.0");
                 writer.WriteEndElement();
 
                 writer.WriteEndElement(); 
