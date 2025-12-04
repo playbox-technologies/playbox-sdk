@@ -60,26 +60,29 @@ namespace Playbox
 
         private void OnSdkInitializedEvent(MaxSdkBase.SdkConfiguration sdkConfiguration)
         {
+
+            bool isInterstitial = AppLovinConfiguration.IsUseInterstitial;
+            bool isReward = AppLovinConfiguration.IsUseReward;
             
             if (RuntimePlatform.IPhonePlayer == Application.platform)
             {
-                Advertisement.RegisterUnitID(AppLovinConfiguration.IOSKey_rew, this);
-                InterstitialAd.RegisterUnitID(AppLovinConfiguration.IOSKey_inter, this);
+                if(isReward) Advertisement.RegisterUnitID(AppLovinConfiguration.IOSKey_rew, this);
+                if(isInterstitial) InterstitialAd.RegisterUnitID(AppLovinConfiguration.IOSKey_inter, this);
                 
                 Debug.Log("AppLovin iPhone");
             }
 
             if (RuntimePlatform.Android == Application.platform)
             {
-                Advertisement.RegisterUnitID(AppLovinConfiguration.AndroidKey_rew, this);
-                InterstitialAd.RegisterUnitID(AppLovinConfiguration.AndroidKey_iter, this);
+                if(isReward) Advertisement.RegisterUnitID(AppLovinConfiguration.AndroidKey_rew, this);
+                if(isInterstitial) InterstitialAd.RegisterUnitID(AppLovinConfiguration.AndroidKey_iter, this);
                 
                 Debug.Log("AppLovin Android");
             }
 
 #if UNITY_EDITOR
-            Advertisement.RegisterUnitID(AppLovinConfiguration.IOSKey_rew, this);
-            InterstitialAd.RegisterUnitID(AppLovinConfiguration.IOSKey_inter, this);
+            if(isReward) Advertisement.RegisterUnitID(AppLovinConfiguration.IOSKey_rew, this);
+            if(isInterstitial) InterstitialAd.RegisterUnitID(AppLovinConfiguration.IOSKey_inter, this);
                 
             Debug.Log("AppLovin Test Unity iOS");
 #endif

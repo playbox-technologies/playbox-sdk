@@ -69,7 +69,6 @@ namespace Playbox
         public static Action OnRewarderedReceived;
         public static Action<string> OnPlayerOpened;
         
-        private static bool IsEnabled => AppLovinConfiguration.IsUseReward;
         
         private static AppLovinInitialization appLovinInitialization;
         
@@ -84,8 +83,6 @@ namespace Playbox
         /// </summary>
         public static void RegisterUnitID(string unitId, AppLovinInitialization aInitialization)
         {
-            if(!IsEnabled)
-            
             UnitId = unitId;
             appLovinInitialization = aInitialization;
             

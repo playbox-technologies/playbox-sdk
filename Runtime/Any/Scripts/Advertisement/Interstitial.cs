@@ -59,8 +59,6 @@ namespace Playbox
         public static Action OnFailedDisplay;
         public static Action<string> OnPlayerOpened;
         
-        private static bool IsEnabled => AppLovinConfiguration.IsUseInterstitial;
-        
         private static AppLovinInitialization appLovinInitialization;
         
         /// <summary>
@@ -74,9 +72,6 @@ namespace Playbox
         /// </summary>
         public static void RegisterUnitID(string unitId, AppLovinInitialization aInitialization)
         {
-            if(!IsEnabled)
-                return;
-            
             UnitId = unitId;
             appLovinInitialization = aInitialization;
             
