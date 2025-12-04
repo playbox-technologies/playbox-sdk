@@ -118,11 +118,11 @@ namespace Playbox
         /// <summary>
         /// Starts showing ads if they are ready to be shown, otherwise they will try to load again.
         /// </summary>
-        public static void Show()
+        public static void Show(string placement = "default")
         {
             if (isReady())
             {
-                MaxSdk.ShowInterstitial(unitId);    
+                MaxSdk.ShowInterstitial(unitId, placement);    
             }
             else
             {
