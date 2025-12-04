@@ -61,13 +61,13 @@ namespace Playbox
         private void OnSdkInitializedEvent(MaxSdkBase.SdkConfiguration sdkConfiguration)
         {
 #if UNITY_IOS
-            Advertisement.RegisterReward(AppLovinConfiguration.IOSKey_rew, this);
-            InterstitialAd.RegisterReward(AppLovinConfiguration.IOSKey_inter, this);
+            Advertisement.RegisterUnitID(AppLovinConfiguration.IOSKey_rew, this);
+            InterstitialAd.RegisterUnitID(AppLovinConfiguration.IOSKey_inter, this);
 #endif
             
 #if UNITY_ANDROID
-            Advertisement.RegisterReward(AppLovinConfiguration.AndroidKey_rew, this);
-            InterstitialAd.RegisterReward(AppLovinConfiguration.AndroidKey_iter, this);
+            Advertisement.RegisterUnitID(AppLovinConfiguration.AndroidKey_rew, this);
+            InterstitialAd.RegisterUnitID(AppLovinConfiguration.AndroidKey_iter, this);
 #endif
             
             Debug.Log("AppLovin initialized");

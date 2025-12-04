@@ -103,7 +103,7 @@ namespace Playbox
         /// AppLovin initialization script, required for basic services to work.
         /// </param>>
         /// </summary>
-        public static void RegisterReward(string unitId, AppLovinInitialization aInitialization)
+        public static void RegisterUnitID(string unitId, AppLovinInitialization aInitialization)
         {
             UnitId = unitId;
             appLovinInitialization = aInitialization;
