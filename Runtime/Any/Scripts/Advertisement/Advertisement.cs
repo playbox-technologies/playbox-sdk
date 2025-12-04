@@ -1,34 +1,11 @@
 ﻿using System;
 using System.Collections;
 using CI.Utils.Extentions;
+using Playbox.SdkConfigurations;
 using UnityEngine;
 
 namespace Playbox
 {
-    /// <summary>
-    /// <param name="Ready">
-    /// The commercials are loaded.
-    /// </param>>
-    /// <param name="NotReady">
-    /// The ads are not loaded.
-    /// </param>>
-    /// <param name="NullStatus">
-    /// The unitId of the advertisement is equal to Null.
-    /// </param>>
-    /// <param name="NotInitialized">
-    /// MaxSdk is not initialized.
-    /// </param>>
-    /// </summary>
-      public enum AdReadyStatus
-        {
-            Ready,
-            NotReady,
-            NullStatus,
-            NotInitialized
-        }
-    /// <summary>
-    /// Responsible for advertising, is static. To use it, it must be initialized and AppLovinInitialization must be thrown into it.
-    /// </summary>
     public static class Advertisement
     {
         private static string unitId;
@@ -92,6 +69,8 @@ namespace Playbox
         public static Action OnRewarderedReceived;
         public static Action<string> OnPlayerOpened;
         
+        private static bool IsEnabled => AppLovinConfiguration.IsUseReward;
+        
         private static AppLovinInitialization appLovinInitialization;
         
         /// <summary>
@@ -105,13 +84,15 @@ namespace Playbox
         /// </summary>
         public static void RegisterUnitID(string unitId, AppLovinInitialization aInitialization)
         {
+            if(!IsEnabled)
+            
             UnitId = unitId;
             appLovinInitialization = aInitialization;
             
             InitCallback();
             Load();
 
-            aInitialization.StartCoroutine(rewardUpdate());
+            aInitialization.StartCoroutine(RewardUpdate());
         }
 
         /// <summary>
@@ -191,7 +172,7 @@ namespace Playbox
             }
         }
 
-        static IEnumerator rewardUpdate()
+        static IEnumerator RewardUpdate()
         {
             while (true)
             {

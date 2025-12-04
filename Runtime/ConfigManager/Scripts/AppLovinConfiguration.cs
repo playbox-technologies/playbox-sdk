@@ -6,8 +6,10 @@ namespace Playbox.SdkConfigurations
     /// <summary>
     /// Provides configuration management for AppLovin SDK integration with Playbox, including saving and loading JSON configurations.
     /// </summary>
-    public static class AppLovinConfiguration{
-    
+    public static class AppLovinConfiguration
+    {
+        private static bool _isUseReward = true;
+        private static bool _isUseInterstitial = true;
         private static string _iosKeyRew = "";
         private static string _iosKeyInter = "";
         private static string _androidKeyRew = "";
@@ -60,6 +62,18 @@ namespace Playbox.SdkConfigurations
             set => name = value;
         }
 
+        public static bool IsUseReward
+        {
+            get => _isUseReward;
+            set => _isUseReward = value;
+        }
+
+        public static bool IsUseInterstitial
+        {
+            get => _isUseInterstitial;
+            set => _isUseInterstitial = value;
+        }
+
 
         public static JObject GetJsonConfig()
         {
@@ -71,6 +85,8 @@ namespace Playbox.SdkConfigurations
             config[nameof(_androidKeyInter)] = _androidKeyInter;
             config[nameof(advertisementSdk)] = AdvertisementSdk;
             config[nameof(active)] = active;
+            config[nameof(_isUseInterstitial)] = _isUseInterstitial;
+            config[nameof(_isUseReward)] = _isUseReward;
         
             return config;
         }
@@ -97,6 +113,8 @@ namespace Playbox.SdkConfigurations
             _androidKeyInter = (string)obj[nameof(_androidKeyInter)];
             advertisementSdk = (string)obj[nameof(advertisementSdk)];
             active = (bool)(obj[nameof(active)] ?? false);
+            _isUseInterstitial = (bool)(obj[nameof(_isUseInterstitial)] ?? false);
+            _isUseReward = (bool)(obj[nameof(_isUseReward)] ?? false);
         
         }
 

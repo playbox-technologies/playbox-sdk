@@ -60,14 +60,28 @@ namespace Playbox
 
         private void OnSdkInitializedEvent(MaxSdkBase.SdkConfiguration sdkConfiguration)
         {
-#if UNITY_IOS
+            
+            if (RuntimePlatform.IPhonePlayer == Application.platform)
+            {
+                Advertisement.RegisterUnitID(AppLovinConfiguration.IOSKey_rew, this);
+                InterstitialAd.RegisterUnitID(AppLovinConfiguration.IOSKey_inter, this);
+                
+                Debug.Log("AppLovin iPhone");
+            }
+
+            if (RuntimePlatform.Android == Application.platform)
+            {
+                Advertisement.RegisterUnitID(AppLovinConfiguration.AndroidKey_rew, this);
+                InterstitialAd.RegisterUnitID(AppLovinConfiguration.AndroidKey_iter, this);
+                
+                Debug.Log("AppLovin Android");
+            }
+
+#if UNITY_EDITOR
             Advertisement.RegisterUnitID(AppLovinConfiguration.IOSKey_rew, this);
             InterstitialAd.RegisterUnitID(AppLovinConfiguration.IOSKey_inter, this);
-#endif
-            
-#if UNITY_ANDROID
-            Advertisement.RegisterUnitID(AppLovinConfiguration.AndroidKey_rew, this);
-            InterstitialAd.RegisterUnitID(AppLovinConfiguration.AndroidKey_iter, this);
+                
+            Debug.Log("AppLovin Test Unity iOS");
 #endif
             
             Debug.Log("AppLovin initialized");
