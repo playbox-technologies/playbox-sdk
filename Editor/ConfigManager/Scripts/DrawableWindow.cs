@@ -52,7 +52,6 @@ namespace Playbox.SdkWindow
 
         public virtual void Title()
         {
-           
         }
 
         public virtual void Header()

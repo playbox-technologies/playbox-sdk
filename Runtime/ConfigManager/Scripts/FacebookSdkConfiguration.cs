@@ -14,7 +14,7 @@ namespace Playbox.SdkConfigurations
     
         private static bool active;
 
-        private static string name = "FacebookSdk";
+        private const string name = "FacebookSdk";
         
         public static bool Active
         {
@@ -37,7 +37,6 @@ namespace Playbox.SdkConfigurations
         public static string Name
         {
             get => name;
-            set => name = value;
         }
 
         public static string ClientToken

@@ -15,7 +15,7 @@ namespace Playbox.SdkConfigurations
         
         private static bool active = false;
 
-        private static string name = "DevToDev";
+        private const string name = "DevToDev";
 
         public static string IOSKey
         {
@@ -38,7 +38,6 @@ namespace Playbox.SdkConfigurations
         public static string Name
         {
             get => name;
-            set => name = value;
         }
 
         public static DTDLogLevel LOGLevel

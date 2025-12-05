@@ -181,7 +181,19 @@ namespace Playbox
 
         private static void OnAdRevenuePaid(string id, MaxSdkBase.AdInfo info)
         {
-            Analytics.TrackAd(info);
+            Analytics.TrackAd(new PlayboxAdInfo
+            {
+                AdUnitIdentifier = info.AdUnitIdentifier,
+                AdFormat = info.AdFormat,
+                NetworkName = info.NetworkName,
+                NetworkPlacement = info.NetworkPlacement,
+                Placement = info.Placement,
+                CreativeIdentifier = info.CreativeIdentifier,
+                Revenue = info.Revenue,
+                RevenuePrecision = info.RevenuePrecision,
+                LatencyMillis = info.LatencyMillis,
+                DspName = info.DspName
+            });
         }
 
         private static void OnInterstitialAdFailedToDisplayEvent(string arg1, MaxSdkBase.ErrorInfo reward, MaxSdkBase.AdInfo info)

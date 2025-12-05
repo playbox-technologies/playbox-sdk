@@ -10,7 +10,7 @@ namespace Playbox.SdkConfigurations
     
         private static bool active = false;
 
-        private static string name = "IAP Verificator";
+        private const string name = "IAP Verificator";
         
 
         public static bool Active
@@ -22,7 +22,6 @@ namespace Playbox.SdkConfigurations
         public static string Name
         {
             get => name;
-            set => name = value;
         }
 
         public static string ServerURL

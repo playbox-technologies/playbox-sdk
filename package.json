@@ -2,7 +2,7 @@
   "name": "playbox",
   "displayName": "Playbox",
   "author": "playbox",
-  "version": "0.0.81",
+  "version": "0.0.82",
   "description": "Support package for SDK and integration of CI/CD functionality, Advertising, cross promo, consent.",
   "keywords": [
     "utility",

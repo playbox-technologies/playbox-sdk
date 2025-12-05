@@ -18,6 +18,9 @@ namespace Playbox.SdkConfigurations
         public static string Load(string configPath)
         {
             var asset = Resources.Load<TextAsset>(configPath);
+
+            if (asset == null)
+                return "{}";
             
             return asset.text;
         }

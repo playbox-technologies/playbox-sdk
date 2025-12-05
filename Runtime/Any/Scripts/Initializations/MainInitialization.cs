@@ -1,19 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using Any.Scripts.Initializations;
-using AppsFlyerSDK;
 using CI.Utils.Extentions;
-using Firebase.Crashlytics;
 using Playbox.Consent;
-#if UNITY_EDITOR
-#endif
 using Playbox.SdkConfigurations;
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 using UnityEngine;
 using UnityEngine.Events;
@@ -31,8 +21,6 @@ namespace Playbox
         [SerializeField] private UnityEvent OnPostInitializatioon;
         
         private List<PlayboxBehaviour> behaviours = new();
-        
-        private const string objectName = "[Global] MainInitialization";
         
         private static Dictionary<string,bool> initStatus = new();
 
@@ -52,7 +40,10 @@ namespace Playbox
             {
                 OnPostInitializatioon?.Invoke();
                 OnPostInitializatioon = null;
+                
+                Analytics.RegisterAnalyticsCustomManagement();
             };
+            
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
@@ -107,10 +98,21 @@ namespace Playbox
                 if(item != null)
                     item.GetInitStatus(() =>
                     {
-                        item.playboxName.PlayboxInfo("INITIALIZED");
+                        item.playboxName.PlayboxSplashLogUGUI();
                         InitStatus[item.playboxName] = true;
                         
                     });
+            }
+            
+            foreach (var item in behaviours)
+            {
+                if (item != null)
+                {
+                    if (!item.ConsentDependency)
+                    {
+                        item.Initialization();
+                    }
+                }
             }
             
             ConsentData.ShowConsent(this, () =>
@@ -126,19 +128,13 @@ namespace Playbox
                     }
                 }
                 
-                PostInitialization?.Invoke();
+                Invoke(nameof(PostInitializationM), 2);
             });
-            
-            foreach (var item in behaviours)
-            {
-                if (item != null)
-                {
-                    if (!item.ConsentDependency)
-                    {
-                        item.Initialization();
-                    }
-                }
-            }
+        }
+
+        private void PostInitializationM()
+        {
+            PostInitialization?.Invoke();
         }
 
         private void OnDestroy()
@@ -161,42 +157,5 @@ namespace Playbox
             }
 
         }
-        
-#if UNITY_EDITOR
-        [MenuItem("Playbox/Initialization/Create")]
-        public static void CreateAnalyticsObject()
-        { 
-            var findable = GameObject.Find(objectName);
-
-            if (findable == null)
-            {
-                var go = new GameObject(objectName); 
-                
-                go.AddComponent<MainInitialization>();
-            }
-            else
-            {
-                if (findable.TryGetComponent(out MainInitialization main))
-                {
-                    DestroyImmediate(main);
-                }
-                else
-                {
-                    findable.AddComponent<MainInitialization>();   
-                }
-            }
-        }
-        
-        [MenuItem("Playbox/Initialization/Remove")]
-        public static void RemoveAnalyticsObject()
-        {
-            var go = GameObject.Find(objectName);
-
-            if (go != null)
-            {
-                DestroyImmediate(go);
-            }
-        }
-#endif
     }
 }

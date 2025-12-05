@@ -32,6 +32,13 @@ namespace Playbox
         public static bool isFSBInit => IsValidate<FacebookSdkInitialization>();
         public static bool isFirebaseInit => IsValidate<FirebaseInitialization>();
         
+        public static AnalyticsCustomManagement analyticsCustomManagement = new();
+
+        public static void RegisterAnalyticsCustomManagement()
+        {
+            analyticsCustomManagement.Initialize();
+        }
+        
         private static bool IsValidate<T>() where T : PlayboxBehaviour
         {
             return MainInitialization.IsValidate<T>();
@@ -160,7 +167,7 @@ namespace Playbox
             });
         }
 
-        public static void TrackAd(MaxSdkBase.AdInfo impressionData)
+        public static void TrackAd(PlayboxAdInfo impressionData)
         {
             Events.AdImpression(impressionData.NetworkName, impressionData.Revenue, impressionData.Placement, impressionData.AdUnitIdentifier);
 

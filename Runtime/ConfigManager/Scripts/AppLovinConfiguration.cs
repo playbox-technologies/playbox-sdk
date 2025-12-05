@@ -18,7 +18,7 @@ namespace Playbox.SdkConfigurations
     
         private static bool active = false;
 
-        private static string name = "AppLovin";
+        public const string name = "AppLovin";
 
         public static string IOSKey_rew
         {
@@ -55,13 +55,7 @@ namespace Playbox.SdkConfigurations
             get => advertisementSdk;
             set => advertisementSdk = value;
         }
-
-        public static string Name
-        {
-            get => name;
-            set => name = value;
-        }
-
+        
         public static bool IsUseReward
         {
             get => _isUseReward;
@@ -93,16 +87,16 @@ namespace Playbox.SdkConfigurations
 
         public static void SaveJsonConfig()
         {
-            GlobalPlayboxConfig.SaveSubconfigs(Name,GetJsonConfig());
+            GlobalPlayboxConfig.SaveSubconfigs(name,GetJsonConfig());
         }
     
         public static void LoadJsonConfig()
         {
-            JObject obj = GlobalPlayboxConfig.LoadSubconfigs(Name);
+            JObject obj = GlobalPlayboxConfig.LoadSubconfigs(name);
 
             if (obj == null)
             {
-                $"{Name} config not contains in json".PlayboxWarning();
+                $"{name} config not contains in json".PlayboxWarning();
             
                 return;
             }

@@ -22,7 +22,7 @@ namespace Playbox.SdkWindow
         {
             base.InitName();
 
-            name = AppLovinConfiguration.Name;
+            name = AppLovinConfiguration.name;
         }
 
         public override void Body()

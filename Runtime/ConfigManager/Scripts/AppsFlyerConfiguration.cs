@@ -16,7 +16,7 @@ namespace Playbox.SdkConfigurations
     
         private static bool active = false;
 
-        private static string name = "AppsFlyer";
+        private const string name = "AppsFlyer";
 
         public static string IOSKey
         {
@@ -39,7 +39,6 @@ namespace Playbox.SdkConfigurations
         public static string Name
         {
             get => name;
-            set => name = value;
         }
 
         public static string AndroidAppId
