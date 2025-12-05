@@ -115,7 +115,7 @@ namespace Playbox
                     }
                 }
                 
-                PostInitialization?.Invoke();
+                Invoke(nameof(PostInit),1);
             });
             
             foreach (var item in behaviours)
@@ -129,7 +129,9 @@ namespace Playbox
                 }
             }
         }
-
+        
+        void PostInit() => PostInitialization?.Invoke();
+        
         private void OnDestroy()
         {
             foreach (var item in behaviours)
