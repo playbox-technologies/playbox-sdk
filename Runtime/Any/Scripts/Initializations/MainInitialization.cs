@@ -15,9 +15,7 @@ namespace Playbox
     {
         [SerializeField] private bool isAutoInitialize = true;
         [SerializeField] private bool useInAppValidation = true;
-        //[SerializeField] private bool useLinkGenerator = true;
         [SerializeField] private bool isDebugSplash;
-        [SerializeField] private bool usePlayboxIAP;
         [SerializeField] private UnityEvent OnPostInitializatioon;
         
         private List<PlayboxBehaviour> behaviours = new();
@@ -128,13 +126,8 @@ namespace Playbox
                     }
                 }
                 
-                Invoke(nameof(PostInitializationM), 2);
+                PostInitialization?.Invoke();
             });
-        }
-
-        private void PostInitializationM()
-        {
-            PostInitialization?.Invoke();
         }
 
         private void OnDestroy()
