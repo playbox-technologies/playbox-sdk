@@ -19,19 +19,19 @@ namespace Playbox
 
         public void RegisterAdapter(IAnalyticsAdapter adapter)
         {
-            Adapters.Add(adapter);    
+             Adapters.Add(adapter);    
         }
 
         public void UnregisterAdapter(IAnalyticsAdapter adapter)
         {
-            Adapters.Remove(adapter);
+             Adapters.Remove(adapter);
         }
 
         public void TrackEvent(string eventName, IDictionary<string, string> properties = null)
         {
             foreach (var adapter in Adapters)
             {
-                adapter.TrackEvent(eventName, properties);
+                if (adapter.IsInitialized()) adapter.TrackEvent(eventName, properties);
             }
         }
 
@@ -39,7 +39,7 @@ namespace Playbox
         {
             foreach (var adapter in Adapters)
             {
-                adapter.Log(message);
+                if (adapter.IsInitialized()) adapter.Log(message);
             }
         }
 
@@ -48,7 +48,7 @@ namespace Playbox
         {
             foreach (var adapter in Adapters)
             {
-                adapter.TrackAd(impressionData);
+                if (adapter.IsInitialized()) adapter.TrackAd(impressionData);
             }
         }
 
@@ -56,7 +56,7 @@ namespace Playbox
         {
             foreach (var adapter in Adapters)
             {
-                adapter.LogLevelUp(level);
+                if (adapter.IsInitialized()) adapter.LogLevelUp(level);
             }
         }
 
@@ -64,7 +64,7 @@ namespace Playbox
         {
             foreach (var adapter in Adapters)
             {
-                adapter.LogContentView(content);
+                if (adapter.IsInitialized()) adapter.LogContentView(content);
             }
         }
 
@@ -73,7 +73,7 @@ namespace Playbox
         {
             foreach (var adapter in Adapters)
             {
-                adapter.LogTutorial(tutorial, stateLevel, step);
+                if (adapter.IsInitialized()) adapter.LogTutorial(tutorial, stateLevel, step);
             }
         }
 
@@ -81,7 +81,7 @@ namespace Playbox
         {
             foreach (var adapter in Adapters)
             {
-                adapter.TutorialCompleted();
+                if (adapter.IsInitialized()) adapter.TutorialCompleted();
             }
         }
 
@@ -89,7 +89,7 @@ namespace Playbox
         {
             foreach (var adapter in Adapters)
             {
-                adapter.AdToCart(count);
+                if (adapter.IsInitialized()) adapter.AdToCart(count);
             }
         }
 
@@ -97,7 +97,7 @@ namespace Playbox
         {
             foreach (var adapter in Adapters)
             {
-                adapter.AdRewardCount(count);
+                if (adapter.IsInitialized()) adapter.AdRewardCount(count);
             }
         }
 
@@ -105,7 +105,7 @@ namespace Playbox
         {
             foreach (var adapter in Adapters)
             {
-                adapter.CurrentBalance(balance);
+                if (adapter.IsInitialized()) adapter.CurrentBalance(balance);
             }
         }
 
@@ -113,7 +113,7 @@ namespace Playbox
         {
             foreach (var adapter in Adapters)
             {
-                adapter.RealCurrencyPayment(orderId, price, productId, currencyCode);
+                if (adapter.IsInitialized()) adapter.RealCurrencyPayment(orderId, price, productId, currencyCode);
             }
         }
 
@@ -122,7 +122,7 @@ namespace Playbox
         {
             foreach (var adapter in Adapters)
             {
-                adapter.VirtualCurrencyPayment(purchaseId, purchaseType, purchaseAmount, resources);
+                if (adapter.IsInitialized()) adapter.VirtualCurrencyPayment(purchaseId, purchaseType, purchaseAmount, resources);
             }
         }
 
@@ -130,7 +130,7 @@ namespace Playbox
         {
             foreach (var adapter in Adapters)
             {
-                adapter.AdImpression(network, revenue, placement, unit);
+                if (adapter.IsInitialized()) adapter.AdImpression(network, revenue, placement, unit);
             }
         }
 
@@ -138,7 +138,7 @@ namespace Playbox
         {
             foreach (var adapter in Adapters)
             {
-                adapter.Tutorial(step);
+                if (adapter.IsInitialized()) adapter.Tutorial(step);
             }
         }
 
@@ -146,7 +146,7 @@ namespace Playbox
         {
             foreach (var adapter in Adapters)
             {
-                adapter.StartProgressionEvent(eventName);
+                if (adapter.IsInitialized()) adapter.StartProgressionEvent(eventName);
             }
         }
 
@@ -154,7 +154,15 @@ namespace Playbox
         {
             foreach (var adapter in Adapters)
             {
-                adapter.FinishProgressionEvent(eventName);
+                if (adapter.IsInitialized()) adapter.FinishProgressionEvent(eventName);
+            }
+        }
+
+        public void TrackProductRevenue(ProductDataAdapter productDataAdapter)
+        {
+            foreach (var adapter in Adapters)
+            {
+                if (adapter.IsInitialized()) adapter.TrackProductRevenue(productDataAdapter);
             }
         }
     }

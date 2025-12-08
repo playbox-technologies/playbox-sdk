@@ -27,5 +27,6 @@ namespace Playbox
         public void Tutorial(int step);
         public void StartProgressionEvent(string eventName);
         public void FinishProgressionEvent(string eventName);
+        public void TrackProductRevenue(ProductDataAdapter productDataAdapter);
     }
 }
