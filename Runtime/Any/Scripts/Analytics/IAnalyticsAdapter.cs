@@ -7,7 +7,7 @@ namespace Playbox
     {
         public void Initialize();
         public void SubscribeToInitializeEvent(Action initializeEvent = null);
-        public void IsInitialized();
+        public bool IsInitialized();
         
         public void TrackEvent(string eventName, IDictionary<string, string> properties = null);
         public void Log(string message);
