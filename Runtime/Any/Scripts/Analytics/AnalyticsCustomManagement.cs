@@ -19,7 +19,9 @@ namespace Playbox
 
         public void RegisterAdapter(IAnalyticsAdapter adapter)
         {
-             Adapters.Add(adapter);    
+             Adapters.Add(adapter);
+
+             adapter.GetType().ToString().PlayboxInfo();
         }
 
         public void UnregisterAdapter(IAnalyticsAdapter adapter)
