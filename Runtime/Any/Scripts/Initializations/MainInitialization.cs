@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using Any.Scripts.Initializations;
 using CI.Utils.Extentions;
+
+#if UNITY_EDITOR
+using InspectorButton;
+#endif
+
 using Playbox.Consent;
 using Playbox.SdkConfigurations;
 
@@ -17,6 +22,8 @@ namespace Playbox
         [SerializeField] private bool useInAppValidation = true;
         [SerializeField] private bool isDebugSplash;
         [SerializeField] private UnityEvent OnPostInitializatioon;
+        
+        [SerializeField] private List<BaseAnalyticsRegistrator> analyticsRegistrator = new();
         
         private List<PlayboxBehaviour> behaviours = new();
         
@@ -152,5 +159,22 @@ namespace Playbox
             }
 
         }
+
+#if UNITY_EDITOR
+        [Button]
+        private void FindRegistrators()
+        {
+         
+            analyticsRegistrator.Clear();
+
+            var registrators = GameObject.FindObjectsByType<BaseAnalyticsRegistrator>(FindObjectsInactive.Exclude,FindObjectsSortMode.None);
+
+            foreach (var item in registrators)
+            {
+                analyticsRegistrator.Add(item);
+            }
+        }
+#endif
+        
     }
 }
