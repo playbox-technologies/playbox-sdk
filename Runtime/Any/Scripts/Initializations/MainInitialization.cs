@@ -41,6 +41,8 @@ namespace Playbox
 
         private void Awake()
         {
+            analyticsRegistrator.ForEach(a => a.Register());
+            
             PostInitialization += () =>
             {
                 OnPostInitializatioon?.Invoke();
@@ -173,6 +175,7 @@ namespace Playbox
             {
                 analyticsRegistrator.Add(item);
             }
+            
         }
 #endif
         
