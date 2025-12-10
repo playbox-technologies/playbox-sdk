@@ -78,8 +78,7 @@ namespace Playbox.CI
             string iosVersion = "15.0"; 
             project.SetBuildProperty(mainTarget, "IPHONEOS_DEPLOYMENT_TARGET", iosVersion);
             project.SetBuildProperty(unityFrameworkTarget, "IPHONEOS_DEPLOYMENT_TARGET", iosVersion);
-
-            project.SetBuildProperty(mainTarget, "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES", "YES");
+            
             project.SetBuildProperty(mainTarget, "CLANG_ENABLE_MODULES", "YES");
             project.SetBuildProperty(mainTarget, "ENABLE_BITCODE", "NO");
 
@@ -112,8 +111,7 @@ namespace Playbox.CI
             project.ReadFromFile(projectPath);
 
             string targetGuid = project.GetUnityFrameworkTargetGuid();
-
-            project.SetBuildProperty(targetGuid, "GCC_TREAT_WARNINGS_AS_ERRORS", "NO");
+            
             project.SetBuildProperty(targetGuid, "DEVELOPMENT_TEAM", Playbox.CI.IOS.TeamID);
 
             File.WriteAllText(projectPath, project.WriteToString());
