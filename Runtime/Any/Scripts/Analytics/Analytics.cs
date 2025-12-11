@@ -6,6 +6,7 @@ using Any.Scripts.Initializations;
 using AppsFlyerSDK;
 using CI.Utils.Extentions;
 using DevToDev.Analytics;
+using Facebook.Unity;
 using Firebase.Analytics;
 using Firebase.Crashlytics;
 
@@ -200,6 +201,7 @@ namespace Playbox
                 analyticsCustomManagement.LogLevelUp(level);
             }
             
+            [Obsolete("")]
             public static void LogContentView(string content)
             {
                 TrackEvent(nameof(LogContentView),new KeyValuePair<string, string>(nameof(LogContentView),content));
@@ -389,6 +391,11 @@ namespace Playbox
                 {
                     FirebaseAnalytics.LogEvent($"{eventName} : {message}");
                 }
+            }
+
+            public static void TrackProductRevenue(ProductDataAdapter productDataAdapter)
+            {
+                analyticsCustomManagement.TrackProductRevenue(productDataAdapter);
             }
         }
     }
