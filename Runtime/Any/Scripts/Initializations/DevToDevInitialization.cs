@@ -26,6 +26,7 @@ namespace Playbox
             
 #endif
             
+            
             DTDAnalytics.SetLogLevel(DevToDevConfiguration.LOGLevel);
             
             DTDAnalytics.SetTrackingAvailability(true);
@@ -38,6 +39,9 @@ namespace Playbox
                 if (!string.IsNullOrEmpty(a))
                 {
                     ApproveInitialization();
+                    
+                    DTDUserCard.Set("device_ram", SystemInfo.systemMemorySize);
+                    DTDUserCard.Set("gpu_memory", SystemInfo.graphicsMemorySize);
                 }
             });
 
