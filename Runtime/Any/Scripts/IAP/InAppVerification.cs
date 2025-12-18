@@ -39,23 +39,23 @@ namespace Playbox
             StartCoroutine(UpdatePurchases());
         }
         
-        public static void Validate(string productID,string receipt, Action<bool> callback)
+        public static void Validate(string productID,string receipt,double price, string currency, Action<bool> callback)
         {
             if(_instance == null) return;
             if(string.IsNullOrEmpty(productID)) return;
             if(string.IsNullOrEmpty(receipt)) return;
             if(callback == null) return;
             
-            _instance.SendRequest(productID, receipt,callback);
+            _instance.SendRequest(productID, receipt,price,currency,callback);
         }
 
-        public void SendRequest(string productID,string receipt, Action<bool> callback)
+        public void SendRequest(string productID,string receipt,double price, string currency, Action<bool> callback)
         {
-            StartCoroutine(Request(productID,receipt, callback));
+            StartCoroutine(Request(productID,receipt,price,currency, callback));
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
-        public IEnumerator Request(string productID,string receipt, Action<bool> callback)
+        public IEnumerator Request(string productID,string receipt, double price, string currency, Action<bool> callback)
         {
             UnityWebRequest sendPurchaseRequest = new UnityWebRequest(Uri, "POST");
             
@@ -63,6 +63,10 @@ namespace Playbox
             sendPurchaseRequest.SetRequestHeader("x-api-token", XApiToken);
         
             var sendObject = CreateSendObjectJson(productID, receipt);
+            
+            
+            sendObject["price"] = price;
+            sendObject["currency"] = currency;
 
             var bodyRaw = System.Text.Encoding.UTF8.GetBytes(sendObject.ToString());
 

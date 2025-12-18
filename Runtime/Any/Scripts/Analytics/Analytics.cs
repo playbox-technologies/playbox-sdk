@@ -131,7 +131,7 @@ namespace Playbox
                 { "af_content_id", productId }
             };
             
-            InAppVerification.Validate(purchasedProduct.DefinitionId,purchasedProduct.Receipt, (isValid) =>
+            InAppVerification.Validate(purchasedProduct.DefinitionId,purchasedProduct.Receipt,(double)price,currency, (isValid) =>
             {
                 onValidate?.Invoke(isValid);
                 
