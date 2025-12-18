@@ -131,7 +131,7 @@ namespace Playbox
                 { "af_content_id", productId }
             };
             
-            InAppVerification.Validate(purchasedProduct.DefinitionId,purchasedProduct.Receipt,(double)price,currency, (isValid) =>
+            InAppVerification.Validate(purchasedProduct.DefinitionId,purchasedProduct.Receipt,(double)price,currency, (isValid, returnProductData) =>
             {
                 onValidate?.Invoke(isValid);
                 
@@ -153,15 +153,24 @@ namespace Playbox
                     FirebaseAnalytics.LogEvent(
                         FirebaseAnalytics.EventPurchase,
                         new Parameter[]{
-                            new Parameter(FirebaseAnalytics.ParameterTransactionID, orderId),
-                            new Parameter(FirebaseAnalytics.ParameterAffiliation, affiliation),
-                            new Parameter(FirebaseAnalytics.ParameterValue, (double)price),
-                            new Parameter(FirebaseAnalytics.ParameterPrice, (double)price),
-                            new Parameter(FirebaseAnalytics.ParameterCurrency, currency)
+                            new (FirebaseAnalytics.ParameterTransactionID, orderId),
+                            new (FirebaseAnalytics.ParameterAffiliation, affiliation),
+                            new (FirebaseAnalytics.ParameterValue, (double)price),
+                            new (FirebaseAnalytics.ParameterPrice, (double)price),
+                            new (FirebaseAnalytics.ParameterCurrency, currency)
                         }
                     );
                     
-                    analyticsCustomManagement.TrackProductRevenue(purchasedProduct);
+                    
+                    
+                    analyticsCustomManagement.TrackProductRevenue(new ProductDataAdapter()
+                    {
+                        DefinitionId = productId,
+                        Receipt = purchasedProduct.Receipt,
+                        TransactionId = orderId,
+                        MetadataLocalizedPrice = returnProductData.MetadataLocalizedPrice,
+                        MetadataIsoCurrencyCode = returnProductData.MetadataIsoCurrencyCode
+                    });
                     
                 }
             });

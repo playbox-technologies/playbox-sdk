@@ -1,4 +1,5 @@
 ﻿using System;
+using Playbox;
 
 public class PurchaseData
 {
@@ -6,7 +7,7 @@ public class PurchaseData
     private string ticketId;
     private string _saveIndentifier;
     
-    public Action<bool> OnValidateCallback;
+    public Action<bool, ProductDataAdapter> OnValidateCallback;
 
     public string ProductId
     {

@@ -39,7 +39,7 @@ namespace Playbox
             StartCoroutine(UpdatePurchases());
         }
         
-        public static void Validate(string productID,string receipt,double price, string currency, Action<bool> callback)
+        public static void Validate(string productID,string receipt,double price, string currency, Action<bool, ProductDataAdapter> callback)
         {
             if(_instance == null) return;
             if(string.IsNullOrEmpty(productID)) return;
@@ -49,13 +49,13 @@ namespace Playbox
             _instance.SendRequest(productID, receipt,price,currency,callback);
         }
 
-        public void SendRequest(string productID,string receipt,double price, string currency, Action<bool> callback)
+        public void SendRequest(string productID,string receipt,double price, string currency, Action<bool,ProductDataAdapter> callback)
         {
             StartCoroutine(Request(productID,receipt,price,currency, callback));
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
-        public IEnumerator Request(string productID,string receipt, double price, string currency, Action<bool> callback)
+        public IEnumerator Request(string productID,string receipt, double price, string currency, Action<bool,ProductDataAdapter> callback)
         {
             UnityWebRequest sendPurchaseRequest = new UnityWebRequest(Uri, "POST");
             
@@ -63,7 +63,6 @@ namespace Playbox
             sendPurchaseRequest.SetRequestHeader("x-api-token", XApiToken);
         
             var sendObject = CreateSendObjectJson(productID, receipt);
-            
             
             sendObject["price"] = price;
             sendObject["currency"] = currency;
@@ -191,6 +190,8 @@ namespace Playbox
                 
                 string status = json["status"]?.ToString();
                 
+                //TO DO: получить валюту в долларах
+                
                 switch (VerificationStatusHelper.GetStatusByString(status))
                 {
                     case VerificationStatusHelper.EStatus.none:
@@ -207,14 +208,18 @@ namespace Playbox
                 
                     case VerificationStatusHelper.EStatus.verified:
                         
-                        purchaseDataItem.Value.OnValidateCallback?.Invoke(true);
+                        purchaseDataItem.Value.OnValidateCallback?.Invoke(true, new ProductDataAdapter()
+                        {
+                            MetadataLocalizedPrice = (decimal)0.99f,
+                            MetadataIsoCurrencyCode = "ABC"
+                        });
                         removeFromQueueCallback?.Invoke(true);
                     
                         break;
                 
                     case VerificationStatusHelper.EStatus.unverified:
                         
-                        purchaseDataItem.Value.OnValidateCallback?.Invoke(false);
+                        purchaseDataItem.Value.OnValidateCallback?.Invoke(false, null);
                         removeFromQueueCallback?.Invoke(true);
                         
                         break;
@@ -230,7 +235,7 @@ namespace Playbox
                         break;
                     
                     default:
-                        purchaseDataItem.Value.OnValidateCallback?.Invoke(false);
+                        purchaseDataItem.Value.OnValidateCallback?.Invoke(false, null);
                         removeFromQueueCallback?.Invoke(true);
                         break;
                 }
