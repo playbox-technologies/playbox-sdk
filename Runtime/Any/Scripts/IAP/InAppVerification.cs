@@ -201,12 +201,16 @@ namespace Playbox
                             MetadataIsoCurrencyCode = "USD"
                         });
                         removeFromQueueCallback?.Invoke(true);
-                    
+                        
                         break;
                 
                     case VerificationStatusHelper.EStatus.unverified:
                         
-                        purchaseDataItem.Value.OnValidateCallback?.Invoke(false, null);
+                        purchaseDataItem.Value.OnValidateCallback?.Invoke(false, new ProductDataAdapter()
+                        {
+                            MetadataLocalizedPrice = decimal.Parse(json["price_usd"]?.ToString() ?? string.Empty),
+                            MetadataIsoCurrencyCode = "USD"
+                        });
                         removeFromQueueCallback?.Invoke(true);
                         
                         break;
@@ -222,7 +226,11 @@ namespace Playbox
                         break;
                     
                     default:
-                        purchaseDataItem.Value.OnValidateCallback?.Invoke(false, null);
+                        purchaseDataItem.Value.OnValidateCallback?.Invoke(false, new ProductDataAdapter()
+                        {
+                            MetadataLocalizedPrice = decimal.Parse(json["price_usd"]?.ToString() ?? string.Empty),
+                            MetadataIsoCurrencyCode = "USD"
+                        });
                         removeFromQueueCallback?.Invoke(true);
                         break;
                 }
