@@ -9,16 +9,15 @@ using UnityEngine.Networking;
 namespace Playbox
 {
     public class InAppVerification : PlayboxBehaviour
-    {
-        [SerializeField] private float verifyUpdateRate = 0.5f;
-
-        private const string Uri = "https://api.playbox.network/verify";
-        private const string UriStatus = "https://api.playbox.network/verify/status";
-        private const string XApiToken = Data.Playbox.PlayboxKey;
-
-        private static Dictionary<string, PurchaseData> _verificationQueue = new(); 
-
-        private static List<PurchaseData> _keyBuffer = new();
+    { 
+        private float verifyUpdateRate = 0.8f;
+        
+        private const string Uri = "https://api.playbox.services/v1/iap/verify";
+        private const string UriStatus = "https://api.playbox.services/v1/iap/status";
+        private string Bearer = $"Bearer {Data.Playbox.PlayboxKey}";
+        
+        private Dictionary<string, PurchaseData> _verificationQueue = new(); 
+        private List<PurchaseData> _keyBuffer = new();
         
         private static InAppVerification _instance;
 
@@ -60,7 +59,8 @@ namespace Playbox
             UnityWebRequest sendPurchaseRequest = new UnityWebRequest(Uri, "POST");
             
             sendPurchaseRequest.SetRequestHeader("Content-Type", "application/json");
-            sendPurchaseRequest.SetRequestHeader("x-api-token", XApiToken);
+            sendPurchaseRequest.SetRequestHeader("Authorization", Bearer);
+            sendPurchaseRequest.SetRequestHeader("X-User-ID", Data.Playbox.PlayboxKey);
         
             var sendObject = CreateSendObjectJson(productID, receipt);
             
@@ -71,7 +71,7 @@ namespace Playbox
 
             sendPurchaseRequest.uploadHandler = new UploadHandlerRaw(bodyRaw);
             sendPurchaseRequest.downloadHandler = new DownloadHandlerBuffer();
-        
+            
             yield return sendPurchaseRequest.SendWebRequest();
 
             if (sendPurchaseRequest.result is UnityWebRequest.Result.ProtocolError or UnityWebRequest.Result.ConnectionError or UnityWebRequest.Result.DataProcessingError)
@@ -81,11 +81,9 @@ namespace Playbox
 
             if (sendPurchaseRequest.isDone)
             {
-                sendPurchaseRequest.downloadHandler.text.PlayboxInfo();
-            
                 JObject outObject = JObject.Parse(sendPurchaseRequest.downloadHandler.text);
             
-                string ticketID = outObject["ticket_id"]?.ToString();
+                string ticketID = outObject["ticket"]?.ToString();
             
                 PurchaseData data = new PurchaseData
                 {
@@ -103,13 +101,13 @@ namespace Playbox
         {
             JObject sendObject = new()
             {
-                ["os_version"] = SystemInfo.operatingSystem,
-                ["device_name"] = SystemInfo.deviceName,
-                ["device_model"] = SystemInfo.deviceModel,
+                //["os_version"] = SystemInfo.operatingSystem,
+                //["device_name"] = SystemInfo.deviceName,
+                //["device_model"] = SystemInfo.deviceModel,
                 ["app_version"] = Data.Playbox.AppVersion,
                 ["product_id"] = productID,
-                ["game_id"] = Data.Playbox.GameId,
-                ["version"] = Data.Playbox.AppVersion,
+                ["bundle_id"] = Data.Playbox.GameId,
+                ["app_version"] = Data.Playbox.AppVersion,
                 ["receipt"] = receipt
             };
 
@@ -117,12 +115,6 @@ namespace Playbox
             sendObject["platform"] = "android";
 #elif UNITY_IOS
             sendObject["platform"] = "ios";
-#endif
-            
-#if UNITY_ANDROID
-            sendObject["manufacturer"] = "android";
-#elif UNITY_IOS
-            sendObject["manufacturer"] = "apple";
 #endif
             
             return sendObject;
@@ -165,32 +157,28 @@ namespace Playbox
         // ReSharper disable Unity.PerformanceAnalysis
         private IEnumerator GetStatus(KeyValuePair<string,PurchaseData> purchaseDataItem, Action<bool> removeFromQueueCallback)
         {
-            
-            UnityWebRequest getStausRequest = new UnityWebRequest($"{UriStatus}/{purchaseDataItem.Key}", "GET");
+         
+            UnityWebRequest statusRequest = new UnityWebRequest($"{UriStatus}/{purchaseDataItem.Key}", "GET");
         
-            getStausRequest.SetRequestHeader("Content-Type", "application/json");
-            getStausRequest.SetRequestHeader("x-api-token", XApiToken);
+            statusRequest.SetRequestHeader("Content-Type", "application/json");
+            statusRequest.SetRequestHeader("Authorization", Bearer);
         
-            getStausRequest.downloadHandler = new DownloadHandlerBuffer();
+            statusRequest.downloadHandler = new DownloadHandlerBuffer();
         
-            yield return getStausRequest.SendWebRequest();
+            yield return statusRequest.SendWebRequest();
 
-            if (getStausRequest.result == UnityWebRequest.Result.ProtocolError ||
-                getStausRequest.result == UnityWebRequest.Result.ConnectionError ||
-                getStausRequest.result == UnityWebRequest.Result.DataProcessingError)
+            if (statusRequest.result == UnityWebRequest.Result.ProtocolError ||
+                statusRequest.result == UnityWebRequest.Result.ConnectionError ||
+                statusRequest.result == UnityWebRequest.Result.DataProcessingError)
             {
-                $"Request Failed: {getStausRequest.error}".PlayboxError();
+                $"Request Failed: {statusRequest.error}".PlayboxError();
             }
             
-            Debug.Log($"{purchaseDataItem.Key}: {purchaseDataItem.Value.ProductId}");
-            
-            if (getStausRequest.isDone)
+            if (statusRequest.isDone)
             {
-                JObject json = JObject.Parse(getStausRequest.downloadHandler.text);
+                JObject json = JObject.Parse(statusRequest.downloadHandler.text);
                 
                 string status = json["status"]?.ToString();
-                
-                //TO DO: получить валюту в долларах
                 
                 switch (VerificationStatusHelper.GetStatusByString(status))
                 {
@@ -203,15 +191,14 @@ namespace Playbox
                     case VerificationStatusHelper.EStatus.pending:
                     
                         removeFromQueueCallback?.Invoke(false);
-                    
                         break;
                 
                     case VerificationStatusHelper.EStatus.verified:
                         
                         purchaseDataItem.Value.OnValidateCallback?.Invoke(true, new ProductDataAdapter()
                         {
-                            MetadataLocalizedPrice = (decimal)0.99f,
-                            MetadataIsoCurrencyCode = "ABC"
+                            MetadataLocalizedPrice = decimal.Parse(json["price_usd"]?.ToString() ?? string.Empty),
+                            MetadataIsoCurrencyCode = "USD"
                         });
                         removeFromQueueCallback?.Invoke(true);
                     

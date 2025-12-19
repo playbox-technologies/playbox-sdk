@@ -1,6 +1,7 @@
 ﻿using System;
 using Playbox;
 
+[Serializable]
 public class PurchaseData
 {
     private string productId;
