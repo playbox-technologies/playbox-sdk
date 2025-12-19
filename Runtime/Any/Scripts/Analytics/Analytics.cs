@@ -134,6 +134,8 @@ namespace Playbox
             InAppVerification.Validate(purchasedProduct.DefinitionId,purchasedProduct.Receipt,(double)price,currency, (isValid, returnProductData) =>
             {
                 onValidate?.Invoke(isValid);
+
+                $"Purchase is {(isValid ? "" : "not")} Valid!".PlayboxInfo("IAP Validator");
                 
                 if (isValid)
                 {
