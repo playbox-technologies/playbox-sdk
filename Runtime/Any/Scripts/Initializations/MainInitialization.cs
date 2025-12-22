@@ -85,7 +85,7 @@ namespace Playbox
             
             behaviours.Add(AddToGameObject<PlayboxSplashUGUILogger>(gameObject, isDebugSplash));
             behaviours.Add(AddToGameObject<FirebaseInitialization>(gameObject));
-            behaviours.Add(AddToGameObject<InAppVerification>(gameObject, useInAppValidation));
+            behaviours.Add(AddToGameObject<InAppVerification>(gameObject));
             
             behaviours.Add(AddToGameObject<DevToDevInitialization>(gameObject,true,true));
             behaviours.Add(AddToGameObject<AppLovinInitialization>(gameObject,true,true));
