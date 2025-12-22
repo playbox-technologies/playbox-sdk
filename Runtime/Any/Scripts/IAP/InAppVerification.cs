@@ -21,6 +21,7 @@ namespace Playbox
         
         private static InAppVerification _instance;
 
+        [InspectorButton.Button]
         public override void Initialization()
         {
             if (_instance == null)
@@ -29,10 +30,10 @@ namespace Playbox
             }
             else
             {
-                Destroy(gameObject);
+                Destroy(this);
             }
         
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(this);
             
             isInitialized = true;
             StartCoroutine(UpdatePurchases());
