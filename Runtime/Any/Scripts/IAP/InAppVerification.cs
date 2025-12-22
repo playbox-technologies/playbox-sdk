@@ -19,7 +19,7 @@ namespace Playbox
         private Dictionary<string, PurchaseData> _verificationQueue = new(); 
         private List<PurchaseData> _keyBuffer = new();
         
-        private static InAppVerification _instance;
+        private static InAppVerification _instance = null;
 
         [InspectorButton.Button]
         public override void Initialization()
@@ -36,6 +36,8 @@ namespace Playbox
             DontDestroyOnLoad(this);
             
             isInitialized = true;
+            "INAP VERIFICATOR".PlayboxInfo("Initialization");
+            
             StartCoroutine(UpdatePurchases());
         }
         
