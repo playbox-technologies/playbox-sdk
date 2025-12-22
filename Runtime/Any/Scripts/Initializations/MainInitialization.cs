@@ -92,13 +92,14 @@ namespace Playbox
             behaviours.Add(AddToGameObject<AppsFlyerInitialization>(gameObject,true,true));
             behaviours.Add(AddToGameObject<FacebookSdkInitialization>(gameObject,true,true));
             
+            
+            InitStatus[nameof(InAppVerification)] = false;
             InitStatus[nameof(PlayboxSplashUGUILogger)] = false;
             InitStatus[nameof(FirebaseInitialization)] = false;
             InitStatus[nameof(AppsFlyerInitialization)] = false;
             InitStatus[nameof(DevToDevInitialization)] = false;
             InitStatus[nameof(FacebookSdkInitialization)] = false;
             InitStatus[nameof(AppLovinInitialization)] = false;
-            InitStatus[nameof(InAppVerification)] = false;
             
             foreach (var item in behaviours)
             {
