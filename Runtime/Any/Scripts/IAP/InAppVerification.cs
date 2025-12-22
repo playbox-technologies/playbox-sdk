@@ -81,6 +81,8 @@ namespace Playbox
 
             if (sendPurchaseRequest.isDone)
             {
+                
+                Debug.Log("Done sending request");
                 JObject outObject = JObject.Parse(sendPurchaseRequest.downloadHandler.text);
             
                 string ticketID = outObject["ticket"]?.ToString();
