@@ -36,7 +36,7 @@ namespace Playbox
             DontDestroyOnLoad(this);
             
             isInitialized = true;
-            "INAP VERIFICATOR".PlayboxInfo("Initialization");
+            ApproveInitialization();
             
             StartCoroutine(UpdatePurchases());
         }
