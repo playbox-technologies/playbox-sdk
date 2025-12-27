@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using CI.Utils.Extentions;
+using Facebook.Unity;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -14,8 +15,8 @@ namespace Playbox
         
         private const string Uri = "https://api.playbox.services/v1/iap/verify";
         private const string UriStatus = "https://api.playbox.services/v1/iap/status";
-        private string Bearer = $"Bearer {Data.Playbox.PlayboxKey}";
         
+        private Dictionary<string, string> context = new();
         private Dictionary<string, PurchaseData> _verificationQueue = new(); 
         private List<PurchaseData> _keyBuffer = new();
         
@@ -37,6 +38,8 @@ namespace Playbox
             
             isInitialized = true;
             ApproveInitialization();
+            
+            context = PlayboxHeaderContext.GetContext();
             
             StartCoroutine(UpdatePurchases());
         }
@@ -60,10 +63,11 @@ namespace Playbox
         public IEnumerator Request(string productID,string receipt, double price, string currency, Action<bool,ProductDataAdapter> callback)
         {
             UnityWebRequest sendPurchaseRequest = new UnityWebRequest(Uri, "POST");
-            
-            sendPurchaseRequest.SetRequestHeader("Content-Type", "application/json");
-            sendPurchaseRequest.SetRequestHeader("Authorization", Bearer);
-            sendPurchaseRequest.SetRequestHeader("X-User-ID", Data.Playbox.PlayboxKey);
+        
+            foreach (var header in context)
+            {
+                sendPurchaseRequest.SetRequestHeader(header.Key, header.Value);
+            }
         
             var sendObject = CreateSendObjectJson(productID, receipt);
             
@@ -106,21 +110,9 @@ namespace Playbox
         {
             JObject sendObject = new()
             {
-                //["os_version"] = SystemInfo.operatingSystem,
-                //["device_name"] = SystemInfo.deviceName,
-                //["device_model"] = SystemInfo.deviceModel,
-                ["app_version"] = Data.Playbox.AppVersion,
                 ["product_id"] = productID,
-                ["bundle_id"] = Data.Playbox.GameId,
-                ["app_version"] = Data.Playbox.AppVersion,
                 ["receipt"] = receipt
             };
-
-#if UNITY_ANDROID
-            sendObject["platform"] = "android";
-#elif UNITY_IOS
-            sendObject["platform"] = "ios";
-#endif
             
             return sendObject;
         }
@@ -164,9 +156,11 @@ namespace Playbox
         {
          
             UnityWebRequest statusRequest = new UnityWebRequest($"{UriStatus}/{purchaseDataItem.Key}", "GET");
-        
-            statusRequest.SetRequestHeader("Content-Type", "application/json");
-            statusRequest.SetRequestHeader("Authorization", Bearer);
+            
+            foreach (var header in context)
+            {
+                statusRequest.SetRequestHeader(header.Key, header.Value);
+            }
         
             statusRequest.downloadHandler = new DownloadHandlerBuffer();
         

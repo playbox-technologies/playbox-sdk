@@ -7,6 +7,7 @@ namespace Playbox.Data
         public static string AppVersion => Application.version;
         public static string GameId => Application.identifier;
         public static string Campaign => Application.companyName;
+        public static string Platform => GetPlatform();
         
         //public const string PlayboxKey = "plx_api_Rm8qTXe7Pzw94v1FujgEKsWD";
         public const string PlayboxKey = "pbx_live_5289164063088009792ba4d94a1de74592e0c1f567ae515b";
@@ -16,5 +17,15 @@ namespace Playbox.Data
         {
             
         }
+
+        private static string GetPlatform()
+        {
+#if UNITY_ANDROID
+            return "android";
+#elif UNITY_IOS
+            return "ios";
+#endif
+        }
+
     }
 }
