@@ -47,7 +47,11 @@ namespace Playbox
         {
             if(_instance == null) return;
             if(string.IsNullOrEmpty(productID)) return;
+            
+#if !UNITY_EDITOR
             if(string.IsNullOrEmpty(receipt)) return;
+#endif
+            
             if(callback == null) return;
             
             _instance.SendRequest(productID, receipt,price,currency,callback);

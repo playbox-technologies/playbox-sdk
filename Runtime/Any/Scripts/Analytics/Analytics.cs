@@ -169,8 +169,6 @@ namespace Playbox
                         }
                     );
                     
-                    
-                    
                     analyticsCustomManagement.TrackProductRevenue(new ProductDataAdapter()
                     {
                         DefinitionId = productId,
