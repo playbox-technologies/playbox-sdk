@@ -22,7 +22,8 @@ namespace Playbox.Data
         {
 #if UNITY_ANDROID
             return "android";
-#elif UNITY_IOS
+#endif
+#if UNITY_IOS
             return "ios";
 #endif
         }
