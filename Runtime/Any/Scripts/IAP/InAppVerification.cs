@@ -25,7 +25,7 @@ namespace Playbox
         [InspectorButton.Button]
         public override void Initialization()
         {
-            if (_instance == null)
+            if (_instance is null)
             {
                 _instance = this;
             }
@@ -33,8 +33,6 @@ namespace Playbox
             {
                 Destroy(this);
             }
-        
-            DontDestroyOnLoad(this);
             
             isInitialized = true;
             ApproveInitialization();
