@@ -9,8 +9,10 @@ using AppsFlyerSDK;
 using CI.Utils.Extentions;
 using DevToDev.Analytics;
 using Facebook.Unity;
+using fbg;
 using Firebase.Analytics;
 using Firebase.Crashlytics;
+using Debug = UnityEngine.Debug;
 
 /*
     af_initiated_checkout - инициация покупки
@@ -133,8 +135,12 @@ namespace Playbox
                 { "af_content_id", productId }
             };
             
+            Debug.Log($"Send {purchasedProduct} to Playbox Validator");
+            
             InAppVerification.Validate(purchasedProduct.DefinitionId,purchasedProduct.Receipt,(double)price,currency, (isValid, returnProductData) =>
             {
+                Debug.Log($"Request {purchasedProduct} from Playbox Validator");
+                
                 onValidate?.Invoke(isValid);
                 
                 if (isValid)
