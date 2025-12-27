@@ -31,10 +31,11 @@ namespace Playbox
             }
             else
             {
-                Destroy(this);
+                
+                if (_instance != this)
+                    Destroy(this);
             }
             
-            isInitialized = true;
             ApproveInitialization();
             
             context = PlayboxHeaderContext.GetContext();
