@@ -138,6 +138,15 @@ namespace Playbox
             {
                onValidate?.Invoke(isValid);
                 
+               Debug.Log($@"Purchase Request {new ProductDataAdapter()
+               {
+                   MetadataIsoCurrencyCode = returnProductData.MetadataIsoCurrencyCode,
+                   MetadataLocalizedPrice = returnProductData.MetadataLocalizedPrice,
+                   Receipt = purchasedProduct.Receipt,
+                   TransactionId = purchasedProduct.TransactionId,
+                   DefinitionId = purchasedProduct.DefinitionId
+               }}");
+               
                 if (isValid)
                 {
                     Events.RealCurrencyPayment(orderId, (double)price, productId, currency);
