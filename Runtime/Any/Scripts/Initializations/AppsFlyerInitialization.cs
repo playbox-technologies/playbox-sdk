@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Playbox.SdkConfigurations;
 using AppsFlyerSDK;
-using CI.Utils.Extentions;
 using Playbox.Consent;
 using UnityEngine;
+using Utils.Tools.Extentions;
 
 
 namespace Playbox

@@ -4,11 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Any.Scripts.Backend.Verificator;
 using Any.Scripts.Initializations;
 using AppsFlyerSDK;
 using DevToDev.Analytics;
 using Firebase.Analytics;
 using Firebase.Crashlytics;
+using Utils.Tools.Extentions;
 using Debug = UnityEngine.Debug;
 
 /*
@@ -134,7 +136,7 @@ namespace Playbox
             
             Debug.Log($"Send {purchasedProduct} to Playbox Validator");
             
-            InAppVerification.Validate(purchasedProduct.DefinitionId,purchasedProduct.Receipt,(double)price,currency, (isValid, returnProductData) =>
+            PurchaseValidator.Validate(purchasedProduct, (isValid, returnProductData) =>
             {
                 Debug.Log($"Request {purchasedProduct} from Playbox Validator");
                 
@@ -152,7 +154,7 @@ namespace Playbox
 #endif
 
 #if UNITY_ANDROID
-                     affiliation = "Google Play Store";
+                    affiliation = "Google Play Store";
 #endif
                     
                     FirebaseAnalytics.LogEvent(
@@ -177,6 +179,7 @@ namespace Playbox
                     
                 }
             });
+            
         }
 
         public static void TrackAd(PlayboxAdInfo impressionData)

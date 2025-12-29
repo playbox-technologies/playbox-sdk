@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
-using CI.Utils.Extentions;
 using Playbox.SdkConfigurations;
 using UnityEngine;
+using Utils.Tools.Extentions;
 
 namespace Playbox
 {

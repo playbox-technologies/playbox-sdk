@@ -1,5 +1,5 @@
 ﻿using System;
-using CI.Utils.Extentions;
+using Utils.Tools.Extentions;
 
 namespace Playbox.Consent
 {

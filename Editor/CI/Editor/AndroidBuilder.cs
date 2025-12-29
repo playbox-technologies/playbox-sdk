@@ -2,9 +2,9 @@
 #if UNITY_EDITOR && UNITY_ANDROID
 
 using System.Linq;
-using CI.Utils.Extentions;
 using UnityEditor.Build;
 using UnityEditor;
+using Utils.Tools.Extentions;
 
 namespace Playbox.CI
 {

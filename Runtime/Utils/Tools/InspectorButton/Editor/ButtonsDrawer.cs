@@ -1,12 +1,14 @@
 ﻿
-#if UNITY_EDITOR
-namespace InspectorButton.Editor
-{
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-    using UnityEditor;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using InspectorButton;
+using InspectorButton.Editor;
+using UnityEditor;
 
+#if UNITY_EDITOR
+namespace Utils.Tools.InspectorButton.Editor
+{
     public class ButtonsDrawer
     {
         public readonly List<IGrouping<string, Button>> ButtonGroups;

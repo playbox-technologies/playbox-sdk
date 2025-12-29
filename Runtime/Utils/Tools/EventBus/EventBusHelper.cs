@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EventBusSystem
+namespace Utils.Tools.EventBus
 {
     /// <summary>
     /// EventBusHelper provides methods to determine subscriber interfaces and cache them for performance.

@@ -1,4 +1,6 @@
-﻿#if UNITY_EDITOR
+﻿using Utils.Tools.InspectorButton;
+
+#if UNITY_EDITOR
 
 namespace InspectorButton.Editor
 {

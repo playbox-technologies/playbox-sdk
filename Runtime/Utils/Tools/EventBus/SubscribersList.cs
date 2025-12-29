@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace EventBusSystem
+namespace Utils.Tools.EventBus
 {
     /// <summary>
     /// SubscribersList maintains a list of subscribers with safe iteration and cleanup functionality.
@@ -9,8 +9,8 @@ namespace EventBusSystem
     {
         public readonly List<TSubscriber> List = new();
 
-        private bool _needsCleanUp = false;
-        private bool _executing = false;
+        private bool _needsCleanUp;
+        private bool _executing;
         
         /// <summary>
         /// Indicates whether the list is currently being iterated.

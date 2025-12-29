@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using CI.Utils.Extentions;
 using UnityEngine;
+using Utils.Tools.Extentions;
 
 namespace Playbox
 {

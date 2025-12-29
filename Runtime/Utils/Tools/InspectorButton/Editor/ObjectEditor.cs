@@ -1,12 +1,13 @@
-﻿#if UNITY_EDITOR
+﻿using UnityEditor;
 
-namespace InspectorButton.Editor
+#if UNITY_EDITOR
+
+namespace Utils.Tools.InspectorButton.Editor
 {
-    using UnityEditor;
     using Object = UnityEngine.Object;
 
     [CustomEditor(typeof(Object), true), CanEditMultipleObjects]
-    internal class ObjectEditor : Editor
+    internal class ObjectEditor : UnityEditor.Editor
     {
         private ButtonsDrawer _buttonsDrawer;
 

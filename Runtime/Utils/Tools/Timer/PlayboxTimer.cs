@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Utils.Timer
+namespace Utils.Tools.Timer
 {
     /// <summary>
     /// Represents a timer that provides events for various timer states (start, stop, pause, resume, timeout, elapsed and remaining time).

@@ -1,7 +1,4 @@
-﻿using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-
-namespace Utils.Data
+﻿namespace Utils.Tools.Serializer
 {
     public static class DataSerializer
     {

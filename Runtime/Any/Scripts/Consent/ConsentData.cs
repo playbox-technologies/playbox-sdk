@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections;
-using CI.Utils.Extentions;
 using GoogleMobileAds.Ump.Api;
 using UnityEngine;
-using Utils.Timer;
+using Utils.Tools.Extentions;
 
 #if UNITY_IOS
 using Unity.Advertisement.IosSupport;

@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text;
 using UnityEngine;
-using Utils.Data;
+using Utils.Tools.Serializer;
 
 namespace Playbox.SdkConfigurations
 {

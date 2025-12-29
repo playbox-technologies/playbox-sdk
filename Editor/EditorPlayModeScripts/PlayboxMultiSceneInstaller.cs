@@ -1,11 +1,11 @@
 #if UNITY_EDITOR
 
 using System.IO;
-using CI.Utils.Extentions;
 using Newtonsoft.Json.Linq;
 using Playbox.SdkConfigurations;
 using UnityEditor;
 using UnityEngine;
+using Utils.Tools.Extentions;
 
 namespace Playbox
 {

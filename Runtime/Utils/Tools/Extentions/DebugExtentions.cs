@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Playbox;
 using UnityEngine;
-using Object = System.Object;
 
-namespace CI.Utils.Extentions
+namespace Utils.Tools.Extentions
 {
     public static class DebugExtentions
     {

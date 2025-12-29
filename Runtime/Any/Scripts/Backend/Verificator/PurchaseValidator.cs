@@ -1,0 +1,84 @@
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+using Playbox;
+using UnityEngine;
+
+namespace Any.Scripts.Backend.Verificator
+{
+    public static class PurchaseValidator
+    {
+        public static async void Validate(ProductDataAdapter productData, Action<bool, ProductDataAdapter> callback)
+        {
+            JObject sendObject = new()
+            {
+                ["product_id"] = productData.DefinitionId,
+                ["receipt"] = productData.Receipt,
+                ["price"] = productData.MetadataLocalizedPrice,
+                ["currency"] = productData.MetadataIsoCurrencyCode
+            };
+        
+            var a = await HttpService.PostJsonAsync("/verify", sendObject.ToString());
+            
+
+            var jsonData = JObject.Parse(a.Body);
+         
+            var ct = CancellationToken.None;
+         
+            await PollSafeAsync(ct, jsonData["ticket"]?.ToString(), callback);
+        }
+        
+        private static async Task PollSafeAsync(CancellationToken ct, string key,Action<bool, ProductDataAdapter> callback)
+        {
+            while (!ct.IsCancellationRequested)
+            {
+                using var linkedCts =
+                    CancellationTokenSource.CreateLinkedTokenSource(ct);
+
+                linkedCts.CancelAfter(800); // max 800 мс на запрос
+
+                var result = await HttpService.GetAsync($"/status/{key}", linkedCts.Token);
+
+                if(string.IsNullOrEmpty(result.Body))
+                    continue;
+                
+                var resultData = JObject.Parse(result.Body);
+
+                string stringResult = resultData["status"]?.ToString();
+
+
+                var status = VerificationStatusHelper.GetStatusByString(stringResult);
+            
+                if (status == VerificationStatusHelper.EStatus.unverified)
+                {
+                    Debug.Log("unverified");
+                    
+                    callback.Invoke(false, new ProductDataAdapter
+                    {
+                        MetadataLocalizedPrice = decimal.Parse(resultData["price_usd"]?.ToString() ?? string.Empty),
+                        MetadataIsoCurrencyCode = "USD"
+                    });
+                    
+                    break;
+                }
+                if (status == VerificationStatusHelper.EStatus.verified)
+                {
+                    Debug.Log("verified");
+                    
+                    callback.Invoke(true, new ProductDataAdapter
+                    {
+                        MetadataLocalizedPrice = decimal.Parse(resultData["price_usd"]?.ToString() ?? string.Empty),
+                        MetadataIsoCurrencyCode = "USD"
+                    });
+                    
+                    break;
+                }
+            
+                Debug.Log(stringResult);
+
+                await Task.Delay(100, ct);
+            }
+        }
+    }
+}

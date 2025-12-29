@@ -1,7 +1,7 @@
-﻿namespace InspectorButton
-{
-    using System;
+﻿using System;
 
+namespace Utils.Tools.InspectorButton
+{
     [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
     public sealed class ButtonAttribute : Attribute
     {

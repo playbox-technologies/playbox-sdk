@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Any.Scripts.Initializations;
-using CI.Utils.Extentions;
 
 #if UNITY_EDITOR
 using InspectorButton;
@@ -13,6 +12,8 @@ using Playbox.SdkConfigurations;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using Utils.Tools.Extentions;
+using Utils.Tools.InspectorButton;
 
 namespace Playbox
 {

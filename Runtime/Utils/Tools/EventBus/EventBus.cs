@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace EventBusSystem
+namespace Utils.Tools.EventBus
 {
     /// <summary>
     /// EventBus is a static class that manages subscription, unsubscription, and broadcasting of events to IGlobalSubscribers.

@@ -1,5 +1,5 @@
-﻿using CI.Utils.Extentions;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
+using Utils.Tools.Extentions;
 
 namespace Playbox.SdkConfigurations
 { 

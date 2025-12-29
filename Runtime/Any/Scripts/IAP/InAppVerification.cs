@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using CI.Utils.Extentions;
+using Any.Scripts.Backend;
 using Facebook.Unity;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
+using Utils.Tools.Extentions;
+using Utils.Tools.InspectorButton;
 
 namespace Playbox
 {
@@ -22,7 +24,7 @@ namespace Playbox
         
         private static InAppVerification _instance = null;
 
-        [InspectorButton.Button]
+        [Button]
         public override void Initialization()
         {
             if (_instance is null)
