@@ -1,19 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using Any.Scripts.Initializations;
-
-#if UNITY_EDITOR
-using InspectorButton;
-#endif
-
 using Playbox.Consent;
 using Playbox.SdkConfigurations;
-
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using Utils.Tools.Extentions;
-using Utils.Tools.InspectorButton;
 
 namespace Playbox
 {
@@ -157,25 +150,7 @@ namespace Playbox
                 if(mainInit != null)
                     Destroy(mainInit.gameObject);
             }
-
         }
-
-#if UNITY_EDITOR
-        [Button]
-        private void FindRegistrators()
-        {
-         
-            analyticsRegistrator.Clear();
-
-            var registrators = GameObject.FindObjectsByType<BaseAnalyticsRegistrator>(FindObjectsInactive.Exclude,FindObjectsSortMode.None);
-
-            foreach (var item in registrators)
-            {
-                analyticsRegistrator.Add(item);
-            }
-            
-        }
-#endif
         
     }
 }
