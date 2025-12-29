@@ -20,7 +20,6 @@ namespace Playbox
     public class MainInitialization : PlayboxBehaviour
     {
         [SerializeField] private bool isAutoInitialize = true;
-        [SerializeField] private bool useInAppValidation = true;
         [SerializeField] private bool isDebugSplash;
         [SerializeField] private UnityEvent OnPostInitializatioon;
         
@@ -86,15 +85,12 @@ namespace Playbox
             
             behaviours.Add(AddToGameObject<PlayboxSplashUGUILogger>(gameObject, isDebugSplash));
             behaviours.Add(AddToGameObject<FirebaseInitialization>(gameObject));
-            behaviours.Add(AddToGameObject<InAppVerification>(gameObject));
             
             behaviours.Add(AddToGameObject<DevToDevInitialization>(gameObject,true,true));
             behaviours.Add(AddToGameObject<AppLovinInitialization>(gameObject,true,true));
             behaviours.Add(AddToGameObject<AppsFlyerInitialization>(gameObject,true,true));
             behaviours.Add(AddToGameObject<FacebookSdkInitialization>(gameObject,true,true));
             
-            
-            InitStatus[nameof(InAppVerification)] = false;
             InitStatus[nameof(PlayboxSplashUGUILogger)] = false;
             InitStatus[nameof(FirebaseInitialization)] = false;
             InitStatus[nameof(AppsFlyerInitialization)] = false;
