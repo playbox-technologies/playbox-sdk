@@ -1,14 +1,13 @@
-﻿using Utils.Tools.InspectorButton;
+﻿using System.Collections.Generic;
+using System.Reflection;
+using Editor.Utils.InspectorButton;
+using UnityEditor;
+using UnityEngine;
 
 #if UNITY_EDITOR
 
-namespace InspectorButton.Editor
+namespace Editor.Utils
 {
-    using System.Reflection;
-    using System.Collections.Generic;
-    using UnityEditor;
-    using UnityEngine;
-
     public class Button
     {
         public readonly string DisplayName;

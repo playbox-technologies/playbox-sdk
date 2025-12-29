@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Utils.Tools.InspectorButton
+namespace Editor.Utils.InspectorButton
 {
     [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
     public sealed class ButtonAttribute : Attribute

@@ -2,7 +2,7 @@
 
 #if UNITY_EDITOR
 
-namespace Utils.Tools.InspectorButton.Editor
+namespace Editor.Utils.InspectorButton.Editor
 {
     using Object = UnityEngine.Object;
 
