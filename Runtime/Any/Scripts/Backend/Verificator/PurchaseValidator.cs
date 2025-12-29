@@ -36,7 +36,7 @@ namespace Any.Scripts.Backend.Verificator
                 using var linkedCts =
                     CancellationTokenSource.CreateLinkedTokenSource(ct);
 
-                linkedCts.CancelAfter(800); // max 800 мс на запрос
+                linkedCts.CancelAfter(1000);
 
                 var result = await HttpService.GetAsync($"/status/{key}", linkedCts.Token);
 
@@ -52,8 +52,6 @@ namespace Any.Scripts.Backend.Verificator
             
                 if (status == VerificationStatusHelper.EStatus.unverified)
                 {
-                    Debug.Log("unverified");
-                    
                     callback.Invoke(false, new ProductDataAdapter
                     {
                         MetadataLocalizedPrice = decimal.Parse(resultData["price_usd"]?.ToString() ?? string.Empty),
@@ -64,8 +62,6 @@ namespace Any.Scripts.Backend.Verificator
                 }
                 if (status == VerificationStatusHelper.EStatus.verified)
                 {
-                    Debug.Log("verified");
-                    
                     callback.Invoke(true, new ProductDataAdapter
                     {
                         MetadataLocalizedPrice = decimal.Parse(resultData["price_usd"]?.ToString() ?? string.Empty),
@@ -74,9 +70,7 @@ namespace Any.Scripts.Backend.Verificator
                     
                     break;
                 }
-            
-                Debug.Log(stringResult);
-
+                
                 await Task.Delay(100, ct);
             }
         }

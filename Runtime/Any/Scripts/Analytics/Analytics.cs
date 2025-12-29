@@ -134,13 +134,9 @@ namespace Playbox
                 { "af_content_id", productId }
             };
             
-            Debug.Log($"Send {purchasedProduct} to Playbox Validator");
-            
             PurchaseValidator.Validate(purchasedProduct, (isValid, returnProductData) =>
             {
-                Debug.Log($"Request {purchasedProduct} from Playbox Validator");
-                
-                onValidate?.Invoke(isValid);
+               onValidate?.Invoke(isValid);
                 
                 if (isValid)
                 {
