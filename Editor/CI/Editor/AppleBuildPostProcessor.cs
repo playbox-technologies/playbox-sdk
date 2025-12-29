@@ -1,7 +1,6 @@
 ﻿#if UNITY_EDITOR && UNITY_IOS
 
 using System.IO;
-using CI.Utils.Extentions;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Callbacks;
