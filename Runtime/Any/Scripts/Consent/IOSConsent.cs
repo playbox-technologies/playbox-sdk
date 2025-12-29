@@ -2,9 +2,9 @@
 using System;
 using System.Collections;
 using AppsFlyerSDK;
-using CI.Utils.Extentions;
 using Unity.Advertisement.IosSupport;
 using UnityEngine;
+using Utils.Tools.Extentions;
 
 namespace Playbox.Consent
 {
