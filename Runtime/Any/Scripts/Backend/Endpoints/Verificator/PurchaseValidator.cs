@@ -19,7 +19,7 @@ namespace Any.Scripts.Backend.Verificator
                 ["currency"] = productData.MetadataIsoCurrencyCode
             };
         
-            var a = await HttpService.PostJsonAsync("/verify", sendObject.ToString());
+            var a = await HttpService.PostJsonAsync("/iap/verify", sendObject.ToString());
             
 
             var jsonData = JObject.Parse(a.Body);
@@ -38,7 +38,7 @@ namespace Any.Scripts.Backend.Verificator
 
                 linkedCts.CancelAfter(1000);
 
-                var result = await HttpService.GetAsync($"/status/{key}", linkedCts.Token);
+                var result = await HttpService.GetAsync($"/iap/status/{key}", linkedCts.Token);
 
                 if(string.IsNullOrEmpty(result.Body))
                     continue;

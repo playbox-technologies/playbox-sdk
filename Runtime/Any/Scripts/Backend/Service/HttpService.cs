@@ -14,7 +14,7 @@ namespace Any.Scripts.Backend.Verificator
     {
         private static HttpClient _client;
 
-        private static string _baseUrl = "https://api.playbox.services/v1/iap";
+        private static string _baseUrl = "https://api.playbox.services/v1";
 
         private static void InitService()
         {
