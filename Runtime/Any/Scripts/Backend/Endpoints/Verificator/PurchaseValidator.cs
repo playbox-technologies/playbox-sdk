@@ -21,7 +21,6 @@ namespace Any.Scripts.Backend.Verificator
         
             var a = await HttpService.PostJsonAsync("/iap/verify", sendObject.ToString());
             
-
             var jsonData = JObject.Parse(a.Body);
          
             var ct = CancellationToken.None;

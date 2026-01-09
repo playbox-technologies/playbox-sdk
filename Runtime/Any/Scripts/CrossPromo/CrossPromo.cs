@@ -6,6 +6,7 @@ using AppsFlyerSDK;
 using Newtonsoft.Json.Linq;
 using Playbox.SdkConfigurations;
 using UnityEngine;
+using Utils.Tools.WebQuery;
 
 namespace Playbox
 {
@@ -87,11 +88,13 @@ namespace Playbox
         {
             using var client = new HttpClient();
             string baseUrl = "https://api.playbox.space/promo/get-link";
-        
-            var query = System.Web.HttpUtility.ParseQueryString(string.Empty);
-            query["placement_id"] = placementID;
-            query["bundle_id"] = bundleID;
-            query["os"] = os;
+            
+            string query = QueryStringBuilder.Build(new Dictionary<string, string>
+            {
+                ["placement_id"] = placementID,
+                ["bundle_id"] = bundleID,
+                ["os"] = os
+            });
         
             string url = $"{baseUrl}?{query}";
   
