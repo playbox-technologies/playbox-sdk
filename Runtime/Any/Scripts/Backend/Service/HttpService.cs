@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Unity.Services.Core;
 using UnityEngine;
 
 namespace Any.Scripts.Backend.Verificator
