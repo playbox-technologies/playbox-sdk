@@ -1,8 +1,6 @@
-using System.Xml;
 using DevToDev.Analytics;
 using Playbox.SdkConfigurations;
 using UnityEngine;
-
 
 namespace Playbox
 {
@@ -30,6 +28,7 @@ namespace Playbox
             DTDAnalytics.SetLogLevel(DevToDevConfiguration.LOGLevel);
             
             DTDAnalytics.SetTrackingAvailability(true);
+            
             
             //DTDAnalytics.CoppaControlEnable();
             DTDAnalytics.StartActivity();

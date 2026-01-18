@@ -110,6 +110,7 @@ namespace Playbox.Consent
                     return;
 #endif
                 
+                
                 Application.RequestAdvertisingIdentifierAsync((advertisingId, trackingEnabled, errorMsg) =>
                 {
                     AdvertisingId = advertisingId;
