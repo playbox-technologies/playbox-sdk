@@ -28,7 +28,7 @@ namespace Playbox
                 }
                 else
                 {
-                    findable.AddComponent<MainInitialization>();   
+                    findable!.AddComponent<MainInitialization>();   
                 }
             }
         }
