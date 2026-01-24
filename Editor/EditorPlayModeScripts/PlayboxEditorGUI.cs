@@ -11,16 +11,10 @@ namespace Playbox
 
         [MenuItem("Playbox/Initialization/Create")]
         public static void CreateAnalyticsObject()
-        { 
+        {
             var findable = GameObject.Find(objectName);
 
-            if (findable == null)
-            {
-                var go = new GameObject(objectName); 
-                
-                go.AddComponent<MainInitialization>();
-            }
-            else
+            if (findable != null)
             {
                 if (findable.TryGetComponent(out MainInitialization main))
                 {
@@ -28,8 +22,14 @@ namespace Playbox
                 }
                 else
                 {
-                    findable!.AddComponent<MainInitialization>();   
+                    findable!.AddComponent<MainInitialization>();
                 }
+            }
+            else
+            {
+                var go = new GameObject(objectName);
+
+                go.AddComponent<MainInitialization>();
             }
         }
         
