@@ -26,10 +26,8 @@ namespace Playbox
                 }
             }
             else
-            {
-                var go = new GameObject(objectName);
-
-                go.AddComponent<MainInitialization>();
+            { 
+                new GameObject(objectName).AddComponent<MainInitialization>();
             }
         }
         
