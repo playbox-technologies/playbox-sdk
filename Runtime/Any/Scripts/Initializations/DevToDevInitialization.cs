@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using DevToDev.Analytics;
 using Playbox.SdkConfigurations;
 using UnityEngine;
@@ -9,13 +11,13 @@ namespace Playbox
 
         public override void Initialization()
         {
-            GlobalPlayboxConfig.Load();
-            
             DevToDevConfiguration.LoadJsonConfig();
             
             if(!DevToDevConfiguration.Active)
                 return;
 
+            DTDAnalytics.SetLogLevel(DevToDevConfiguration.LOGLevel);
+            
 #if UNITY_ANDROID
             DTDAnalytics.Initialize(DevToDevConfiguration.AndroidKey);
 #endif
@@ -24,34 +26,43 @@ namespace Playbox
             
 #endif
             
-            
-            DTDAnalytics.SetLogLevel(DevToDevConfiguration.LOGLevel);
-            
             DTDAnalytics.SetTrackingAvailability(true);
             
-            
-            //DTDAnalytics.CoppaControlEnable();
-            DTDAnalytics.StartActivity();
+            //DTDAnalytics.StartActivity();
 
+            ApproveInitialization();
+            
             DTDAnalytics.GetDeviceId((a) =>
             {
                 if (!string.IsNullOrEmpty(a))
                 {
-                    ApproveInitialization();
-                    
-                    DTDUserCard.Set("device_ram", SystemInfo.systemMemorySize);
-                    DTDUserCard.Set("gpu_memory", SystemInfo.graphicsMemorySize);
-                    DTDUserCard.Set("screen_width", Screen.width);
-                    DTDUserCard.Set("screen_height", Screen.height);
-                    DTDUserCard.Set("device_name", SystemInfo.deviceName);
-                    DTDUserCard.Set("graphicsDeviceName", SystemInfo.graphicsDeviceName);
-                    DTDUserCard.Set("graphicsDeviceType", SystemInfo.graphicsDeviceType.ToString());
-                    DTDUserCard.Set("processorManufacturer", SystemInfo.processorManufacturer);
-                    
+                    DTDUserCard.Set("dtd_device_id_present", 1);
+                }
+                else
+                {
+                    DTDUserCard.Set("dtd_device_id_present", 0);
                 }
             });
 
-            Application.quitting += DTDAnalytics.StopActivity;
+            StartCoroutine(SendUserCard());
+
+            //Application.quitting += DTDAnalytics.StopActivity;
+        }
+
+        IEnumerator SendUserCard()
+        {
+            
+            yield return null;
+            yield return new WaitForEndOfFrame();
+            
+            DTDUserCard.Set("device_ram", SystemInfo.systemMemorySize);
+            DTDUserCard.Set("gpu_memory", SystemInfo.graphicsMemorySize);
+            DTDUserCard.Set("screen_width", Screen.width);
+            DTDUserCard.Set("screen_height", Screen.height);
+            DTDUserCard.Set("device_name", SystemInfo.deviceName);
+            DTDUserCard.Set("graphicsDeviceName", SystemInfo.graphicsDeviceName);
+            DTDUserCard.Set("graphicsDeviceType", SystemInfo.graphicsDeviceType.ToString());
+            DTDUserCard.Set("processorManufacturer", SystemInfo.processorManufacturer);
         }
 
         public override void Close()

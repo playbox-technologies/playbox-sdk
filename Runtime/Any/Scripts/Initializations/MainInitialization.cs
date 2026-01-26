@@ -61,6 +61,7 @@ namespace Playbox
         
         private IEnumerator InitializationAfterFrame()
         {
+            yield return null;
             yield return new WaitForEndOfFrame();
             
             "Playbox SDK Init After Frame".PlayboxInfo();
