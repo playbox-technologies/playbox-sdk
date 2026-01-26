@@ -41,6 +41,7 @@ namespace Playbox
                     
                     DTDUserCard.Set("device_ram", SystemInfo.systemMemorySize);
                     DTDUserCard.Set("gpu_memory", SystemInfo.graphicsMemorySize);
+                    DTDUserCard.Set("resolution", $"Screen: {Screen.width}x{Screen.height}");
                 }
             });
 
