@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Any.Scripts.Initializations;
 using Playbox.Consent;
@@ -51,13 +52,22 @@ namespace Playbox
         {
             if (!isAutoInitialize)
                 return;
-
+            
             "AutoStarting Playbox SDK".PlayboxInfo();
             
-            Initialization();
-         
+            StartCoroutine(InitializationAfterFrame());
+
         }
         
+        private IEnumerator InitializationAfterFrame()
+        {
+            yield return new WaitForEndOfFrame();
+            
+            "Playbox SDK Init After Frame".PlayboxInfo();
+            
+            Initialization();
+        }
+
         public static bool IsValidate<T>() where T : PlayboxBehaviour
         {
             if(initStatus == null)
