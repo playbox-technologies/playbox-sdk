@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using DevToDev.Analytics;
 using Playbox.SdkConfigurations;
 using UnityEngine;
@@ -62,7 +61,6 @@ namespace Playbox
             DTDUserCard.Set("device_name", SystemInfo.deviceName);
             DTDUserCard.Set("graphicsDeviceName", SystemInfo.graphicsDeviceName);
             DTDUserCard.Set("graphicsDeviceType", SystemInfo.graphicsDeviceType.ToString());
-            DTDUserCard.Set("processorManufacturer", SystemInfo.processorManufacturer);
         }
 
         public override void Close()
