@@ -61,9 +61,12 @@ namespace Playbox
             //Cores
             DTDUserCard.Set("cpu_cores", SystemInfo.processorCount);
             DTDUserCard.Set("cpu_freq", SystemInfo.processorFrequency);
-            DTDUserCard.Set("cpu_model", SystemInfo.processorModel);
             DTDUserCard.Set("cpu_type", SystemInfo.processorType);
+
+#if UNITY_6000_3
+            DTDUserCard.Set("cpu_model", SystemInfo.processorModel);
             DTDUserCard.Set("cpu_manufacturer", SystemInfo.processorManufacturer);
+#endif
             
             
             //Names
