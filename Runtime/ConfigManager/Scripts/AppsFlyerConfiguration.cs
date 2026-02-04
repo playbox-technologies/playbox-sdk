@@ -8,6 +8,7 @@ namespace Playbox.SdkConfigurations
     /// </summary>
     public static class AppsFlyerConfiguration{
     
+        private static bool _isConfigured = false;
         private static string ios_key = "";
         private static string android_key = "";
         
@@ -17,6 +18,8 @@ namespace Playbox.SdkConfigurations
         private static bool active = false;
 
         private const string name = "AppsFlyer";
+        
+        public static bool Configured => _isConfigured;
 
         public static string IOSKey
         {
@@ -80,6 +83,7 @@ namespace Playbox.SdkConfigurations
             {
                 $"{Name} config not contains in json".PlayboxWarning();
             
+                _isConfigured = false;
                 return;
             }
         
@@ -89,6 +93,7 @@ namespace Playbox.SdkConfigurations
             ios_app_Id = (string)obj[nameof(ios_app_Id)];
             android_app_Id = (string)obj[nameof(android_app_Id)];
         
+            _isConfigured = true;
         }
 
     }

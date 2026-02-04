@@ -9,6 +9,8 @@ namespace Playbox.SdkConfigurations
     /// </summary>
     public static class DevToDevConfiguration{
     
+        private static bool _isConfigured = false;
+        
         private static string ios_key = "";
         private static string android_key = "";
         private static DTDLogLevel logLevel = DTDLogLevel.No;
@@ -17,6 +19,8 @@ namespace Playbox.SdkConfigurations
 
         private const string name = "DevToDev";
 
+        public static bool Configured => _isConfigured;
+        
         public static string IOSKey
         {
             get => ios_key;
@@ -71,6 +75,8 @@ namespace Playbox.SdkConfigurations
             if (obj == null)
             {
                 $"{Name} config not contains in json".PlayboxWarning();
+                
+                _isConfigured = false;
             
                 return;
             }
@@ -81,6 +87,8 @@ namespace Playbox.SdkConfigurations
             
             if(obj.ContainsKey(nameof(LOGLevel)))
                 LOGLevel = (DTDLogLevel)((int)obj[nameof(LOGLevel)]);
+            
+            _isConfigured = true;
         }
 
     }

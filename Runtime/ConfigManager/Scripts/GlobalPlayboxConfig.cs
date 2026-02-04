@@ -17,8 +17,6 @@ namespace Playbox.SdkConfigurations
     {
         public static string configPath => Path.Combine(Application.dataPath, "Resources", "Playbox", "PlayboxConfig");
         
-        public static bool IsLoaded => jsonConfig != null;
-        
         private static JObject jsonConfig = new();
         private static string configFile = Path.Combine(Application.dataPath, "Resources", "Playbox", "PlayboxConfig",
             "playbox_sdk_config");
@@ -57,6 +55,16 @@ namespace Playbox.SdkConfigurations
             {
                 jsonConfig = JObject.Parse(PlayboxJsonConfig.Load(ResourcesPath));   
             }
+        }
+
+        public static bool ExistsJson()
+        {
+            return File.Exists(configFile + ".json");
+        }
+        
+        public static bool ExistsBinaryJson()
+        {
+            return File.Exists(configFile + ".json.bytes");
         }
 
         public static JObject LoadSubconfigs(string name)

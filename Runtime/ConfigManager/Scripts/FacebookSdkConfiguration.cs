@@ -8,6 +8,7 @@ namespace Playbox.SdkConfigurations
     /// </summary>
     public static class FacebookSdkConfiguration{
     
+        private static bool _isConfigured = false;
         private static string appLabel = "";
         private static string app_id = "";
         private static string clientToken = "";
@@ -15,6 +16,8 @@ namespace Playbox.SdkConfigurations
         private static bool active;
 
         private const string name = "FacebookSdk";
+        
+        public static bool Configured => _isConfigured;
         
         public static bool Active
         {
@@ -70,7 +73,9 @@ namespace Playbox.SdkConfigurations
             if (obj == null)
             {
                 $"{Name} config not contains in json".PlayboxWarning();
-            
+                
+                _isConfigured = false;
+                
                 return;
             }
         
@@ -78,6 +83,8 @@ namespace Playbox.SdkConfigurations
             AppID = (string)obj[nameof(AppID)];
             ClientToken = (string)obj[nameof(ClientToken)];
             active = (bool)(obj[nameof(active)] ?? false);
+            
+            _isConfigured = true;
         }
 
     }

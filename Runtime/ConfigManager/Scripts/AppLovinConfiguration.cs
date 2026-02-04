@@ -8,6 +8,7 @@ namespace Playbox.SdkConfigurations
     /// </summary>
     public static class AppLovinConfiguration
     {
+        private static bool _isConfigured = false;
         private static bool _isUseReward = true;
         private static bool _isUseInterstitial = true;
         private static string _iosKeyRew = "";
@@ -19,6 +20,8 @@ namespace Playbox.SdkConfigurations
         private static bool active = false;
 
         public const string name = "AppLovin";
+        
+        public static bool Configured => _isConfigured;
 
         public static string IOSKey_rew
         {
@@ -97,7 +100,9 @@ namespace Playbox.SdkConfigurations
             if (obj == null)
             {
                 $"{name} config not contains in json".PlayboxWarning();
-            
+                
+                _isConfigured = false;
+                
                 return;
             }
         
@@ -109,8 +114,9 @@ namespace Playbox.SdkConfigurations
             active = (bool)(obj[nameof(active)] ?? false);
             _isUseInterstitial = (bool)(obj[nameof(_isUseInterstitial)] ?? false);
             _isUseReward = (bool)(obj[nameof(_isUseReward)] ?? false);
-        
-        }
 
+            _isConfigured = true;
+
+        }
     }
 }
