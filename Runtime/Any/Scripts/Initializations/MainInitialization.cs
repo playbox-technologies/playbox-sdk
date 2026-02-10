@@ -17,7 +17,7 @@ namespace Playbox
         [SerializeField] private bool isDebugSplash;
         [SerializeField] private UnityEvent OnPostInitializatioon;
         
-        [SerializeField] private List<IBaseAnalyticsRegistrator> analyticsRegistrator = new();
+        [SerializeField] private List<BaseAnalyticsRegistrator> analyticsRegistrator = new();
         
         private List<PlayboxBehaviour> behaviours = new();
         
