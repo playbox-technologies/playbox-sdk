@@ -221,41 +221,6 @@ namespace Playbox
                 analyticsCustomManagement.LogLevelUp(level);
             }
             
-            [Obsolete("")]
-            public static void LogContentView(string content)
-            {
-                TrackEvent(nameof(LogContentView),new KeyValuePair<string, string>(nameof(LogContentView),content));
-                analyticsCustomManagement.LogContentView(content);
-            }
-
-            public static void LogTutorial(string tutorial, ETutorialState stateLevel = ETutorialState.Complete, string step = "none")
-            {
-                switch (stateLevel)
-                {
-                    case ETutorialState.Start:
-                        TrackEvent(tutorial,new KeyValuePair<string, string>("start",step));
-                        break;
-                
-                    case ETutorialState.Skipped:
-                        TrackEvent(tutorial,new KeyValuePair<string, string>("skip",step));
-                        break;
-                
-                    case ETutorialState.Complete:
-                        TrackEvent(tutorial,new KeyValuePair<string, string>("complete",step));
-                        break;
-                
-                    case ETutorialState.StepComplete:
-                        TrackEvent(tutorial,new KeyValuePair<string, string>("stepComplete",step));
-                        break;
-                
-                    default:
-                        TrackEvent(tutorial,new KeyValuePair<string, string>("completed",step));
-                        break;
-                }
-                
-                analyticsCustomManagement.LogTutorial(tutorial);
-            }
-            
             /// <summary>
             /// Sends the event if the tutorial is completed
             /// </summary>
@@ -263,8 +228,6 @@ namespace Playbox
             {
                 if (isAppsFlyerInit)
                     AppsFlyer.sendEvent("af_tutorial_completion", new());
-                
-                analyticsCustomManagement.TutorialCompleted();
             }
             
             /// <summary>
@@ -326,7 +289,6 @@ namespace Playbox
             public static void AdImpression(string network, double revenue, string placement, string unit)
             {
                 if (isDTDInit) DTDAnalytics.AdImpression(network, revenue, placement, unit);
-                analyticsCustomManagement.AdImpression(network, revenue, placement, unit);
             }
             /// <summary>
             /// Tracks a tutorial step completion in DevToDev.
@@ -334,7 +296,6 @@ namespace Playbox
             public static void Tutorial(int step)
             {
                 if (isDTDInit) DTDAnalytics.Tutorial(step);
-                analyticsCustomManagement.Tutorial(step);
             }
             /// <summary>
             /// Logs a successful social network connection event to DevToDev.
@@ -370,7 +331,6 @@ namespace Playbox
             public static void StartProgressionEvent(string eventName)
             {
                 if (isDTDInit) DTDAnalytics.StartProgressionEvent(eventName);
-                analyticsCustomManagement.StartProgressionEvent(eventName);
             }
             /// <summary>
             /// Starts tracking a progression event with custom parameters in DevToDev.
@@ -385,7 +345,6 @@ namespace Playbox
             public static void FinishProgressionEvent(string eventName)
             {
                 if (isDTDInit) DTDAnalytics.FinishProgressionEvent(eventName);
-                analyticsCustomManagement.FinishProgressionEvent(eventName);
             }
             /// <summary>
             /// Marks a progression event as finished with custom parameters in DevToDev.
