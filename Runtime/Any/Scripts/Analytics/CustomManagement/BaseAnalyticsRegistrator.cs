@@ -2,8 +2,10 @@
 
 namespace Playbox
 {
-    public interface IBaseAnalyticsRegistrator
+    public class BaseAnalyticsRegistrator: MonoBehaviour
     {
-        public void Register();
+        public virtual void Register()
+        {
+        }
     }
 }
