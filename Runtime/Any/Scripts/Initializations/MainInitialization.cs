@@ -56,20 +56,14 @@ namespace Playbox
             
             PreInitialization?.Invoke();
             
-            "AutoStarting Playbox SDK".PlayboxInfo();
-            
             StartCoroutine(InitializationAfterFrame());
 
         }
         
         private IEnumerator InitializationAfterFrame()
         {
-            Debug.Log("InitializationAfterFrame Pre");
-            
             yield return null;
             yield return new WaitForEndOfFrame();
-            
-            Debug.Log("Playbox SDK Init After Frame");
             
             Initialization();
             
@@ -82,16 +76,11 @@ namespace Playbox
 
         public override void Initialization()
         {
-            Debug.Log("Loading config");
-            
             GlobalPlayboxConfig.Load();
             
-            Debug.Log("Setup dont destroy");
             
             if(Application.isPlaying)
                 DontDestroyOnLoad(gameObject);
-            
-            Debug.Log("Playbox SDK Initialized 0");
             
             foreach (var item in _behaviours)
             {
@@ -111,14 +100,11 @@ namespace Playbox
                             if (!InitStatus.Contains(st))
                             {
                                 InitStatus.Add(st);
-                                Debug.Log($"[Init] Service {st} registered.");
                             }
                         }
                     });   
                 }
             }
-            
-            Debug.Log("Playbox SDK Initialized 1");
             
             ConsentData.ShowConsent(this, () =>
             {
