@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Any.Scripts.Initializations;
 using Playbox.Consent;
 using Playbox.SdkConfigurations;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-using Utils.Tools.Extentions;
 
 namespace Playbox
 {
@@ -153,12 +153,12 @@ namespace Playbox
         
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            var mainInit = FindFirstObjectByType<MainInitialization>();
+            var initializators = FindObjectsByType<MainInitialization>(FindObjectsInactive.Exclude,FindObjectsSortMode.None);
 
-            if (mainInit != this)
+            foreach (var item in initializators)
             {
-                if(mainInit != null)
-                    Destroy(mainInit.gameObject);
+                if(item != this && item != null)
+                    Destroy(item.gameObject);
             }
         }
         
