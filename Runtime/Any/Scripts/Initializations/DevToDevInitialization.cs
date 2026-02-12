@@ -1,8 +1,10 @@
 using System.Collections;
+using System.Threading.Tasks;
 using DevToDev.Analytics;
 using Playbox.DeviceDevector;
 using Playbox.SdkConfigurations;
 using UnityEngine;
+
 
 namespace Playbox
 {
@@ -102,6 +104,11 @@ namespace Playbox
             DTDUserCard.Set("color_space", QualitySettings.activeColorSpace.ToString());
             DTDUserCard.Set("render_pipeline", QualitySettings.renderPipeline.name);
             
+#if UNITY_IOS
+             DTDUserCard.Set("ad_tracking_id", UnityEngine.iOS.Device.advertisingIdentifier);
+#endif
+            
+            
           
 
 #if UNITY_ANDROID
@@ -109,14 +116,65 @@ namespace Playbox
             
             DTDUserCard.Set("is_test_device", isEmu ? 1 : 0);
             DTDUserCard.Set("emulator_reason", isEmu ? "swiftshader_or_lowcpu" : "none");
+
+            StartCoroutine(SetAdIdSequence());
+
 #endif
         }
 
         public override void Close()
         {
             base.Close();
-            
-            //DTDAnalytics.StopActivity();
         }
+        
+        #if UNITY_ANDROID
+
+        private IEnumerator SetAdIdSequence()
+        {
+            Task<string> adIdTask = GetAndroidAdIdAsync();
+            
+            while (!adIdTask.IsCompleted)
+            {
+                yield return null;
+            }
+            if (adIdTask.IsFaulted)
+            {
+                Debug.LogError("Не удалось получить GAID: " + adIdTask.Exception);
+            }
+            else
+            {
+                string gaid = adIdTask.Result;
+
+                if (!string.IsNullOrEmpty(gaid))
+                {
+                   DTDUserCard.Set("ad_tracking_id", gaid);
+                }
+            }
+        }
+        
+        private Task<string> GetAndroidAdIdAsync()
+        {
+            return Task.Run(() =>
+            {
+                try
+                {
+                    using (var up = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+                    using (var currentActivity = up.GetStatic<AndroidJavaObject>("currentActivity"))
+                    using (var client = new AndroidJavaClass("com.google.android.gms.ads.identifier.AdvertisingIdClient"))
+                    {
+                        using (var adInfo = client.CallStatic<AndroidJavaObject>("getAdvertisingIdInfo", currentActivity))
+                        {
+                            return adInfo.Call<string>("getId");
+                        }
+                    }
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogError($"Ошибка получения GAID: {e.Message}");
+                    return null;
+                }
+            });
+        }
+        #endif
     }
 }
