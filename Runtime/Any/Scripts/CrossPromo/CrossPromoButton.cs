@@ -10,17 +10,7 @@ namespace Playbox
 
         private void OnEnable()
         {
-            CrossPromo.OnInviteLinkGenerated += s =>
-            {
-                s.PlayboxInfo("LINK");
-                s.PlayboxSplashLogUGUI();
-            };
-            CrossPromo.OnOpenStoreLinkGenerated += s =>
-            {
-                s.PlayboxInfo("LINK");
-                s.PlayboxSplashLogUGUI();
-                Application.OpenURL(s);
-            };
+          
 
             RecordCrossPromoImpression();
         }
