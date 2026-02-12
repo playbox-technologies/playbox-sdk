@@ -6,7 +6,7 @@ using Utils.Tools.Extentions;
 
 namespace Playbox
 {
-    public static class Advertisement
+    public static class Rewarded
     {
         private static string unitId;
         /// <summary>

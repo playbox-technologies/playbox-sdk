@@ -66,7 +66,7 @@ namespace Playbox
             
             if (RuntimePlatform.IPhonePlayer == Application.platform)
             {
-                if(isReward) Advertisement.RegisterUnitID(AppLovinConfiguration.IOSKey_rew, this);
+                if(isReward) Rewarded.RegisterUnitID(AppLovinConfiguration.IOSKey_rew, this);
                 if(isInterstitial) InterstitialAd.RegisterUnitID(AppLovinConfiguration.IOSKey_inter, this);
                 
                 Debug.Log("AppLovin iPhone");
@@ -74,14 +74,14 @@ namespace Playbox
 
             if (RuntimePlatform.Android == Application.platform)
             {
-                if(isReward) Advertisement.RegisterUnitID(AppLovinConfiguration.AndroidKey_rew, this);
+                if(isReward) Rewarded.RegisterUnitID(AppLovinConfiguration.AndroidKey_rew, this);
                 if(isInterstitial) InterstitialAd.RegisterUnitID(AppLovinConfiguration.AndroidKey_iter, this);
                 
                 Debug.Log("AppLovin Android");
             }
 
 #if UNITY_EDITOR
-            if(isReward) Advertisement.RegisterUnitID(AppLovinConfiguration.IOSKey_rew, this);
+            if(isReward) Rewarded.RegisterUnitID(AppLovinConfiguration.IOSKey_rew, this);
             if(isInterstitial) InterstitialAd.RegisterUnitID(AppLovinConfiguration.IOSKey_inter, this);
                 
             Debug.Log("AppLovin Test Unity iOS");
@@ -89,7 +89,7 @@ namespace Playbox
             
             Debug.Log("AppLovin initialized");
             
-            Advertisement.OnSdkInitializedEvent?.Invoke(sdkConfiguration.ToString());
+            Rewarded.OnSdkInitializedEvent?.Invoke(sdkConfiguration.ToString());
             InterstitialAd.OnSdkInitializedEvent?.Invoke(sdkConfiguration.ToString());
         }
         
