@@ -27,7 +27,7 @@ namespace Playbox
         public static void OpenStore(string afLink)
         {
 #if !UNITY_EDITOR
-            if (Analytics.isAppsFlyerInit)
+            if (Analytics.IsAppsFlyerInit)
             {
 #endif
                 AppsFlyerConfiguration.LoadJsonConfig();
@@ -42,7 +42,7 @@ namespace Playbox
         {
            
 #if !UNITY_EDITOR
-            if (Analytics.isAppsFlyerInit)
+            if (Analytics.IsAppsFlyerInit)
             {
 #endif
                 string os = GetOS();
