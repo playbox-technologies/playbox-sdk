@@ -28,6 +28,8 @@ namespace Any.Scripts.Initializations
         {
             base.Initialization();
             
+            serviceType = ServiceType.Facebook;
+            
             FacebookSdkConfiguration.LoadJsonConfig();
             
             if(!FacebookSdkConfiguration.Active)

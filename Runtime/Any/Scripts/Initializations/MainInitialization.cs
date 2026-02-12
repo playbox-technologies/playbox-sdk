@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Any.Scripts.Initializations;
 using Playbox.Consent;
 using Playbox.SdkConfigurations;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-using Utils.Tools.Extentions;
 
 namespace Playbox
 {
@@ -19,23 +19,24 @@ namespace Playbox
         
         [SerializeField] private List<BaseAnalyticsRegistrator> analyticsRegistrator = new();
         
-        private List<PlayboxBehaviour> behaviours = new();
-        
-        private static Dictionary<string,bool> initStatus = new();
-
-        public static Dictionary<string, bool> InitStatus
-        {
-            get => initStatus ??= new Dictionary<string, bool>();
-            set => initStatus = value;
-        }
+        [SerializeField]
+        private List<PlayboxBehaviour> _behaviours = new();
+        private static readonly HashSet<ServiceType> InitStatus = new();
 
         public static Action PostInitialization = delegate { };
         public static Action PreInitialization = delegate { };
-
-
+        
         private void Awake()
         {
             analyticsRegistrator.ForEach(a => a.Register());
+
+            var splasher = AddToGameObject<PlayboxSplashUGUILogger>(gameObject, isDebugSplash);
+            
+            if(isDebugSplash)
+                splasher.Initialization();
+            
+            
+            AddComponentsToInitialization();
             
             PostInitialization += () =>
             {
@@ -53,7 +54,7 @@ namespace Playbox
             if (!isAutoInitialize)
                 return;
             
-            "AutoStarting Playbox SDK".PlayboxInfo();
+            PreInitialization?.Invoke();
             
             StartCoroutine(InitializationAfterFrame());
 
@@ -64,72 +65,61 @@ namespace Playbox
             yield return null;
             yield return new WaitForEndOfFrame();
             
-            "Playbox SDK Init After Frame".PlayboxInfo();
-            
             Initialization();
+            
         }
 
-        public static bool IsValidate<T>() where T : PlayboxBehaviour
+        public static bool IsValidate(ServiceType serviceType)
         {
-            if(initStatus == null)
-                return false;
-            
-            initStatus.TryGetValue(typeof(T).Name, out bool validate);
-                return validate;
+            return InitStatus.Contains(serviceType);
         }
 
         public override void Initialization()
         {
             GlobalPlayboxConfig.Load();
             
+            
             if(Application.isPlaying)
                 DontDestroyOnLoad(gameObject);
             
-            PreInitialization?.Invoke();
-            
-            behaviours.Add(AddToGameObject<PlayboxSplashUGUILogger>(gameObject, isDebugSplash));
-            behaviours.Add(AddToGameObject<FirebaseInitialization>(gameObject));
-            
-            behaviours.Add(AddToGameObject<DevToDevInitialization>(gameObject,true,true));
-            behaviours.Add(AddToGameObject<AppLovinInitialization>(gameObject,true,true));
-            behaviours.Add(AddToGameObject<AppsFlyerInitialization>(gameObject,true,true));
-            behaviours.Add(AddToGameObject<FacebookSdkInitialization>(gameObject,true,true));
-            
-            InitStatus[nameof(PlayboxSplashUGUILogger)] = false;
-            InitStatus[nameof(FirebaseInitialization)] = false;
-            InitStatus[nameof(AppsFlyerInitialization)] = false;
-            InitStatus[nameof(DevToDevInitialization)] = false;
-            InitStatus[nameof(FacebookSdkInitialization)] = false;
-            InitStatus[nameof(AppLovinInitialization)] = false;
-            
-            foreach (var item in behaviours)
+            foreach (var item in _behaviours)
             {
-                if(item != null)
-                    item.GetInitStatus(() =>
+                if (item == null) continue;
+                
+                var currentItem = item;
+                ServiceType st = currentItem.GetServiceType();
+                
+                Debug.Log(st);
+                
+                if (!InitStatus.Contains(st))
+                {
+                    currentItem.GetInitStatus(() =>
                     {
-                        item.playboxName.PlayboxSplashLogUGUI();
-                        InitStatus[item.playboxName] = true;
-                        
-                    });
+                        lock (InitStatus) 
+                        {
+                            if (!InitStatus.Contains(st))
+                            {
+                                InitStatus.Add(st);
+                            }
+                        }
+                    });   
+                }
             }
             
             ConsentData.ShowConsent(this, () =>
             {
-                foreach (var item in behaviours)
+                foreach (var item in _behaviours)
                 {
-                    if (item != null)
+                    if (item != null && item.ConsentDependency)
                     {
-                        if (item.ConsentDependency)
-                        {
-                            item.Initialization();
-                        }
+                        item.Initialization();
                     }
                 }
                 
                 Invoke(nameof(PostInit),1);
             });
             
-            foreach (var item in behaviours)
+            foreach (var item in _behaviours)
             {
                 if (item != null)
                 {
@@ -141,11 +131,20 @@ namespace Playbox
             }
         }
         
-        void PostInit() => PostInitialization?.Invoke();
-        
+        private void PostInit() => PostInitialization?.Invoke();
+
+        private void AddComponentsToInitialization()
+        {
+            _behaviours.Add(AddToGameObject<FirebaseInitialization>(gameObject));
+            _behaviours.Add(AddToGameObject<DevToDevInitialization>(gameObject,true));
+            _behaviours.Add(AddToGameObject<AppLovinInitialization>(gameObject,true));
+            _behaviours.Add(AddToGameObject<AppsFlyerInitialization>(gameObject,true));
+            _behaviours.Add(AddToGameObject<FacebookSdkInitialization>(gameObject,true));
+        }
+
         private void OnDestroy()
         {
-            foreach (var item in behaviours)
+            foreach (var item in _behaviours)
             { 
                 if(item != null)
                     item.Close();   
@@ -154,12 +153,12 @@ namespace Playbox
         
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            var mainInit = FindFirstObjectByType<MainInitialization>();
+            var initializators = FindObjectsByType<MainInitialization>(FindObjectsInactive.Exclude,FindObjectsSortMode.None);
 
-            if (mainInit != this)
+            foreach (var item in initializators)
             {
-                if(mainInit != null)
-                    Destroy(mainInit.gameObject);
+                if(item != this && item != null)
+                    Destroy(item.gameObject);
             }
         }
         

@@ -9,32 +9,32 @@ namespace Playbox
         [SerializeField]
         protected bool isInitialized = false;
         protected Action initCallback = delegate { };
+        
+        protected ServiceType serviceType = ServiceType.PlayboxBehaviour;
 
         public string playboxName => GetType().Name;
         
         [HideInInspector]
         public bool ConsentDependency = false;
         
-        public static PlayboxBehaviour AddToGameObject<T>(GameObject target, bool hasAdd = true, bool hasConsentDependency = false) where T : PlayboxBehaviour
+        public static PlayboxBehaviour AddToGameObject<T>(GameObject target, bool hasConsentDependency = false) where T : PlayboxBehaviour
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
 
-            if (hasAdd)
-            {
-                var component = target.gameObject.AddComponent<T>();
-                component.ConsentDependency = hasConsentDependency;
+           
+            var component = target.gameObject.AddComponent<T>();
+            component.ConsentDependency = hasConsentDependency;
                 
-                return component;
-            }
-            else
-            {
-                return null;
-            }
+            return component;
+         
         }
 
+        public ServiceType GetServiceType() => serviceType;
+        
         public virtual void Initialization()
         {
+            serviceType = ServiceType.PlayboxBehaviour;
         }
 
         public virtual void GetInitStatus(Action OnInitComplete)

@@ -25,6 +25,8 @@ namespace Playbox.Data
 #if UNITY_IOS
             return "ios";
 #endif
+
+            return "windows";
         }
 
     }

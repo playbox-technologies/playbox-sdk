@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using Playbox.SdkConfigurations;
 using UnityEngine;
 using Utils.Tools.Extentions;
 
@@ -8,11 +7,11 @@ namespace Playbox
 {
     public static class Rewarded
     {
-        private static string unitId;
+        private static string _unitId;
         /// <summary>
         /// Returns the status of the advertisement's readiness for display.
         /// </summary>
-        public static bool isReady()
+        public static bool IsReady()
         {
             var ready = IsReadyStatus();
             return ready == AdReadyStatus.Ready;
@@ -69,7 +68,6 @@ namespace Playbox
         public static Action OnRewarderedReceived;
         public static Action<string> OnPlayerOpened;
         
-        
         private static AppLovinInitialization appLovinInitialization;
         
         /// <summary>
@@ -98,8 +96,8 @@ namespace Playbox
         /// </summary>
         public static string UnitId
         {
-            get => unitId;
-            set => unitId = value;
+            get => _unitId;
+            set => _unitId = value;
         }
         
         /// <summary>
@@ -107,7 +105,7 @@ namespace Playbox
         /// </summary>
         public static void Load()
         {
-            if(isReady())
+            if(IsReady())
                 return;
             
             if (MaxSdk.IsInitialized())
@@ -132,9 +130,9 @@ namespace Playbox
         /// </summary>
         public static void Show(string placement = "default")
         {
-            if (isReady())
+            if (IsReady())
             {
-                MaxSdk.ShowRewardedAd(unitId, placement);    
+                MaxSdk.ShowRewardedAd(_unitId, placement);    
             }
             else
             {
@@ -154,12 +152,12 @@ namespace Playbox
                 return AdReadyStatus.NotInitialized;
             }
 
-            if (string.IsNullOrEmpty(unitId))
+            if (string.IsNullOrEmpty(_unitId))
             {
                 return AdReadyStatus.NullStatus;
             }
 
-            if (MaxSdk.IsRewardedAdReady(unitId))
+            if (MaxSdk.IsRewardedAdReady(_unitId))
             {
                 return AdReadyStatus.Ready;
             }
@@ -173,7 +171,7 @@ namespace Playbox
         {
             while (true)
             {
-                if(!isReady())
+                if(!IsReady())
                     Load(0.3f);
                 yield return new WaitForSecondsRealtime(0.5f);
             }

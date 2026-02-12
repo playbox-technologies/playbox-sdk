@@ -21,6 +21,8 @@ namespace Playbox
         public override void Initialization()
         {
             base.Initialization();
+
+            serviceType = ServiceType.AppsFlyer;
             
             AppsFlyerConfiguration.LoadJsonConfig();
             
