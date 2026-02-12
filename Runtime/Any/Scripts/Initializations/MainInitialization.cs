@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using Any.Scripts.Initializations;
 using Playbox.Consent;
 using Playbox.SdkConfigurations;
@@ -65,12 +64,15 @@ namespace Playbox
         
         private IEnumerator InitializationAfterFrame()
         {
+            Debug.Log("InitializationAfterFrame Pre");
+            
             yield return null;
             yield return new WaitForEndOfFrame();
             
-            "Playbox SDK Init After Frame".PlayboxInfo();
+            Debug.Log("Playbox SDK Init After Frame");
             
             Initialization();
+            
         }
 
         public static bool IsValidate(ServiceType serviceType)
@@ -80,19 +82,43 @@ namespace Playbox
 
         public override void Initialization()
         {
+            Debug.Log("Loading config");
+            
             GlobalPlayboxConfig.Load();
+            
+            Debug.Log("Setup dont destroy");
             
             if(Application.isPlaying)
                 DontDestroyOnLoad(gameObject);
             
+            Debug.Log("Playbox SDK Initialized 0");
+            
             foreach (var item in _behaviours)
             {
-                item?.GetInitStatus(() =>
+                if (item == null) continue;
+                
+                var currentItem = item;
+                ServiceType st = currentItem.GetServiceType();
+                
+                Debug.Log(st);
+                
+                if (!InitStatus.Contains(st))
                 {
-                    item.playboxName.PlayboxSplashLogUGUI();
-                    InitStatus.Add(item.GetSerivceType());
-                });
+                    currentItem.GetInitStatus(() =>
+                    {
+                        lock (InitStatus) 
+                        {
+                            if (!InitStatus.Contains(st))
+                            {
+                                InitStatus.Add(st);
+                                Debug.Log($"[Init] Service {st} registered.");
+                            }
+                        }
+                    });   
+                }
             }
+            
+            Debug.Log("Playbox SDK Initialized 1");
             
             ConsentData.ShowConsent(this, () =>
             {
@@ -124,11 +150,10 @@ namespace Playbox
         private void AddComponentsToInitialization()
         {
             _behaviours.Add(AddToGameObject<FirebaseInitialization>(gameObject));
-            
-            _behaviours.Add(AddToGameObject<DevToDevInitialization>(gameObject,true,true));
-            _behaviours.Add(AddToGameObject<AppLovinInitialization>(gameObject,true,true));
-            _behaviours.Add(AddToGameObject<AppsFlyerInitialization>(gameObject,true,true));
-            _behaviours.Add(AddToGameObject<FacebookSdkInitialization>(gameObject,true,true));
+            _behaviours.Add(AddToGameObject<DevToDevInitialization>(gameObject,true));
+            _behaviours.Add(AddToGameObject<AppLovinInitialization>(gameObject,true));
+            _behaviours.Add(AddToGameObject<AppsFlyerInitialization>(gameObject,true));
+            _behaviours.Add(AddToGameObject<FacebookSdkInitialization>(gameObject,true));
         }
 
         private void OnDestroy()

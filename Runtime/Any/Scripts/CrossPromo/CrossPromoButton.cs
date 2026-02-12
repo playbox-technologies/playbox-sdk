@@ -7,12 +7,6 @@ namespace Playbox
     public class CrossPromoButton : MonoBehaviour
     {
         [SerializeField] private string AfPromoteLink = "";
-        
-        [SerializeField] private string androidPromoteId = "";
-
-        [SerializeField] private string iosPromoteId = "";
-
-        [SerializeField] private string campaign = "";
 
         private void OnEnable()
         {

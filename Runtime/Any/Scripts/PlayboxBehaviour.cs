@@ -17,25 +17,20 @@ namespace Playbox
         [HideInInspector]
         public bool ConsentDependency = false;
         
-        public static PlayboxBehaviour AddToGameObject<T>(GameObject target, bool hasAdd = true, bool hasConsentDependency = false) where T : PlayboxBehaviour
+        public static PlayboxBehaviour AddToGameObject<T>(GameObject target, bool hasConsentDependency = false) where T : PlayboxBehaviour
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
 
-            if (hasAdd)
-            {
-                var component = target.gameObject.AddComponent<T>();
-                component.ConsentDependency = hasConsentDependency;
+           
+            var component = target.gameObject.AddComponent<T>();
+            component.ConsentDependency = hasConsentDependency;
                 
-                return component;
-            }
-            else
-            {
-                return null;
-            }
+            return component;
+         
         }
 
-        public ServiceType GetSerivceType() => serviceType;
+        public ServiceType GetServiceType() => serviceType;
         
         public virtual void Initialization()
         {
