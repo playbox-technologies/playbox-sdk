@@ -30,23 +30,21 @@ namespace Playbox
     /// </summary>
     public static class Analytics
     {
-        public static bool isAppsFlyerInit => IsValidate<AppsFlyerInitialization>();
-        public static bool isAppLovinInit => IsValidate<AppLovinInitialization>();
-        public static bool isDTDInit => IsValidate<DevToDevInitialization>();
-        public static bool isFSBInit => IsValidate<FacebookSdkInitialization>();
-        public static bool isFirebaseInit => IsValidate<FirebaseInitialization>();
+        public static bool IsAppsFlyerInit => IsValidate(ServiceType.AppsFlyer);
+        public static bool IsAppLovinInit => IsValidate(ServiceType.AppLovin);
+        public static bool IsDtdInit => IsValidate(ServiceType.DevToDev);
+        public static bool IsFsbInit => IsValidate(ServiceType.Facebook);
+        public static bool IsFirebaseInit => IsValidate(ServiceType.Firebase);
         
-        public static AnalyticsCustomManagement analyticsCustomManagement = new();
+        public static readonly AnalyticsCustomManagement AnalyticsCustomManagement = new();
 
         public static void RegisterAnalyticsCustomManagement()
         {
-            analyticsCustomManagement.Initialize();
+            AnalyticsCustomManagement.Initialize();
         }
-        
-        private static bool IsValidate<T>() where T : PlayboxBehaviour
-        {
-            return MainInitialization.IsValidate<T>();
-        }
+
+        private static bool IsValidate(ServiceType serviceType) => MainInitialization.IsValidate(serviceType);
+       
         
         /// <summary>
         /// Sends a custom event to AppsFlyer
@@ -57,7 +55,7 @@ namespace Playbox
             
             dict.Add(parameter_name, value.ToString());
             
-            if (isAppsFlyerInit)
+            if (IsAppsFlyerInit)
                 AppsFlyer.sendEvent(eventName, dict);
         }
 
@@ -67,13 +65,13 @@ namespace Playbox
         public static void TrackEvent(string eventName, List<KeyValuePair<string,string>> arguments)
         {
             
-            if(isDTDInit)
+            if(IsDtdInit)
                     DTDAnalytics.CustomEvent(eventName, arguments.ToCustomParameters());
             
             //if (isFirebaseInit)
             //        FirebaseAnalytics.LogEvent(eventName,new Parameter(eventName,JsonUtility.ToJson(arguments)));
             
-            analyticsCustomManagement.TrackEvent(eventName, arguments.ToDictionary(x => x.Key, x => x.Value));
+            AnalyticsCustomManagement.TrackEvent(eventName, arguments.ToDictionary(x => x.Key, x => x.Value));
         }
 
         public static void TrackEvent(string eventName, KeyValuePair<string,string> eventPair)
@@ -81,21 +79,21 @@ namespace Playbox
             var arguments = new Dictionary<string,string>();
             arguments.Add(eventPair.Key, eventPair.Value);
             
-            if(isDTDInit)
+            if(IsDtdInit)
                 DTDAnalytics.CustomEvent(eventName, arguments.ToList().ToCustomParameters());
             
-            analyticsCustomManagement.TrackEvent(eventName, arguments);
+            AnalyticsCustomManagement.TrackEvent(eventName, arguments);
         }
 
         public static void TrackEvent(string eventName)
         {
-            if (isFirebaseInit)
+            if (IsFirebaseInit)
                 FirebaseAnalytics.LogEvent(eventName);
             
-            if (isDTDInit)
+            if (IsDtdInit)
                 DTDAnalytics.CustomEvent(eventName);
             
-            analyticsCustomManagement.TrackEvent(eventName);
+            AnalyticsCustomManagement.TrackEvent(eventName);
         }
 
         public static void LogPurshaseInitiation(ProductDataAdapter product)
@@ -105,7 +103,7 @@ namespace Playbox
             
             TrackEvent("purchasing_init",new KeyValuePair<string, string>("purchasing_init",product.DefinitionId));
             
-            if (isAppsFlyerInit)
+            if (IsAppsFlyerInit)
                 AppsFlyer.sendEvent("af_initiated_checkout",new());
             
         }
@@ -115,7 +113,7 @@ namespace Playbox
         {
             if(purchasedProduct == null)
             {
-                if(isFirebaseInit)
+                if(IsFirebaseInit)
                     Crashlytics.LogException(new Exception("[PlayboxLogging] purchasedProduct is null"));
                 return;
             }
@@ -173,7 +171,7 @@ namespace Playbox
                         }
                     );
                     
-                    analyticsCustomManagement.TrackProductRevenue(new ProductDataAdapter()
+                    AnalyticsCustomManagement.TrackProductRevenue(new ProductDataAdapter()
                     {
                         DefinitionId = productId,
                         Receipt = purchasedProduct.Receipt,
@@ -191,7 +189,7 @@ namespace Playbox
         {
             Events.AdImpression(impressionData.NetworkName, impressionData.Revenue, impressionData.Placement, impressionData.AdUnitIdentifier);
 
-            if (isFirebaseInit)
+            if (IsFirebaseInit)
             {
                 double revenue = impressionData.Revenue;
                 var impressionParameters = new[]
@@ -207,18 +205,18 @@ namespace Playbox
                 
             }
             
-            analyticsCustomManagement.TrackAd(impressionData);
+            AnalyticsCustomManagement.TrackAd(impressionData);
         }
         
         public static class Events
         {
             public static void LogLevelUp(int level)
             {
-                if (isDTDInit)
+                if (IsDtdInit)
                     DTDAnalytics.LevelUp(level);
             
                 SendAppsFlyerEvent("af_level_achieved","level",level);
-                analyticsCustomManagement.LogLevelUp(level);
+                AnalyticsCustomManagement.LogLevelUp(level);
             }
             
             /// <summary>
@@ -226,7 +224,7 @@ namespace Playbox
             /// </summary>
             public static void TutorialCompleted()
             {
-                if (isAppsFlyerInit)
+                if (IsAppsFlyerInit)
                     AppsFlyer.sendEvent("af_tutorial_completion", new());
             }
             
@@ -236,7 +234,7 @@ namespace Playbox
             public static void AdToCart(int count) // more than 30 ad impressions
             {
                 SendAppsFlyerEvent("af_add_to_cart","count", count);
-                analyticsCustomManagement.AdToCart(count);
+                AnalyticsCustomManagement.AdToCart(count);
             }
             
             /// <summary>
@@ -246,7 +244,7 @@ namespace Playbox
             public static void AdRewardCount(int count) // ad views
             {
                 SendAppsFlyerEvent("ad_reward","count", count);
-                analyticsCustomManagement.AdRewardCount(count);
+                AnalyticsCustomManagement.AdRewardCount(count);
             }
 
             /// <summary>
@@ -254,8 +252,8 @@ namespace Playbox
             /// </summary>
             public static void CurrentBalance(Dictionary<string, long> balance)
             {
-                if (isDTDInit) DTDAnalytics.CurrentBalance(balance);
-                analyticsCustomManagement.CurrentBalance(balance);
+                if (IsDtdInit) DTDAnalytics.CurrentBalance(balance);
+                AnalyticsCustomManagement.CurrentBalance(balance);
             }
             
             /// <summary>
@@ -264,15 +262,15 @@ namespace Playbox
             public static void CurrencyAccrual(string currencyName, int currencyAmount, string source,
                 DTDAccrualType type)
             {
-                if (isDTDInit) DTDAnalytics.CurrencyAccrual(currencyName, currencyAmount, source, type);
+                if (IsDtdInit) DTDAnalytics.CurrencyAccrual(currencyName, currencyAmount, source, type);
             }
             /// <summary>
             /// Logs a real-money purchase transaction to DevToDev.
             /// </summary>
             public static void RealCurrencyPayment(string orderId, double price, string productId, string currencyCode)
             {
-                if (isDTDInit) DTDAnalytics.RealCurrencyPayment(orderId, price, productId, currencyCode);
-                analyticsCustomManagement.RealCurrencyPayment(orderId, price, productId, currencyCode);
+                if (IsDtdInit) DTDAnalytics.RealCurrencyPayment(orderId, price, productId, currencyCode);
+                AnalyticsCustomManagement.RealCurrencyPayment(orderId, price, productId, currencyCode);
             }
             /// <summary>
             /// Logs a virtual currency purchase transaction to DevToDev.
@@ -280,85 +278,85 @@ namespace Playbox
             public static void VirtualCurrencyPayment(string purchaseId, string purchaseType, int purchaseAmount,
                 Dictionary<string, int> resources)
             {
-                if (isDTDInit) DTDAnalytics.VirtualCurrencyPayment(purchaseId, purchaseType, purchaseAmount, resources);
-                analyticsCustomManagement.VirtualCurrencyPayment(purchaseId, purchaseType, purchaseAmount, resources);
+                if (IsDtdInit) DTDAnalytics.VirtualCurrencyPayment(purchaseId, purchaseType, purchaseAmount, resources);
+                AnalyticsCustomManagement.VirtualCurrencyPayment(purchaseId, purchaseType, purchaseAmount, resources);
             }
             /// <summary>
             /// Logs an ad impression event with revenue details to DevToDev.
             /// </summary>
             public static void AdImpression(string network, double revenue, string placement, string unit)
             {
-                if (isDTDInit) DTDAnalytics.AdImpression(network, revenue, placement, unit);
+                if (IsDtdInit) DTDAnalytics.AdImpression(network, revenue, placement, unit);
             }
             /// <summary>
             /// Tracks a tutorial step completion in DevToDev.
             /// </summary>
             public static void Tutorial(int step)
             {
-                if (isDTDInit) DTDAnalytics.Tutorial(step);
+                if (IsDtdInit) DTDAnalytics.Tutorial(step);
             }
             /// <summary>
             /// Logs a successful social network connection event to DevToDev.
             /// </summary>
             public static void SocialNetworkConnect(DTDSocialNetwork socialNetwork)
             {
-                if (isDTDInit) DTDAnalytics.SocialNetworkConnect(socialNetwork);
+                if (IsDtdInit) DTDAnalytics.SocialNetworkConnect(socialNetwork);
             }
             /// <summary>
             /// Logs a social network post event to DevToDev.
             /// </summary>
             public static void SocialNetworkPost(DTDSocialNetwork socialNetwork, string reason)
             {
-                if (isDTDInit) DTDAnalytics.SocialNetworkPost(socialNetwork, reason);
+                if (IsDtdInit) DTDAnalytics.SocialNetworkPost(socialNetwork, reason);
             }
             /// <summary>
             /// Logs referral information (source, campaign, etc.) to DevToDev.
             /// </summary>
             public static void Referrer(Dictionary<DTDReferralProperty, string> referrer)
             {
-                if (isDTDInit) DTDAnalytics.Referrer(referrer);
+                if (IsDtdInit) DTDAnalytics.Referrer(referrer);
             }
             /// <summary>
             /// Sends a purchase event with provided values to AppsFlyer.
             /// </summary>
             public static void AppsFlyerPayment(Dictionary<string,string> appsFlyerPaymentValues)
             {
-                if (isAppsFlyerInit) AppsFlyer.sendEvent("af_purchase", appsFlyerPaymentValues);
+                if (IsAppsFlyerInit) AppsFlyer.sendEvent("af_purchase", appsFlyerPaymentValues);
             }
             /// <summary>
             /// Starts tracking a progression event in DevToDev.
             /// </summary>
             public static void StartProgressionEvent(string eventName)
             {
-                if (isDTDInit) DTDAnalytics.StartProgressionEvent(eventName);
+                if (IsDtdInit) DTDAnalytics.StartProgressionEvent(eventName);
             }
             /// <summary>
             /// Starts tracking a progression event with custom parameters in DevToDev.
             /// </summary>
             public static void StartProgressionEvent(string eventName, DTDStartProgressionEventParameters parameters)
             {
-                if (isDTDInit) DTDAnalytics.StartProgressionEvent(eventName, parameters);
+                if (IsDtdInit) DTDAnalytics.StartProgressionEvent(eventName, parameters);
             }
             /// <summary>
             /// Marks a progression event as finished in DevToDev.
             /// </summary>
             public static void FinishProgressionEvent(string eventName)
             {
-                if (isDTDInit) DTDAnalytics.FinishProgressionEvent(eventName);
+                if (IsDtdInit) DTDAnalytics.FinishProgressionEvent(eventName);
             }
             /// <summary>
             /// Marks a progression event as finished with custom parameters in DevToDev.
             /// </summary>
             public static void FinishProgressionEvent(string eventName, DTDFinishProgressionEventParameters parameters)
             {
-                if (isDTDInit) DTDAnalytics.FinishProgressionEvent(eventName, parameters);
+                if (IsDtdInit) DTDAnalytics.FinishProgressionEvent(eventName, parameters);
             }
             /// <summary>
             /// Sends a custom log message to Firebase Crashlytics.
             /// </summary>
             public static void CrashlyticsLog(string eventName, string message)
             {
-                if (isFirebaseInit)
+                if (IsFirebaseInit)
                 {
                     Crashlytics.Log($"{eventName} : {message}");
                 }
@@ -366,7 +364,7 @@ namespace Playbox
             
             public static void FirebaseEvent(string eventName, string message)
             {
-                if (isFirebaseInit)
+                if (IsFirebaseInit)
                 {
                     FirebaseAnalytics.LogEvent($"{eventName} : {message}");
                 }
@@ -374,7 +372,7 @@ namespace Playbox
 
             public static void TrackProductRevenue(ProductDataAdapter productDataAdapter)
             {
-                analyticsCustomManagement.TrackProductRevenue(productDataAdapter);
+                AnalyticsCustomManagement.TrackProductRevenue(productDataAdapter);
             }
         }
     }

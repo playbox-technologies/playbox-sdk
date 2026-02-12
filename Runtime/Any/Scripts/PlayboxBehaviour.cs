@@ -9,6 +9,8 @@ namespace Playbox
         [SerializeField]
         protected bool isInitialized = false;
         protected Action initCallback = delegate { };
+        
+        protected ServiceType serviceType = ServiceType.PlayboxBehaviour;
 
         public string playboxName => GetType().Name;
         
@@ -33,8 +35,11 @@ namespace Playbox
             }
         }
 
+        public ServiceType GetSerivceType() => serviceType;
+        
         public virtual void Initialization()
         {
+            serviceType = ServiceType.PlayboxBehaviour;
         }
 
         public virtual void GetInitStatus(Action OnInitComplete)

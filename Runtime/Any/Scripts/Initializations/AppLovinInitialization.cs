@@ -13,6 +13,8 @@ namespace Playbox
         public override void Initialization()
         {
             base.Initialization();
+
+            serviceType = ServiceType.AppLovin;
             
             if (ConsentData.IsChildUser)
                 return;

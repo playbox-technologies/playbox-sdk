@@ -95,6 +95,10 @@ namespace Playbox
 
         public override void Initialization()
         {
+            base.Initialization();
+
+            serviceType = ServiceType.PlayboxSplashLogger;
+            
             Init();
             ApproveInitialization();
         }

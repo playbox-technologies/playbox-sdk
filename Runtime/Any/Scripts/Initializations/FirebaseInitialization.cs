@@ -11,6 +11,8 @@ namespace Playbox
         {
             base.Initialization();
             
+            serviceType = ServiceType.Firebase;
+            
             InitializeCrashlytics();
  
         }

@@ -13,6 +13,10 @@ namespace Playbox
 
         public override void Initialization()
         {
+            base.Initialization();
+
+            serviceType = ServiceType.DevToDev;
+            
             DevToDevConfiguration.LoadJsonConfig();
             
             if(!DevToDevConfiguration.Active)
