@@ -94,7 +94,7 @@ namespace Playbox.Consent
             mono.StartCoroutine(ConsentUpdate(() =>
             {
                 
-#if PBX_DEVELOPMENT || UNITY_IOS
+#if UNITY_IOS
 
                 bool isAttComplete = false;
                 
@@ -116,7 +116,7 @@ namespace Playbox.Consent
                     AdvertisingId = advertisingId;
                 });
 
-#if UNITY_ANDROID || UNITY_EDITOR
+#if UNITY_ANDROID
                 callback?.Invoke();
 #endif
             }));

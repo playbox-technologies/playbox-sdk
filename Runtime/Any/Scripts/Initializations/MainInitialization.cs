@@ -41,7 +41,6 @@ namespace Playbox
             PostInitialization += () =>
             {
                 OnPostInitializatioon?.Invoke();
-                OnPostInitializatioon = null;
                 
                 Analytics.RegisterAnalyticsCustomManagement();
             };
@@ -116,7 +115,9 @@ namespace Playbox
                     }
                 }
                 
-                Invoke(nameof(PostInit),1);
+                Debug.Log("Start Post Initialization");
+                
+                StartCoroutine(PostInit());
             });
             
             foreach (var item in _behaviours)
@@ -130,8 +131,13 @@ namespace Playbox
                 }
             }
         }
-        
-        private void PostInit() => PostInitialization?.Invoke();
+
+        private IEnumerator PostInit()
+        {
+            yield return new WaitForSeconds(1);
+
+            PostInitialization?.Invoke();
+        }
 
         private void AddComponentsToInitialization()
         {
