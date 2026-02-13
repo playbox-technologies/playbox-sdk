@@ -135,11 +135,16 @@ namespace Playbox
 
         private void AddComponentsToInitialization()
         {
-            _behaviours.Add(AddToGameObject<FirebaseInitialization>(gameObject));
-            _behaviours.Add(AddToGameObject<DevToDevInitialization>(gameObject,true));
-            _behaviours.Add(AddToGameObject<AppLovinInitialization>(gameObject,true));
-            _behaviours.Add(AddToGameObject<AppsFlyerInitialization>(gameObject,true));
-            _behaviours.Add(AddToGameObject<FacebookSdkInitialization>(gameObject,true));
+            AddService<FirebaseInitialization>();
+            AddService<DevToDevInitialization>(true);
+            AddService<AppLovinInitialization>(true);
+            AddService<AppsFlyerInitialization>(true);
+            AddService<FacebookSdkInitialization>(true);
+        }
+
+        private void AddService<T>(bool isWaitConsent = false) where T : PlayboxBehaviour
+        {
+            _behaviours.Add(AddToGameObject<T>(gameObject, isWaitConsent));
         }
 
         private void OnDestroy()
