@@ -1,10 +1,8 @@
-﻿using Utils.Tools.Extentions;
+﻿using GoogleMobileAds.Ump.Api;
+using UnityEngine;
 
 namespace Playbox.Consent
 {
-    using GoogleMobileAds.Ump.Api;
-    using UnityEngine;
-    
     public static class GoogleUmpManager
     {
         public static void RequestConsentInfo()
@@ -43,8 +41,6 @@ namespace Playbox.Consent
         
         public static void RequestConsentInfoDebug(ConsentDebugSettings consentDebugSettings)
         {
-            "Consent Info Debug".PlayboxInfo();
-            
             ConsentRequestParameters requestParameters = new ConsentRequestParameters
             {
                 TagForUnderAgeOfConsent = false,

@@ -13,7 +13,6 @@ namespace Playbox.Consent
     {
         public static void ShowATTUI(MonoBehaviour mono, Action<bool> onComplete)
         {
-
             mono.StartCoroutine(IosATTStatus(status =>
             {
                 if (status == ATTrackingStatusBinding.AuthorizationTrackingStatus.AUTHORIZED)
@@ -27,55 +26,46 @@ namespace Playbox.Consent
                     onComplete?.Invoke(false);
                     "ATT: DENIED".PlayboxSplashLogUGUI();
                 }
-                
+
                 if (status == ATTrackingStatusBinding.AuthorizationTrackingStatus.RESTRICTED)
                 {
                     onComplete?.Invoke(false);
                     "ATT: RESTRICTED".PlayboxSplashLogUGUI();
                 }
-                
+
                 if (status == ATTrackingStatusBinding.AuthorizationTrackingStatus.NOT_DETERMINED)
-                {
                     "ATT: NOT_DETERMINED".PlayboxSplashLogUGUI();
-                }
-                
             }));
         }
 
-        private static IEnumerator IosATTStatus( Action<ATTrackingStatusBinding.AuthorizationTrackingStatus> action)
+        private static IEnumerator IosATTStatus(Action<ATTrackingStatusBinding.AuthorizationTrackingStatus> action)
         {
-            
             yield return new WaitForSeconds(0.4f);
 
             if (Application.isEditor)
             {
                 action?.Invoke(ATTrackingStatusBinding.AuthorizationTrackingStatus.AUTHORIZED);
                 "ATT: EDITOR".PlayboxSplashLogUGUI();
-                
+
                 yield break;
             }
-            
+
             var attStatus = ATTrackingStatusBinding.GetAuthorizationTrackingStatus();
             if (attStatus == ATTrackingStatusBinding.AuthorizationTrackingStatus.NOT_DETERMINED)
-            {
                 ATTrackingStatusBinding.RequestAuthorizationTracking();
-            }
 
             AppsFlyer.waitForATTUserAuthorizationWithTimeoutInterval(20);
-            
+
             while (true)
             {
                 var status = ATTrackingStatusBinding.GetAuthorizationTrackingStatus();
-                if (status != ATTrackingStatusBinding.AuthorizationTrackingStatus.NOT_DETERMINED)
-                {
-                    break;
-                }
+                if (status != ATTrackingStatusBinding.AuthorizationTrackingStatus.NOT_DETERMINED) break;
 
                 yield return new WaitForSecondsRealtime(0.5f);
             }
 
             var finalStatus = ATTrackingStatusBinding.GetAuthorizationTrackingStatus();
-            
+
             action?.Invoke(finalStatus);
         }
     }

@@ -83,7 +83,11 @@ namespace Playbox.Consent
         private static void RequestConsent(bool isDebug)
         {
             if (isDebug)
+            {
+                _debugSettings.DebugGeography = DebugGeography.EEA;
+                
                 GoogleUmpManager.RequestConsentInfoDebug(_debugSettings);
+            }
             else
                 GoogleUmpManager.RequestConsentInfo();
         }
@@ -91,7 +95,7 @@ namespace Playbox.Consent
         public static void ShowConsent(MonoBehaviour mono, Action callback, bool isDebug = false)
         {
             
-            RequestConsent(isDebug);
+            RequestConsent(Application.isEditor);
             
             mono.StartCoroutine(ConsentUpdate(() =>
             {
