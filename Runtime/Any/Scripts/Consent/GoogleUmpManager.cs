@@ -9,8 +9,6 @@ namespace Playbox.Consent
     {
         public static void RequestConsentInfo()
         {
-            "Consent Info Prod".PlayboxInfo();
-            
             ConsentRequestParameters requestParameters = new ConsentRequestParameters
             {
                 TagForUnderAgeOfConsent = false
@@ -20,8 +18,6 @@ namespace Playbox.Consent
                 {
                     if (error != null)
                     {
-                        Debug.LogError("Consent form error: " + error.Message);
-                    
                         ConsentData.ConsentDeny();
                         return;
                     }
