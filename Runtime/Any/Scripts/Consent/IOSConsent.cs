@@ -1,4 +1,5 @@
-﻿#if PBX_DEVELOPMENT || UNITY_IOS
+﻿#if UNITY_IOS
+
 using System;
 using System.Collections;
 using AppsFlyerSDK;
@@ -13,7 +14,7 @@ namespace Playbox.Consent
         public static void ShowATTUI(MonoBehaviour mono, Action<bool> onComplete)
         {
 
-            mono.StartCoroutine(IosATTStatus(360, status =>
+            mono.StartCoroutine(IosATTStatus(status =>
             {
                 if (status == ATTrackingStatusBinding.AuthorizationTrackingStatus.AUTHORIZED)
                 {
@@ -41,7 +42,7 @@ namespace Playbox.Consent
             }));
         }
 
-        private static IEnumerator IosATTStatus(float timeout, Action<ATTrackingStatusBinding.AuthorizationTrackingStatus> action)
+        private static IEnumerator IosATTStatus( Action<ATTrackingStatusBinding.AuthorizationTrackingStatus> action)
         {
             
             yield return new WaitForSeconds(0.4f);
@@ -62,8 +63,6 @@ namespace Playbox.Consent
 
             AppsFlyer.waitForATTUserAuthorizationWithTimeoutInterval(20);
             
-            float elapsed = 0f;
-            
             while (true)
             {
                 var status = ATTrackingStatusBinding.GetAuthorizationTrackingStatus();
@@ -73,7 +72,6 @@ namespace Playbox.Consent
                 }
 
                 yield return new WaitForSecondsRealtime(0.5f);
-                elapsed += 0.5f;
             }
 
             var finalStatus = ATTrackingStatusBinding.GetAuthorizationTrackingStatus();

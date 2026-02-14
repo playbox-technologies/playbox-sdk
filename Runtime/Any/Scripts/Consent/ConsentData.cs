@@ -5,7 +5,6 @@ using UnityEngine;
 using Utils.Tools.Extentions;
 
 #if UNITY_IOS
-using Unity.Advertisement.IosSupport;
 using UnityEngine.iOS;
 #endif
 
@@ -48,7 +47,6 @@ namespace Playbox.Consent
             HasDoNotSell = true;
 
             "Consent Allow".PlayboxInfo();
-            //consentCallback?.Invoke(true);
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
@@ -64,7 +62,6 @@ namespace Playbox.Consent
             HasDoNotSell = true;
             
             "Consent Deny".PlayboxInfo();
-            //consentCallback?.Invoke(false);
         }
 
         private static IEnumerator ConsentUpdate(Action consentComplete)
@@ -82,14 +79,19 @@ namespace Playbox.Consent
                 yield return new WaitForSeconds(0.1f);
             }
         }
+
+        private static void RequestConsent(bool isDebug)
+        {
+            if (isDebug)
+                GoogleUmpManager.RequestConsentInfoDebug(_debugSettings);
+            else
+                GoogleUmpManager.RequestConsentInfo();
+        }
         
         public static void ShowConsent(MonoBehaviour mono, Action callback, bool isDebug = false)
         {
             
-            if(isDebug)
-                GoogleUmpManager.RequestConsentInfoDebug(_debugSettings);
-            else
-                GoogleUmpManager.RequestConsentInfo();
+            RequestConsent(isDebug);
             
             mono.StartCoroutine(ConsentUpdate(() =>
             {
