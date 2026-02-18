@@ -56,8 +56,8 @@ namespace Playbox.SdkWindow
             
             foreach (var item in drawableWindowList)
             {
-                item.FieldHeight = FieldHeight;
-                item.FieldWidth = FieldWidth;
+                DrawableWindow.FieldHeight = FieldHeight;
+                DrawableWindow.FieldWidth = FieldWidth;
                 
                 GUILayout.BeginVertical();
                 

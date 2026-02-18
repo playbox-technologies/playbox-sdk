@@ -14,20 +14,20 @@ namespace Playbox.SdkWindow
         public bool active;
         public bool hasUnsavedChanges;
         
-        protected float field_width = 300;
-        protected float field_height = 15;
-        protected float footerSpace = 10;
-        protected float headerSpace = 10;
+        protected static float field_width = 300;
+        protected static float field_height = 15;
+        protected static float footerSpace = 10;
+        protected static float headerSpace = 10;
     
         protected JObject configuration;
 
-        public float FieldWidth
+        public static float FieldWidth
         {
             get => field_width;
             set => field_width = value;
         }
 
-        public float FieldHeight
+        public static float FieldHeight
         {
             get => field_height;
             set => field_height = value;

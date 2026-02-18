@@ -3,10 +3,13 @@ using Playbox.SdkConfigurations;
 using UnityEditor;
 
 #if UNITY_EDITOR
+using Editor.Utils.Layout;
 using UnityEngine;
 
 namespace Playbox.SdkWindow
 {
+    using PGUI = PlayboxLayout;
+    
     public class AppLovinWindow : DrawableWindow
     {
         AppLovinData appLovinData;
@@ -33,41 +36,41 @@ namespace Playbox.SdkWindow
             GUILayout.EndHorizontal();
 
             EditorGUILayout.Separator();
+            
+            PGUI.Horizontal(() =>
+            {
+                PGUI.Label("Has Use Rewarded Ad : ");
+                
+                PGUI.Toggle("",appLovinData._isUseReward, (b) =>
+                {
+                    appLovinData._isUseReward = b;
+                });
+                
+            });
+            
+            PGUI.Separator();
+            
+            PGUI.Vertical(() =>
+            {
+                PGUI.Horizontal(() =>
+                {
+                    PGUI.Label("IOS rewarded unit id : ");
+                    PGUI.TextField(appLovinData._iosKeyRew,(text)=> appLovinData._iosKeyRew = text);
+                });
 
-            GUILayout.BeginHorizontal();
-
-            GUILayout.Label("Has Use Rewarded Ad : ", GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight),
-                GUILayout.Width(FieldWidth));
-            appLovinData._isUseReward = EditorGUILayout.Toggle("", appLovinData._isUseReward, GUILayout.ExpandWidth(false),
-                GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-
-            GUILayout.EndHorizontal();
+                PGUI.Separator();
+                
+                PGUI.Horizontal(() =>
+                {
+                    PGUI.Label("Android rewarded unit id : ");
+                    PGUI.TextField(appLovinData._androidKeyRew,(text)=> appLovinData._androidKeyRew = text);
+                });
+                
+            },appLovinData._isUseReward);
 
             EditorGUILayout.Separator();
-
-            if (appLovinData._isUseReward)
-            {
-                GUILayout.BeginHorizontal();
-
-                GUILayout.Label("IOS rewarded unit id : ", GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight),
-                    GUILayout.Width(FieldWidth));
-                appLovinData._iosKeyRew = GUILayout.TextField(appLovinData._iosKeyRew, GUILayout.ExpandWidth(false),
-                    GUILayout.Height(FieldHeight),
-                    GUILayout.Width(FieldWidth));
-
-                GUILayout.EndHorizontal();
-
-                GUILayout.BeginHorizontal();
-
-                GUILayout.Label("Android rewarded unit id : ", GUILayout.ExpandWidth(false),
-                    GUILayout.Height(FieldHeight),
-                    GUILayout.Width(FieldWidth));
-                appLovinData._androidKeyRew = GUILayout.TextField(appLovinData._androidKeyRew, GUILayout.ExpandWidth(false),
-                    GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-
-                GUILayout.EndHorizontal();
-            }
-
+            
+            
             EditorGUILayout.Separator();
 
             GUILayout.BeginHorizontal();
@@ -80,30 +83,30 @@ namespace Playbox.SdkWindow
             GUILayout.EndHorizontal();
 
             EditorGUILayout.Separator();
-
-            if (appLovinData._isUseInterstitial)
+            
+            PlayboxLayout.Vertical(() =>
             {
-                GUILayout.BeginHorizontal();
+                PlayboxLayout.Horizontal(() =>
+                {
+                    GUILayout.Label("IOS interstitial unit id : ", GUILayout.ExpandWidth(false),
+                        GUILayout.Height(FieldHeight),
+                        GUILayout.Width(FieldWidth));
+                    appLovinData._iosKeyInter = GUILayout.TextField(appLovinData._iosKeyInter, GUILayout.ExpandWidth(false),
+                        GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));    
+                });
 
-                GUILayout.Label("IOS interstitial unit id : ", GUILayout.ExpandWidth(false),
-                    GUILayout.Height(FieldHeight),
-                    GUILayout.Width(FieldWidth));
-                appLovinData._iosKeyInter = GUILayout.TextField(appLovinData._iosKeyInter, GUILayout.ExpandWidth(false),
-                    GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-
-                GUILayout.EndHorizontal();
-
-                GUILayout.BeginHorizontal();
-
-                GUILayout.Label("Android interstitial unit id : ", GUILayout.ExpandWidth(false),
-                    GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-                appLovinData._androidKeyInter = GUILayout.TextField(appLovinData._androidKeyInter, GUILayout.ExpandWidth(false),
-                    GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-
-                GUILayout.EndHorizontal();
-            }
-
-            hasUnsavedChanges = true;
+                PlayboxLayout.Horizontal(() =>
+                {
+                    GUILayout.Label("Android interstitial unit id : ", GUILayout.ExpandWidth(false),
+                        GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+                    
+                    appLovinData._androidKeyInter = GUILayout.TextField(appLovinData._androidKeyInter, GUILayout.ExpandWidth(false),
+                        GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));    
+                    
+                });
+                
+            },appLovinData._isUseInterstitial);
+            
         }
 
         public override void Save()
