@@ -108,6 +108,7 @@ namespace Playbox.SdkWindow
 
         public override void Save()
         {
+            appLovinData.active = active;
             
             AppLovinConfiguration.appLovinData = appLovinData;
 
@@ -119,6 +120,7 @@ namespace Playbox.SdkWindow
             AppLovinConfiguration.LoadJsonConfig();
             
             appLovinData = AppLovinConfiguration.appLovinData;
+            active = appLovinData.active;
 
             base.Load();
         }
