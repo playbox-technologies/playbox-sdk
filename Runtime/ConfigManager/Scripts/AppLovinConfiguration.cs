@@ -113,16 +113,16 @@ namespace Playbox.SdkConfigurations
                 
                 return;
             }
-            
-            _iosKeyRew = obj.Get<string>(nameof(_iosKeyRew));
-            _iosKeyInter = obj.Get<string>(nameof(_iosKeyInter));
-            _androidKeyRew = obj.Get<string>(nameof(_androidKeyRew));
-            _androidKeyInter = obj.Get<string>(nameof(_androidKeyInter));
-            advertisementSdk = obj.Get<string>(nameof(advertisementSdk));
-            active = obj.Get<bool>(nameof(active));
-            _isUseInterstitial = obj.Get<bool>(nameof(_isUseInterstitial));
-            _isUseReward = obj.Get<bool>(nameof(_isUseReward));
-            _isAsync = obj.Get<bool>(nameof(_isAsync));
+        
+            _iosKeyRew = (string)obj[nameof(_iosKeyRew)];
+            _iosKeyInter = (string)obj[nameof(_iosKeyInter)];
+            _androidKeyRew = (string)obj[nameof(_androidKeyRew)];
+            _androidKeyInter = (string)obj[nameof(_androidKeyInter)];
+            advertisementSdk = (string)obj[nameof(advertisementSdk)];
+            active = (bool)(obj[nameof(active)] ?? false);
+            _isUseInterstitial = (bool)(obj[nameof(_isUseInterstitial)] ?? false);
+            _isUseReward = (bool)(obj[nameof(_isUseReward)] ?? false);
+            _isAsync = (bool)(obj[nameof(_isAsync)] ?? false);
 
             _isConfigured = true;
 
