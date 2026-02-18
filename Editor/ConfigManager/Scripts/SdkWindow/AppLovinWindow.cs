@@ -115,14 +115,14 @@ namespace Playbox.SdkWindow
 
         public override void Save()
         {
-            AppLovinConfiguration.AndroidKey_rew = android_key_rew;
-            AppLovinConfiguration.AndroidKey_iter = android_key_inter;
-            AppLovinConfiguration.IOSKey_rew = ios_key_rew;
-            AppLovinConfiguration.IOSKey_inter = ios_key_inter;
-            AppLovinConfiguration.Active = active;
-            AppLovinConfiguration.AdvertisementSdk = advertisementSdk;
-            AppLovinConfiguration.IsUseInterstitial = isUseInterstitial;
-            AppLovinConfiguration.IsUseReward = isUseReward;
+            AppLovinConfiguration.appLovinData._androidKeyRew = android_key_rew;
+            AppLovinConfiguration.appLovinData._androidKeyInter = android_key_inter;
+            AppLovinConfiguration.appLovinData._iosKeyRew = ios_key_rew;
+            AppLovinConfiguration.appLovinData._iosKeyInter = ios_key_inter;
+            AppLovinConfiguration.appLovinData.active = active;
+            AppLovinConfiguration.appLovinData.advertisementSdk = advertisementSdk;
+            AppLovinConfiguration.appLovinData._isUseInterstitial = isUseInterstitial;
+            AppLovinConfiguration.appLovinData._isUseReward = isUseReward;
 
             AppLovinConfiguration.SaveJsonConfig();
         }
@@ -131,14 +131,14 @@ namespace Playbox.SdkWindow
         {
             AppLovinConfiguration.LoadJsonConfig();
 
-            android_key_rew = AppLovinConfiguration.AndroidKey_rew;
-            android_key_inter = AppLovinConfiguration.AndroidKey_iter;
-            ios_key_rew = AppLovinConfiguration.IOSKey_rew;
-            ios_key_inter = AppLovinConfiguration.IOSKey_inter;
-            active = AppLovinConfiguration.Active;
-            advertisementSdk = AppLovinConfiguration.AdvertisementSdk;
-            isUseReward = AppLovinConfiguration.IsUseReward;
-            isUseInterstitial = AppLovinConfiguration.IsUseInterstitial;
+            android_key_rew = AppLovinConfiguration.appLovinData._androidKeyRew;
+            android_key_inter = AppLovinConfiguration.appLovinData._androidKeyInter;
+            ios_key_rew = AppLovinConfiguration.appLovinData._iosKeyRew;
+            ios_key_inter = AppLovinConfiguration.appLovinData._iosKeyInter;
+            active = AppLovinConfiguration.appLovinData.active;
+            advertisementSdk = AppLovinConfiguration.appLovinData.advertisementSdk;
+            isUseReward = AppLovinConfiguration.appLovinData._isUseReward;
+            isUseInterstitial = AppLovinConfiguration.appLovinData._isUseInterstitial;
 
             base.Load();
         }
