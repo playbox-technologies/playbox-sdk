@@ -22,6 +22,8 @@ namespace Playbox
                 RuntimePlatform.IPhonePlayer => iOSID,
                 _ => iOSID
             };
+            
+            Debug.Log(_unitId);
         }
         
         [Obsolete("This method is experimental and may change in future versions of the SDK.")]
