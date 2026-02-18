@@ -1,4 +1,4 @@
-﻿#if UNITY_6000
+﻿#if UNITY_6000_0_OR_NEWER
 using System;
 using UnityEngine;
 

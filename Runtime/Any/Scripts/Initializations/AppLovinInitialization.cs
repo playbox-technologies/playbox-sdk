@@ -64,7 +64,7 @@ namespace Playbox
             bool isInterstitial = AppLovinConfiguration.IsUseInterstitial;
             bool isReward = AppLovinConfiguration.IsUseReward;
 
-#if UNITY_6000
+#if UNITY_6000_0_OR_NEWER
             if (isReward)
             {
                 RewardedAd.RegisterUnitID(AppLovinConfiguration.AndroidKey_rew,AppLovinConfiguration.IOSKey_rew);
