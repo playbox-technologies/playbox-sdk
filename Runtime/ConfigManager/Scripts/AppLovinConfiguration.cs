@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using Utils.Tools.Extentions;
+using Utils.Tools.Serializer;
 
 namespace Playbox.SdkConfigurations
 { 
@@ -8,6 +9,7 @@ namespace Playbox.SdkConfigurations
     /// </summary>
     public static class AppLovinConfiguration
     {
+        private static bool _isAsync = false;
         private static bool _isConfigured = false;
         private static bool _isUseReward = true;
         private static bool _isUseInterstitial = true;
@@ -71,6 +73,12 @@ namespace Playbox.SdkConfigurations
             set => _isUseInterstitial = value;
         }
 
+        public static bool IsAsync
+        {
+            get => _isAsync;
+            set => _isAsync = value;
+        }
+
 
         public static JObject GetJsonConfig()
         {
@@ -105,18 +113,21 @@ namespace Playbox.SdkConfigurations
                 
                 return;
             }
-        
-            _iosKeyRew = (string)obj[nameof(_iosKeyRew)];
-            _iosKeyInter = (string)obj[nameof(_iosKeyInter)];
-            _androidKeyRew = (string)obj[nameof(_androidKeyRew)];
-            _androidKeyInter = (string)obj[nameof(_androidKeyInter)];
-            advertisementSdk = (string)obj[nameof(advertisementSdk)];
-            active = (bool)(obj[nameof(active)] ?? false);
-            _isUseInterstitial = (bool)(obj[nameof(_isUseInterstitial)] ?? false);
-            _isUseReward = (bool)(obj[nameof(_isUseReward)] ?? false);
+            
+            _iosKeyRew = obj.Get<string>(nameof(_iosKeyRew));
+            _iosKeyInter = obj.Get<string>(nameof(_iosKeyInter));
+            _androidKeyRew = obj.Get<string>(nameof(_androidKeyRew));
+            _androidKeyInter = obj.Get<string>(nameof(_androidKeyInter));
+            advertisementSdk = obj.Get<string>(nameof(advertisementSdk));
+            active = obj.Get<bool>(nameof(active));
+            _isUseInterstitial = obj.Get<bool>(nameof(_isUseInterstitial));
+            _isUseReward = obj.Get<bool>(nameof(_isUseReward));
+            _isAsync = obj.Get<bool>(nameof(_isAsync));
 
             _isConfigured = true;
 
         }
+        
+        
     }
 }
