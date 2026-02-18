@@ -18,9 +18,10 @@ namespace Playbox
         [SerializeField] private UnityEvent OnPostInitializatioon;
         
         [SerializeField] private List<BaseAnalyticsRegistrator> analyticsRegistrator = new();
+        [SerializeField] private List<PlayboxBehaviour> _behaviours = new();
         
-        [SerializeField]
-        private List<PlayboxBehaviour> _behaviours = new();
+        private AdAnalytics.AdAnalytics _adAnalytics = new();
+        
         private static readonly HashSet<ServiceType> InitStatus = new();
 
         public static Action PostInitialization = delegate { };
@@ -43,6 +44,9 @@ namespace Playbox
                 OnPostInitializatioon?.Invoke();
                 
                 Analytics.RegisterAnalyticsCustomManagement();
+                
+                _adAnalytics.Initialize();
+                
             };
             
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -155,6 +159,8 @@ namespace Playbox
 
         private void OnDestroy()
         {
+            _adAnalytics.Dispose();
+            
             foreach (var item in _behaviours)
             { 
                 if(item != null)

@@ -182,6 +182,7 @@ namespace Playbox
                     new Parameter("ad_unit_name", impressionData.AdUnitIdentifier),
                     new Parameter("ad_format", impressionData.AdFormat),
                     new Parameter("value", revenue),
+                    new Parameter("country_code", impressionData.CountryCode),
                     new Parameter("currency", "USD")
                 };
                 FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventAdImpression, impressionParameters);

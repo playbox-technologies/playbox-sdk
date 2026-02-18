@@ -12,5 +12,6 @@ namespace Playbox
         public string RevenuePrecision { get;  set; }
         public long LatencyMillis { get;  set; }
         public string DspName { get;  set; }
+        public string CountryCode { get;  set; }
     }
 }
