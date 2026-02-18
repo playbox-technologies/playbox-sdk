@@ -1,21 +1,20 @@
-﻿using UnityEngine;
+﻿#if UNITY_6000
+using System;
+using UnityEngine;
 
 namespace Playbox
 {
     public static class RewardedAd
     {
-        public static bool IsReady { get; private set; } = false;
-        
         private static string _unitId;
 
         private static bool IsInitialized => MaxSdk.IsInitialized();
         private static void LoadAd() => MaxSdk.LoadRewardedAd(_unitId);
-        private static bool isLoaded => MaxSdk.IsRewardedAdReady(_unitId);
+        private static bool IsLoaded => MaxSdk.IsRewardedAdReady(_unitId);
         private static void ShowAd(string placement) => MaxSdk.ShowRewardedAd(_unitId, placement);
+        private static AwaitableCompletionSource<bool> _isLoadSource;
 
-        private static MonoBehaviour _context;
-
-        public static void RegisterUnitID(string androidID, string iOSID, MonoBehaviour context)
+        public static void RegisterUnitID(string androidID, string iOSID)
         {
             _unitId = Application.platform switch
             {
@@ -23,24 +22,56 @@ namespace Playbox
                 RuntimePlatform.IPhonePlayer => iOSID,
                 _ => iOSID
             };
-
-            _context = context;
-        }
-
-        public static void Load()
-        {
-            if(IsReady)
-                return;
-            
-            if(IsInitialized)
-                LoadAd();
         }
         
-        public static void Show(string placement = "default") => ShowAd(placement);
-
-        private static void HealthCheck()
+        [Obsolete("This method is experimental and may change in future versions of the SDK.")]
+        public static async Awaitable<bool> LoadAsync()
         {
-            IsReady = IsInitialized && isLoaded;
+            await Awaitable.MainThreadAsync();
+            
+            if (!IsInitialized)
+                throw new Exception("Max SDK Ad is not initialized");
+            
+            if(!string.IsNullOrEmpty(_unitId))
+                throw new Exception("Rewarded Ad is not registered");
+            
+            if(IsLoaded) return true;
+            
+            _isLoadSource = new AwaitableCompletionSource<bool>();
+
+            MaxSdkCallbacks.Rewarded.OnAdLoadedEvent += OnAdLoaded;
+            MaxSdkCallbacks.Rewarded.OnAdLoadFailedEvent += OnAdLoadFailed;
+            
+            LoadAd();
+
+            bool result = await _isLoadSource.Awaitable;
+            
+            MaxSdkCallbacks.Rewarded.OnAdLoadedEvent -= OnAdLoaded;
+            MaxSdkCallbacks.Rewarded.OnAdLoadFailedEvent -= OnAdLoadFailed;
+            
+            return result;
+
+        }
+        
+        [Obsolete("This method is experimental and may change in future versions of the SDK.")]
+        public static async void Show(string placement = "default")
+        {
+            await Awaitable.MainThreadAsync();
+           
+            if(IsLoaded) 
+                ShowAd(placement);
+        }
+
+        private static void OnAdLoadFailed(string arg1, MaxSdkBase.ErrorInfo arg2)
+        {
+            _isLoadSource.TrySetResult(true);
+        }
+
+        private static void OnAdLoaded(string arg1, MaxSdkBase.AdInfo arg2)
+        {
+            _isLoadSource.TrySetResult(false);
         }
     }
 }
+
+#endif

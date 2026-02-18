@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Playbox.Data
 {
@@ -17,17 +18,12 @@ namespace Playbox.Data
             
         }
 
-        private static string GetPlatform()
+        private static string GetPlatform() => Application.platform switch
         {
-#if UNITY_ANDROID
-            return "android";
-#endif
-#if UNITY_IOS
-            return "ios";
-#endif
-
-            return "windows";
-        }
+            RuntimePlatform.IPhonePlayer => "ios",
+            RuntimePlatform.Android => "android",
+            _ => throw new ArgumentOutOfRangeException()
+        };
 
     }
 }

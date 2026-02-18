@@ -1,6 +1,4 @@
-﻿#pragma warning disable CS0618
-
-using System.Collections;
+﻿using System.Collections;
 using Playbox.Consent;
 using Playbox.SdkConfigurations;
 using UnityEngine;
@@ -65,7 +63,13 @@ namespace Playbox
 
             bool isInterstitial = AppLovinConfiguration.IsUseInterstitial;
             bool isReward = AppLovinConfiguration.IsUseReward;
-            
+
+#if UNITY_6000
+            if (isReward)
+            {
+                RewardedAd.RegisterUnitID(AppLovinConfiguration.AndroidKey_rew,AppLovinConfiguration.IOSKey_rew);
+            }
+#endif
             if (RuntimePlatform.IPhonePlayer == Application.platform)
             {
                 if(isReward) Rewarded.RegisterUnitID(AppLovinConfiguration.IOSKey_rew, this);
@@ -81,13 +85,6 @@ namespace Playbox
                 
                 Debug.Log("AppLovin Android");
             }
-
-#if UNITY_EDITOR
-            if(isReward) Rewarded.RegisterUnitID(AppLovinConfiguration.IOSKey_rew, this);
-            if(isInterstitial) InterstitialAd.RegisterUnitID(AppLovinConfiguration.IOSKey_inter, this);
-                
-            Debug.Log("AppLovin Test Unity iOS");
-#endif
             
             Debug.Log("AppLovin initialized");
             
@@ -97,4 +94,3 @@ namespace Playbox
         
     }
 }
-#pragma warning restore CS0618

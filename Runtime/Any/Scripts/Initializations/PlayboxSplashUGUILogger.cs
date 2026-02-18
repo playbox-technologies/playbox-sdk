@@ -71,9 +71,6 @@ namespace Playbox
     public class PlayboxSplashUGUILogger : PlayboxBehaviour
     {
         public static UnityAction<string> SplashEvent;
-
-        [SerializeField]
-        private string text = "";
         
         [SerializeField]
         MessagePool messagePool = new();
