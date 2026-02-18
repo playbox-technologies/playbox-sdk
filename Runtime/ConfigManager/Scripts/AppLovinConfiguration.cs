@@ -63,9 +63,15 @@ namespace Playbox.SdkConfigurations
         public static void LoadJsonConfig()
         {
             JObject obj = GlobalPlayboxConfig.LoadSubconfigs(name);
-            
-            appLovinData = obj.ToObject<AppLovinData>();
-        }
 
+            if (obj == null)
+            {
+                appLovinData = new AppLovinData();    
+            }
+            else
+            {
+                appLovinData = obj.ToObject<AppLovinData>();
+            }
+        }
     }
 }
