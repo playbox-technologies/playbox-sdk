@@ -34,7 +34,7 @@ namespace Playbox
             if (!IsInitialized)
                 throw new Exception("Max SDK Ad is not initialized");
             
-            if(!string.IsNullOrEmpty(_unitId))
+            if(string.IsNullOrEmpty(_unitId))
                 throw new Exception($"Rewarded Ad is not registered _unitId:{_unitId}");
             
             if(IsLoaded) return true;
