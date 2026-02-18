@@ -1,16 +1,9 @@
 ﻿using System;
 using Newtonsoft.Json.Linq;
-using Utils.Tools.Extentions;
-using Utils.Tools.Serializer;
 
 namespace Playbox.SdkConfigurations
 {
-    /// <summary>
-    /// Provides configuration management for AppLovin SDK integration with Playbox, including saving and loading JSON configurations.
-    /// </summary>
-    ///
-
-    [System.Serializable]
+    [Serializable]
     public class AppLovinData
     {
         public bool _isAsync;

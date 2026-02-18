@@ -9,14 +9,7 @@ namespace Playbox.SdkWindow
 {
     public class AppLovinWindow : DrawableWindow
     {
-        private string ios_key_rew = "";
-        private string android_key_rew = "";
-        private string ios_key_inter = "";
-        private string android_key_inter = "";
-        private string advertisementSdk = "";
-
-        private bool isUseReward = true;
-        private bool isUseInterstitial = true;
+        AppLovinData appLovinData;
 
         public override void InitName()
         {
@@ -34,7 +27,7 @@ namespace Playbox.SdkWindow
 
             GUILayout.Label("Advertisement SDK key (Only AppLovin Integration Manager) : ",
                 GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-            advertisementSdk = GUILayout.TextField(advertisementSdk, GUILayout.ExpandWidth(false),
+            appLovinData.advertisementSdk = GUILayout.TextField(appLovinData.advertisementSdk, GUILayout.ExpandWidth(false),
                 GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
 
             GUILayout.EndHorizontal();
@@ -45,20 +38,20 @@ namespace Playbox.SdkWindow
 
             GUILayout.Label("Has Use Rewarded Ad : ", GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight),
                 GUILayout.Width(FieldWidth));
-            isUseReward = EditorGUILayout.Toggle("", isUseReward, GUILayout.ExpandWidth(false),
+            appLovinData._isUseReward = EditorGUILayout.Toggle("", appLovinData._isUseReward, GUILayout.ExpandWidth(false),
                 GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
 
             GUILayout.EndHorizontal();
 
             EditorGUILayout.Separator();
 
-            if (isUseReward)
+            if (appLovinData._isUseReward)
             {
                 GUILayout.BeginHorizontal();
 
                 GUILayout.Label("IOS rewarded unit id : ", GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight),
                     GUILayout.Width(FieldWidth));
-                ios_key_rew = GUILayout.TextField(ios_key_rew, GUILayout.ExpandWidth(false),
+                appLovinData._iosKeyRew = GUILayout.TextField(appLovinData._iosKeyRew, GUILayout.ExpandWidth(false),
                     GUILayout.Height(FieldHeight),
                     GUILayout.Width(FieldWidth));
 
@@ -69,7 +62,7 @@ namespace Playbox.SdkWindow
                 GUILayout.Label("Android rewarded unit id : ", GUILayout.ExpandWidth(false),
                     GUILayout.Height(FieldHeight),
                     GUILayout.Width(FieldWidth));
-                android_key_rew = GUILayout.TextField(android_key_rew, GUILayout.ExpandWidth(false),
+                appLovinData._androidKeyRew = GUILayout.TextField(appLovinData._androidKeyRew, GUILayout.ExpandWidth(false),
                     GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
 
                 GUILayout.EndHorizontal();
@@ -81,21 +74,21 @@ namespace Playbox.SdkWindow
 
             GUILayout.Label("Has Use Interstitial Ad : ", GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight),
                 GUILayout.Width(FieldWidth));
-            isUseInterstitial = EditorGUILayout.Toggle("", isUseInterstitial, GUILayout.ExpandWidth(false),
+            appLovinData._isUseInterstitial = EditorGUILayout.Toggle("", appLovinData._isUseInterstitial, GUILayout.ExpandWidth(false),
                 GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
 
             GUILayout.EndHorizontal();
 
             EditorGUILayout.Separator();
 
-            if (isUseInterstitial)
+            if (appLovinData._isUseInterstitial)
             {
                 GUILayout.BeginHorizontal();
 
                 GUILayout.Label("IOS interstitial unit id : ", GUILayout.ExpandWidth(false),
                     GUILayout.Height(FieldHeight),
                     GUILayout.Width(FieldWidth));
-                ios_key_inter = GUILayout.TextField(ios_key_inter, GUILayout.ExpandWidth(false),
+                appLovinData._iosKeyInter = GUILayout.TextField(appLovinData._iosKeyInter, GUILayout.ExpandWidth(false),
                     GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
 
                 GUILayout.EndHorizontal();
@@ -104,7 +97,7 @@ namespace Playbox.SdkWindow
 
                 GUILayout.Label("Android interstitial unit id : ", GUILayout.ExpandWidth(false),
                     GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-                android_key_inter = GUILayout.TextField(android_key_inter, GUILayout.ExpandWidth(false),
+                appLovinData._androidKeyInter = GUILayout.TextField(appLovinData._androidKeyInter, GUILayout.ExpandWidth(false),
                     GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
 
                 GUILayout.EndHorizontal();
@@ -115,14 +108,8 @@ namespace Playbox.SdkWindow
 
         public override void Save()
         {
-            AppLovinConfiguration.appLovinData._androidKeyRew = android_key_rew;
-            AppLovinConfiguration.appLovinData._androidKeyInter = android_key_inter;
-            AppLovinConfiguration.appLovinData._iosKeyRew = ios_key_rew;
-            AppLovinConfiguration.appLovinData._iosKeyInter = ios_key_inter;
-            AppLovinConfiguration.appLovinData.active = active;
-            AppLovinConfiguration.appLovinData.advertisementSdk = advertisementSdk;
-            AppLovinConfiguration.appLovinData._isUseInterstitial = isUseInterstitial;
-            AppLovinConfiguration.appLovinData._isUseReward = isUseReward;
+            
+            AppLovinConfiguration.appLovinData = appLovinData;
 
             AppLovinConfiguration.SaveJsonConfig();
         }
@@ -130,15 +117,8 @@ namespace Playbox.SdkWindow
         public override void Load()
         {
             AppLovinConfiguration.LoadJsonConfig();
-
-            android_key_rew = AppLovinConfiguration.appLovinData._androidKeyRew;
-            android_key_inter = AppLovinConfiguration.appLovinData._androidKeyInter;
-            ios_key_rew = AppLovinConfiguration.appLovinData._iosKeyRew;
-            ios_key_inter = AppLovinConfiguration.appLovinData._iosKeyInter;
-            active = AppLovinConfiguration.appLovinData.active;
-            advertisementSdk = AppLovinConfiguration.appLovinData.advertisementSdk;
-            isUseReward = AppLovinConfiguration.appLovinData._isUseReward;
-            isUseInterstitial = AppLovinConfiguration.appLovinData._isUseInterstitial;
+            
+            appLovinData = AppLovinConfiguration.appLovinData;
 
             base.Load();
         }
