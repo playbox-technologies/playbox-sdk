@@ -10,35 +10,42 @@ namespace Editor.Utils.Layout
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void BeginHorizontal() => GUILayout.BeginHorizontal();
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void BeginVertical() => GUILayout.BeginVertical();
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void EndVertical() => GUILayout.EndVertical();
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void EndHorizontal() => GUILayout.EndHorizontal();
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Separator() => EditorGUILayout.Separator();
         
-        public static void Horizontal(Action action, bool isRendering = true)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void DropdownList(Action body, bool isOpen) => Vertical(body, isOpen);
+        
+        public static void Horizontal(Action body, bool isRendering = true)
         {
             if (!isRendering)
                 return;
             
             BeginHorizontal();
             
-            action?.Invoke();
+            body?.Invoke();
             
             EndHorizontal();
         }
         
-        public static void Vertical(Action action, bool isRendering = true)
+        public static void Vertical(Action body, bool isRendering = true)
         {
             if (!isRendering)
                 return;
             
             BeginVertical();
             
-            action?.Invoke();
+            body?.Invoke();
             
             EndVertical();
         }

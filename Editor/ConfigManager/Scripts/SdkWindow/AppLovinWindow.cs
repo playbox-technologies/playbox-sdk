@@ -1,11 +1,8 @@
-﻿using System;
-using Playbox.SdkConfigurations;
-using UnityEditor;
+﻿using Playbox.SdkConfigurations;
 using Utils.Tools.Extentions;
 
 #if UNITY_EDITOR
 using Editor.Utils.Layout;
-using UnityEngine;
 
 namespace Playbox.SdkWindow
 {
@@ -24,7 +21,7 @@ namespace Playbox.SdkWindow
 
         public override void Body()
         {
-            PGUI.Vertical((() =>
+            PGUI.DropdownList(() =>
             {
                 PGUI.HorizontalTextField(ref appLovinData.advertisementSdk,"Advertisement SDK key (Only AppLovin Integration Manager) : ");
 
@@ -34,7 +31,7 @@ namespace Playbox.SdkWindow
                 
                 PGUI.Separator();
 
-                PGUI.Vertical(() =>
+                PGUI.DropdownList(() =>
                 {
                     PGUI.HorizontalTextField(ref appLovinData._iosKeyRew,"IOS rewarded unit id : ");
                     
@@ -44,20 +41,21 @@ namespace Playbox.SdkWindow
                     
                 }, appLovinData._isUseReward);
 
-                EditorGUILayout.Separator();
+                PGUI.Separator();
                 
                 PGUI.HorizontalToggle(ref appLovinData._isUseInterstitial, "Has Use Interstitial Ad : ", b=> b.PbInfo());
                 
-                EditorGUILayout.Separator();
+                PGUI.Separator();
 
-                PlayboxLayout.Vertical(() =>
+                PGUI.DropdownList(() =>
                 {
                     PGUI.HorizontalTextField(ref appLovinData._iosKeyInter,"IOS interstitial unit id : ");
                     PGUI.HorizontalTextField(ref appLovinData._androidKeyInter,"Android interstitial unit id : ");
                     
                 }, appLovinData._isUseInterstitial);
                 
-            }), active);
+            }, 
+                active);
         }
 
         public override void Save()
