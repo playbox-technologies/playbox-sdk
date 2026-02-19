@@ -1,4 +1,5 @@
-﻿using Playbox.SdkConfigurations;
+﻿using ConfigManager.Scripts.AppLovin;
+using Playbox.SdkConfigurations;
 using Utils.Tools.Extentions;
 
 #if UNITY_EDITOR
@@ -16,7 +17,7 @@ namespace Playbox.SdkWindow
         {
             base.InitName();
 
-            name = AppLovinConfiguration.name;
+            name = AppLovinConfiguration.Name;
         }
 
         public override void Body()
@@ -27,32 +28,32 @@ namespace Playbox.SdkWindow
 
                 PGUI.Separator();
                 
-                PGUI.HorizontalToggle(ref appLovinData._isUseReward, "Has Use Rewarded Ad : ");
+                PGUI.HorizontalToggle(ref appLovinData.isUseReward, "Has Use Rewarded Ad : ");
                 
                 PGUI.Separator();
 
                 PGUI.DropdownList(() =>
                 {
-                    PGUI.HorizontalTextField(ref appLovinData._iosKeyRew,"IOS rewarded unit id : ");
+                    PGUI.HorizontalTextField(ref appLovinData.iosKeyRew,"IOS rewarded unit id : ");
                     
                     PGUI.Separator();
 
-                    PGUI.HorizontalTextField(ref appLovinData._androidKeyRew,"Android rewarded unit id : ");
+                    PGUI.HorizontalTextField(ref appLovinData.androidKeyRew,"Android rewarded unit id : ");
                     
-                }, appLovinData._isUseReward);
+                }, appLovinData.isUseReward);
 
                 PGUI.Separator();
                 
-                PGUI.HorizontalToggle(ref appLovinData._isUseInterstitial, "Has Use Interstitial Ad : ", b=> b.PbInfo());
+                PGUI.HorizontalToggle(ref appLovinData.isUseInterstitial, "Has Use Interstitial Ad : ");
                 
                 PGUI.Separator();
 
                 PGUI.DropdownList(() =>
                 {
-                    PGUI.HorizontalTextField(ref appLovinData._iosKeyInter,"IOS interstitial unit id : ");
-                    PGUI.HorizontalTextField(ref appLovinData._androidKeyInter,"Android interstitial unit id : ");
+                    PGUI.HorizontalTextField(ref appLovinData.iosKeyInter,"IOS interstitial unit id : ");
+                    PGUI.HorizontalTextField(ref appLovinData.androidKeyInter,"Android interstitial unit id : ");
                     
-                }, appLovinData._isUseInterstitial);
+                }, appLovinData.isUseInterstitial);
                 
             }, 
                 active);
