@@ -72,7 +72,7 @@ namespace Playbox.SdkConfigurations
 
             if (obj == null)
             {
-                $"{Name} config not contains in json".PlayboxWarning();
+                $"{Name} config not contains in json".PbLog();
                 
                 _isConfigured = false;
                 

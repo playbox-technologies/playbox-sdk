@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Playbox;
 using UnityEngine;
 
@@ -43,92 +44,69 @@ namespace Utils.Tools.Extentions
             prefixes.Clear();
         }
         
+        [HideInCallstack]
         public static void PlayboxSplashLogUGUI(this object obj)
         {
             PlayboxSplashUGUILogger.SplashEvent?.Invoke(obj.ToString());
 
-            obj.PlayboxInfo();
+            obj.PbLog();
         }
 
-        private static string PlayboxLogger(Color color,object text,Action<string> action, string predicate = "Playbox",string description = "", bool isException = false)
+        // ReSharper disable Unity.PerformanceAnalysis
+        [System.Diagnostics.DebuggerStepThrough]
+        [HideInCallstack]
+        private static void PlayboxLogger(
+            object text,
+            string predicate = "Playbox",
+            string description = "",
+            LogType logType = LogType.Log,
+            [CallerFilePath] string file = "", 
+            [CallerLineNumber] int line = 0)
         {
-            //if (!Debug.isDebugBuild) return "";
-            
+            string fileName = System.IO.Path.GetFileName(file);
             string prfx = string.IsNullOrEmpty(currentPrefix) ? "" : $"[{currentPrefix}] ";
             string desct = string.IsNullOrEmpty(description) ? "" : $" [{description}] ";
             string pred = string.IsNullOrEmpty(predicate) ? "" : $" [{predicate}] ";
             
-            string str = $"[Playbox] {prfx}{pred}{desct}: {text}";
-            
-            action?.Invoke(str);
-            
-            return str;
+            switch (logType)
+            {
+                case LogType.Error:
+                    break;
+                case LogType.Assert:
+                    break;
+                case LogType.Warning:
+                    
+                    Debug.Log($"[Playbox] {prfx}{pred}{desct}: {text}\n{fileName}:{line}");
+                    
+                    break;
+                case LogType.Log:
+                   
+                    Debug.Log($"[Playbox] {prfx}{pred}{desct}: {text}\n{fileName}:{line}");
+                    
+                    break;
+                case LogType.Exception:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(logType), logType, null);
+            }
         }
 
-        public static string PlayboxLog(this object text, string description = "")
+        [HideInCallstack]
+        public static void PbLog(this object text, string description = "",[CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
         {
-            return PlayboxLogger(Color.white, text,str=> Debug.Log(str,text as GameObject),"Log",description);
+             PlayboxLogger(text,"Log",description, LogType.Log);
         }
         
-        public static string PlayboxError(this object text, string description = "")
+        [HideInCallstack]
+        public static void PbInfo(this object text, string description = "",[CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
         {
-            return PlayboxLogger(Color.red,text,str=> Debug.LogError(str,text as GameObject),"Error", description);
+             PlayboxLogger(text,"Info",description, LogType.Log);
         }
         
-        public static string PlayboxException(this object text, string description = "")
+        [HideInCallstack]
+        public static void PbWarning(this object text, string description = "",[CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
         {
-            return PlayboxLogger(Color.red,text,str=> Debug.LogException(new Exception(str),text as GameObject),"Exception",description,true);
-        }
-        
-        public static string PlayboxWarning(this object text, string description = "")
-        {
-            return PlayboxLogger(Color.yellow,text,str=> Debug.LogWarning(str,text as GameObject),"Warning", description);
-        }
-        
-        public static string PlayboxInfo(this object text, string description = "")
-        {
-            return PlayboxLogger(Color.gray,text,str=> Debug.Log(str,text as GameObject),"Info", description);
-        }
-
-        public static string PlayboxInitialized(this object text, string description = "")
-        {
-            return PlayboxLogger(Color.green,text,str=> Debug.LogError(str,text as GameObject),"Initialized", description);
-        }
-        
-        public static string PlayboxLogD(this object text, string description = "")
-        {
-            PlayboxLogger(Color.white,text,str=> Debug.Log(str,text as GameObject),"Log",description);
-            return text.ToString();
-        }
-        
-        public static string PlayboxErrorD(this object text, string description = "")
-        {
-            PlayboxLogger(Color.red,text,str=> Debug.LogError(str,text as GameObject),"Error", description);
-            return text.ToString();
-        }
-        
-        public static string PlayboxExceptionD(this object text, string description = "")
-        {
-            PlayboxLogger(Color.red,text,str=> Debug.LogException(new Exception(str),text as GameObject),"Exception",description,true);
-            return text.ToString();
-        }
-        
-        public static string PlayboxWarningD(this object text, string description = "")
-        {
-            PlayboxLogger(Color.yellow,text,str=> Debug.LogWarning(str,text as GameObject),"Warning", description);
-            return text.ToString();
-        }
-        
-        public static string PlayboxInfoD(this object text, string description = "")
-        {
-            PlayboxLogger(Color.gray,text,str=> Debug.Log(str,text as GameObject),"Info", description);
-            return text.ToString();
-        }
-
-        public static string PlayboxInitializedD(this object text, string description = "")
-        {
-            PlayboxLogger(Color.green,text,str=> Debug.LogError(str,text as GameObject),"Initialized", description);
-            return text.ToString();
+            PlayboxLogger(text,"Warning",description, LogType.Warning);
         }
     }
 }

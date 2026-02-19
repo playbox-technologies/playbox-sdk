@@ -45,9 +45,9 @@ namespace Playbox
             
             
             if(enabled)
-                "Enable Editor Helper".PlayboxInfo("HELPER");
+                "Enable Editor Helper".PbLog("HELPER");
             else
-                "Disable Editor Helper".PlayboxInfo("HELPER");
+                "Disable Editor Helper".PbLog("HELPER");
             
             EditorPrefs.SetBool(flagKey, enabled);
         }

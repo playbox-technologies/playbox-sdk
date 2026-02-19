@@ -21,7 +21,7 @@ namespace Playbox
         {
              _adapters.Add(adapter);
 
-             adapter.GetType().ToString().PlayboxInfo();
+             adapter.GetType().ToString().PbInfo();
         }
 
         public void UnregisterAdapter(IAnalyticsAdapter adapter)

@@ -1,6 +1,7 @@
 ﻿using System;
 using Playbox.SdkConfigurations;
 using UnityEditor;
+using Utils.Tools.Extentions;
 
 #if UNITY_EDITOR
 using Editor.Utils.Layout;
@@ -25,11 +26,7 @@ namespace Playbox.SdkWindow
         {
             PGUI.Vertical((() =>
             {
-                PGUI.Horizontal(() =>
-                {
-                    PGUI.Label("Advertisement SDK key (Only AppLovin Integration Manager) : ");
-                    PGUI.TextField(ref appLovinData.advertisementSdk);
-                });
+                PGUI.HorizontalTextField(ref appLovinData.advertisementSdk,"Advertisement SDK key (Only AppLovin Integration Manager) : ");
 
                 PGUI.Separator();
                 
@@ -39,48 +36,27 @@ namespace Playbox.SdkWindow
 
                 PGUI.Vertical(() =>
                 {
-                    PGUI.Horizontal(() =>
-                    {
-                        PGUI.Label("IOS rewarded unit id : ");
-                        PGUI.TextField(ref appLovinData._iosKeyRew);
-                    });
-
+                    PGUI.HorizontalTextField(ref appLovinData._iosKeyRew,"IOS rewarded unit id : ");
+                    
                     PGUI.Separator();
 
-                    PGUI.Horizontal(() =>
-                    {
-                        PGUI.Label("Android rewarded unit id : ");
-                        PGUI.TextField(ref appLovinData._androidKeyRew);
-                    });
+                    PGUI.HorizontalTextField(ref appLovinData._androidKeyRew,"Android rewarded unit id : ");
+                    
                 }, appLovinData._isUseReward);
 
                 EditorGUILayout.Separator();
                 
-                PGUI.Horizontal(() =>
-                {
-                    PGUI.Label("Has Use Interstitial Ad : ");
-                    PGUI.Toggle(ref appLovinData._isUseInterstitial);
-                    
-                });
+                PGUI.HorizontalToggle(ref appLovinData._isUseInterstitial, "Has Use Interstitial Ad : ", b=> b.PbInfo());
                 
                 EditorGUILayout.Separator();
 
                 PlayboxLayout.Vertical(() =>
                 {
-                    PlayboxLayout.Horizontal(() =>
-                    {
-                        
-                        PGUI.Label("IOS interstitial unit id : ");
-                        PGUI.TextField(ref appLovinData._iosKeyInter);
-                    });
-
-                    PlayboxLayout.Horizontal(() =>
-                    {
-                        PGUI.Label("Android interstitial unit id : ");
-                        PGUI.TextField(ref appLovinData._androidKeyInter);
-                        
-                    });
+                    PGUI.HorizontalTextField(ref appLovinData._iosKeyInter,"IOS interstitial unit id : ");
+                    PGUI.HorizontalTextField(ref appLovinData._androidKeyInter,"Android interstitial unit id : ");
+                    
                 }, appLovinData._isUseInterstitial);
+                
             }), active);
         }
 

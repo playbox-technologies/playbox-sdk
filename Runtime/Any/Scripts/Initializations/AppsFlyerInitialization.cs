@@ -74,17 +74,17 @@ namespace Playbox
 
         public void onConversionDataFail(string error)
         {
-            "onConversionDataFail".PlayboxInfo();
+            "onConversionDataFail".PbInfo();
         }
 
         public void onAppOpenAttribution(string attributionData)
         {
-            "onAppOpenAttribution".PlayboxInfo();
+            "onAppOpenAttribution".PbInfo();
         }
 
         public void onAppOpenAttributionFailure(string error)
         {
-            "onAppOpenAttributionFailure".PlayboxInfo();
+            "onAppOpenAttributionFailure".PbInfo();
         }
         
         public void onConversionDataSuccess(string conversionData)
@@ -100,7 +100,7 @@ namespace Playbox
             bool fromXPromo = status == "Non-organic" && media == "af_cross_promotion";
             if (fromXPromo)
             {
-                $"[AF] XPromo install from {site} campaign={camp} dlv={dlv} sub1={sub1}".PlayboxInfo("AF");
+                $"[AF] XPromo install from {site} campaign={camp} dlv={dlv} sub1={sub1}".PbInfo("AF");
                 
                 OnConversionDataSuccess.Invoke();
             }
@@ -124,7 +124,7 @@ namespace Playbox
             string dlv  = GetStr(payload, "deep_link_value");
             string sub1 = GetStr(payload, "deep_link_sub1");
 
-            $"UDL dlv={dlv} sub1={sub1}".PlayboxInfo("AF");
+            $"UDL dlv={dlv} sub1={sub1}".PbInfo("AF");
 
             OnDeepLinkValue?.Invoke(dlv, dlv);
         }

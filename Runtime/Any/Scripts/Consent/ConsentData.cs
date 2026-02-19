@@ -46,7 +46,7 @@ namespace Playbox.Consent
             HasUserConsent = true;
             HasDoNotSell = true;
 
-            "Consent Allow".PlayboxInfo();
+            "Consent Allow".PbInfo();
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
@@ -61,12 +61,12 @@ namespace Playbox.Consent
             HasUserConsent = true;
             HasDoNotSell = true;
             
-            "Consent Deny".PlayboxInfo();
+            "Consent Deny".PbInfo();
         }
 
         private static IEnumerator ConsentUpdate(Action consentComplete)
         {
-            "Starting Consent Update".PlayboxInfo();
+            "Starting Consent Update".PbInfo();
             
             while (true)
             {

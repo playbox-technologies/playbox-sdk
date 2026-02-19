@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Playbox.SdkWindow;
 using UnityEditor;
 using UnityEngine;
@@ -7,10 +8,16 @@ namespace Editor.Utils.Layout
 {
     public static class PlayboxLayout
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void BeginHorizontal() => GUILayout.BeginHorizontal();
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void BeginVertical() => GUILayout.BeginVertical();
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void EndVertical() => GUILayout.EndVertical();
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void EndHorizontal() => GUILayout.EndHorizontal();
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Separator() => EditorGUILayout.Separator();
         
         public static void Horizontal(Action action, bool isRendering = true)
         {
@@ -77,6 +84,10 @@ namespace Editor.Utils.Layout
             EndVertical();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void CheckBox(ref bool value, string label = "", Action<bool> action = null,
+            bool isRendering = true) => HorizontalToggle(ref value, "", action, isRendering);
+
         public static void Label(string text, bool isRendering = true)
         {
             if (!isRendering)
@@ -99,8 +110,5 @@ namespace Editor.Utils.Layout
             
             EndVertical();
         }
-        
-        public static void Separator() => EditorGUILayout.Separator();
-        
     }
 }

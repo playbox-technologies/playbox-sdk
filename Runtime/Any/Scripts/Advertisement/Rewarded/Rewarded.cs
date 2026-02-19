@@ -261,7 +261,7 @@ namespace Playbox
 
         private static void OnRewardedAdLoadFailedEvent(string arg1, MaxSdkBase.ErrorInfo info)
         {
-            OnLoadedFailed?.Invoke(info.ToString().PlayboxInfoD(arg1));
+            OnLoadedFailed?.Invoke(info.ToString());
             OnAdLoadFailedEvent?.Invoke(arg1, info.ToString());
             Load(1);
         }
