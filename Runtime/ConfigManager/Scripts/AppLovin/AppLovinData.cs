@@ -10,9 +10,6 @@ namespace ConfigManager.Scripts.AppLovin
         [JsonProperty("_isAsync")]
         public bool isAsync;
         
-        [JsonProperty("_isConfigured")]
-        public bool isConfigured;
-        
         [JsonProperty("_isUseReward")]
         public bool isUseReward;
         

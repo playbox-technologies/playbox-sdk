@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ConfigManager.Scripts.ConfigManagers;
 using Playbox.SdkConfigurations;
 
 #if UNITY_EDITOR
@@ -29,7 +30,6 @@ namespace Playbox.SdkWindow
             drawableWindowList.Add(new DevToDevWindow());
             drawableWindowList.Add(new AppLovinWindow());
             drawableWindowList.Add(new FacebookSdkWindow());
-            drawableWindowList.Add(new InAppPurchaseWindow());
         
             GlobalPlayboxConfig.Load();
         

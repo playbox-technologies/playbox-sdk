@@ -3,22 +3,25 @@ using System.Text;
 using UnityEngine;
 using Utils.Tools.Serializer;
 
-namespace Playbox.SdkConfigurations
+namespace ConfigManager.Scripts.ConfigManagers
 {
     public static class PlayboxBinaryConfig 
     {
-        public static void Save(string configPath,string filePath, string json)
+        public static void Save(string configPath, string json)
         {
-            if (!Directory.Exists(configPath))
+            string directory = Path.GetDirectoryName(configPath);
+            
+            if (!Directory.Exists(directory))
             {
-                Directory.CreateDirectory(configPath);
+                if (directory != null) 
+                    Directory.CreateDirectory(directory);
             }
             
             var сChars = DataSerializer.Serialize(json);
 
             var bytes = Encoding.UTF8.GetBytes(сChars);
             
-            File.WriteAllBytes(filePath + ".json.bytes", bytes);
+            File.WriteAllBytes(configPath, bytes);
         }
 
         public static string Load(string configPath)

@@ -1,4 +1,5 @@
 ﻿using System;
+using ConfigManager.Scripts.ConfigManagers;
 using Newtonsoft.Json.Linq;
 using Playbox.SdkConfigurations;
 
