@@ -7,16 +7,21 @@ namespace Editor.Utils.Layout
 {
     public static class PlayboxLayout
     {
+        public static void BeginHorizontal() => GUILayout.BeginHorizontal();
+        public static void BeginVertical() => GUILayout.BeginVertical();
+        public static void EndVertical() => GUILayout.EndVertical();
+        public static void EndHorizontal() => GUILayout.EndHorizontal();
+        
         public static void Horizontal(Action action, bool isRendering = true)
         {
             if (!isRendering)
                 return;
             
-            GUILayout.BeginHorizontal();
+            BeginHorizontal();
             
             action?.Invoke();
             
-            GUILayout.EndHorizontal();
+            EndHorizontal();
         }
         
         public static void Vertical(Action action, bool isRendering = true)
@@ -24,14 +29,14 @@ namespace Editor.Utils.Layout
             if (!isRendering)
                 return;
             
-            GUILayout.BeginVertical();
+            BeginVertical();
             
             action?.Invoke();
             
-            GUILayout.EndVertical();
+            EndVertical();
         }
 
-        public static void TextField(string text, Action<string> action, bool isRendering = true)
+        public static void TextField(ref string text, Action<string> action = null, bool isRendering = true)
         {
             if (!isRendering)
                 return;
@@ -40,18 +45,36 @@ namespace Editor.Utils.Layout
                 GUILayout.Height(DrawableWindow.FieldHeight),
                 GUILayout.Width(DrawableWindow.FieldWidth));
             
+            text = result;
+            
             action?.Invoke(result);
         }
         
-        public static void Toggle(string text,bool value, Action<bool> action, bool isRendering = true)
+        public static void Toggle(ref bool value, string label = "", Action<bool> action = null, bool isRendering = true)
         {
             if (!isRendering)
                 return;
             
-            bool val = EditorGUILayout.Toggle(text, value, GUILayout.ExpandWidth(false),
+            bool val = EditorGUILayout.Toggle(label, value, GUILayout.ExpandWidth(false),
                 GUILayout.Height(DrawableWindow.FieldHeight), GUILayout.Width(DrawableWindow.FieldWidth));
             
+            value = val;
+            
             action?.Invoke(val);
+        }
+
+        public static void HorizontalToggle(ref bool value, string label = "", Action<bool> action = null,
+            bool isRendering = true)
+        {
+            if (!isRendering)
+                return;
+            
+            BeginHorizontal();
+            
+            Label(label);
+            Toggle(ref value, "", action);
+            
+            EndVertical();
         }
 
         public static void Label(string text, bool isRendering = true)
@@ -61,6 +84,20 @@ namespace Editor.Utils.Layout
             
             GUILayout.Label(text, GUILayout.ExpandWidth(false), GUILayout.Height(DrawableWindow.FieldHeight),
                 GUILayout.Width(DrawableWindow.FieldWidth));
+        }
+        
+        public static void HorizontalTextField(ref string value, string label = "", Action<string> action = null,
+            bool isRendering = true)
+        {
+            if (!isRendering)
+                return;
+            
+            BeginHorizontal();
+            
+            Label(label);
+            TextField(ref value, action);
+            
+            EndVertical();
         }
         
         public static void Separator() => EditorGUILayout.Separator();

@@ -28,18 +28,13 @@ namespace Playbox.SdkWindow
                 PGUI.Horizontal(() =>
                 {
                     PGUI.Label("Advertisement SDK key (Only AppLovin Integration Manager) : ");
-                    PGUI.TextField(appLovinData.advertisementSdk, s =>  appLovinData.advertisementSdk = s);
+                    PGUI.TextField(ref appLovinData.advertisementSdk);
                 });
 
                 PGUI.Separator();
-
-                PGUI.Horizontal(() =>
-                {
-                    PGUI.Label("Has Use Rewarded Ad : ");
-
-                    PGUI.Toggle("", appLovinData._isUseReward, (b) => appLovinData._isUseReward = b);
-                });
-
+                
+                PGUI.HorizontalToggle(ref appLovinData._isUseReward, "Has Use Rewarded Ad : ");
+                
                 PGUI.Separator();
 
                 PGUI.Vertical(() =>
@@ -47,7 +42,7 @@ namespace Playbox.SdkWindow
                     PGUI.Horizontal(() =>
                     {
                         PGUI.Label("IOS rewarded unit id : ");
-                        PGUI.TextField(appLovinData._iosKeyRew, (text) => appLovinData._iosKeyRew = text);
+                        PGUI.TextField(ref appLovinData._iosKeyRew);
                     });
 
                     PGUI.Separator();
@@ -55,7 +50,7 @@ namespace Playbox.SdkWindow
                     PGUI.Horizontal(() =>
                     {
                         PGUI.Label("Android rewarded unit id : ");
-                        PGUI.TextField(appLovinData._androidKeyRew, (text) => appLovinData._androidKeyRew = text);
+                        PGUI.TextField(ref appLovinData._androidKeyRew);
                     });
                 }, appLovinData._isUseReward);
 
@@ -64,7 +59,7 @@ namespace Playbox.SdkWindow
                 PGUI.Horizontal(() =>
                 {
                     PGUI.Label("Has Use Interstitial Ad : ");
-                    PGUI.Toggle("",appLovinData._isUseInterstitial,b =>  appLovinData._isUseInterstitial = b );
+                    PGUI.Toggle(ref appLovinData._isUseInterstitial);
                     
                 });
                 
@@ -74,22 +69,16 @@ namespace Playbox.SdkWindow
                 {
                     PlayboxLayout.Horizontal(() =>
                     {
-                        GUILayout.Label("IOS interstitial unit id : ", GUILayout.ExpandWidth(false),
-                            GUILayout.Height(FieldHeight),
-                            GUILayout.Width(FieldWidth));
-                        appLovinData._iosKeyInter = GUILayout.TextField(appLovinData._iosKeyInter,
-                            GUILayout.ExpandWidth(false),
-                            GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+                        
+                        PGUI.Label("IOS interstitial unit id : ");
+                        PGUI.TextField(ref appLovinData._iosKeyInter);
                     });
 
                     PlayboxLayout.Horizontal(() =>
                     {
-                        GUILayout.Label("Android interstitial unit id : ", GUILayout.ExpandWidth(false),
-                            GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-
-                        appLovinData._androidKeyInter = GUILayout.TextField(appLovinData._androidKeyInter,
-                            GUILayout.ExpandWidth(false),
-                            GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+                        PGUI.Label("Android interstitial unit id : ");
+                        PGUI.TextField(ref appLovinData._androidKeyInter);
+                        
                     });
                 }, appLovinData._isUseInterstitial);
             }), active);
