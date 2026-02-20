@@ -151,7 +151,7 @@ namespace Playbox
 
                 if (!string.IsNullOrEmpty(gaid))
                 {
-                   DTDUserCard.Set("ad_tracking_id", gaid);
+                    //DTDUserCard.Set("ad_tracking_id", gaid);
                 }
             }
         }
@@ -168,7 +168,7 @@ namespace Playbox
                     {
                         using (var adInfo = client.CallStatic<AndroidJavaObject>("getAdvertisingIdInfo", currentActivity))
                         {
-                            return adInfo.Call<string>("getId");
+                            return "no no no"; //adInfo.Call<string>("getId");
                         }
                     }
                 }
