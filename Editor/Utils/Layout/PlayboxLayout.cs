@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if UNITY_EDITOR
+using System;
 using System.Runtime.CompilerServices;
 using Playbox.SdkWindow;
 using UnityEditor;
@@ -119,3 +120,5 @@ namespace Editor.Utils.Layout
         }
     }
 }
+
+#endif
