@@ -135,6 +135,7 @@ namespace Playbox
 
         private IEnumerator SetAdIdSequence()
         {
+            /*
             Task<string> adIdTask = GetAndroidAdIdAsync();
             
             while (!adIdTask.IsCompleted)
@@ -154,6 +155,9 @@ namespace Playbox
                     //DTDUserCard.Set("ad_tracking_id", gaid);
                 }
             }
+            */
+
+            yield return null;
         }
         
         private Task<string> GetAndroidAdIdAsync()
