@@ -2,10 +2,8 @@
 using System;
 using System.Runtime.CompilerServices;
 using Playbox.SdkWindow;
-using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Editor.Utils.Layout
 {
@@ -70,7 +68,7 @@ namespace Editor.Utils.Layout
         {
             if (!isRendering)
                 return;
-            
+
             string result = GUILayout.TextField(text, GUILayout.ExpandWidth(false),
                 GUILayout.Height(DrawableWindow.FieldHeight),
                 GUILayout.Width(DrawableWindow.FieldWidth));
@@ -98,13 +96,21 @@ namespace Editor.Utils.Layout
         {
             if (!isRendering)
                 return;
+
+            try
+            {
+                BeginHorizontal();
             
-            BeginHorizontal();
-            
-            Label(label);
-            Toggle(ref value, "", action);
-            
-            EndVertical();
+                Label(label);
+                
+                GUILayout.FlexibleSpace();
+                
+                Toggle(ref value, "", action);
+            }
+            finally
+            {
+                EndVertical();
+            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -115,9 +121,14 @@ namespace Editor.Utils.Layout
         {
             if (!isRendering)
                 return;
+
+            float width = EditorGUIUtility.labelWidth;
             
-            GUILayout.Label(text, GUILayout.ExpandWidth(false), GUILayout.Height(DrawableWindow.FieldHeight),
-                GUILayout.Width(DrawableWindow.FieldWidth));
+            EditorGUIUtility.labelWidth = DrawableWindow.FieldWidth;
+            
+            EditorGUILayout.PrefixLabel(text);
+            
+            EditorGUIUtility.labelWidth = width;
         }
         
         public static void HorizontalTextField(ref string value, string label = "", Action<string> action = null,
@@ -129,6 +140,9 @@ namespace Editor.Utils.Layout
             BeginHorizontal();
             
             Label(label);
+            
+            GUILayout.FlexibleSpace();
+            
             TextField(ref value, action);
             
             EndVertical();

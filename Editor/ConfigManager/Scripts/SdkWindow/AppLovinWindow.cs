@@ -65,6 +65,7 @@ namespace Playbox.SdkWindow
                 PGUI.DropdownList(() =>
                 {
                     PGUI.HorizontalTextField(ref appLovinData.iosKeyInter,"IOS interstitial unit id : ");
+                    PGUI.Separator();
                     PGUI.HorizontalTextField(ref appLovinData.androidKeyInter,"Android interstitial unit id : ");
                     
                 }, appLovinData.isUseInterstitial);
