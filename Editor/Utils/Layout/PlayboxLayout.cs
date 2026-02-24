@@ -2,8 +2,10 @@
 using System;
 using System.Runtime.CompilerServices;
 using Playbox.SdkWindow;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Editor.Utils.Layout
 {
@@ -33,10 +35,18 @@ namespace Editor.Utils.Layout
                 return;
             
             BeginHorizontal();
+
+            try
+            {
+                BeginHorizontal();
+                GUILayout.Space(20);
+                body?.Invoke();
+            }
+            finally
+            {
+                EndHorizontal();
+            }
             
-            body?.Invoke();
-            
-            EndHorizontal();
         }
         
         public static void Vertical(Action body, bool isRendering = true)
@@ -44,11 +54,16 @@ namespace Editor.Utils.Layout
             if (!isRendering)
                 return;
             
-            BeginVertical();
-            
-            body?.Invoke();
-            
-            EndVertical();
+            try
+            {
+                BeginVertical();
+                GUILayout.Space(20);
+                body?.Invoke();
+            }
+            finally
+            {
+                EndVertical();
+            }
         }
 
         public static void TextField(ref string text, Action<string> action = null, bool isRendering = true)
@@ -117,6 +132,20 @@ namespace Editor.Utils.Layout
             TextField(ref value, action);
             
             EndVertical();
+        }
+
+        public static void Foldout(ref bool isShow , string name, Action OnRendering = null)
+        {
+            isShow = EditorGUILayout.Foldout(isShow, name, true);
+            
+            EditorGUI.indentLevel++;
+            
+            Vertical(() =>
+            {
+                OnRendering?.Invoke();
+                
+            },isShow);
+            
         }
     }
 }

@@ -4,6 +4,7 @@ using Utils.Tools.Extentions;
 
 #if UNITY_EDITOR
 using Editor.Utils.Layout;
+using UnityEditor;
 
 namespace Playbox.SdkWindow
 {
@@ -13,6 +14,8 @@ namespace Playbox.SdkWindow
     {
         AppLovinData appLovinData;
 
+        private int index = 0;
+
         public override void InitName()
         {
             base.InitName();
@@ -20,10 +23,21 @@ namespace Playbox.SdkWindow
             name = AppLovinConfiguration.Name;
         }
 
+        public override void HasRenderToggle()
+        {
+            
+        }
+
         public override void Body()
         {
-            PGUI.DropdownList(() =>
+            PGUI.Foldout(ref active,AppLovinConfiguration.Name,() =>
             {
+                EditorGUI.indentLevel++;
+                
+                PGUI.HorizontalToggle(ref appLovinData.isAsync, "Is Async");
+                
+                PGUI.Separator();
+                
                 PGUI.HorizontalTextField(ref appLovinData.advertisementSdk,"Advertisement SDK key (Only AppLovin Integration Manager) : ");
 
                 PGUI.Separator();
@@ -55,8 +69,7 @@ namespace Playbox.SdkWindow
                     
                 }, appLovinData.isUseInterstitial);
                 
-            }, 
-                active);
+            });
         }
 
         public override void Save()
