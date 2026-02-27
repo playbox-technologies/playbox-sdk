@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Threading.Tasks;
+using ConfigManager.Scripts.DevToDev;
 using DevToDev.Analytics;
 using Playbox.DeviceDevector;
 using Playbox.SdkConfigurations;
@@ -22,13 +23,13 @@ namespace Playbox
             if(!DevToDevConfiguration.Active)
                 return;
 
-            DTDAnalytics.SetLogLevel(DevToDevConfiguration.LOGLevel);
+            DTDAnalytics.SetLogLevel((DTDLogLevel)DevToDevConfiguration.DevToDevData.logLevel);
             
 #if UNITY_ANDROID
-            DTDAnalytics.Initialize(DevToDevConfiguration.AndroidKey);
+            DTDAnalytics.Initialize(DevToDevConfiguration.DevToDevData.androidKey);
 #endif
 #if UNITY_IOS
-            DTDAnalytics.Initialize(DevToDevConfiguration.IOSKey);
+            DTDAnalytics.Initialize(DevToDevConfiguration.DevToDevData.iosKey);
             
 #endif
             

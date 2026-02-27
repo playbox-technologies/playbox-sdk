@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Editor.Utils.Layout
 {
-    public static class PlayboxLayout
+    public static class PGUI
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void BeginHorizontal() => GUILayout.BeginHorizontal();
@@ -27,6 +27,9 @@ namespace Editor.Utils.Layout
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DropdownList(Action body, bool isOpen) => Vertical(body, isOpen);
         
+        public static void Push() => EditorGUI.indentLevel++;
+        public static void Pop() => EditorGUI.indentLevel--;
+        
         public static void Horizontal(Action body, bool isRendering = true)
         {
             if (!isRendering)
@@ -37,7 +40,6 @@ namespace Editor.Utils.Layout
             try
             {
                 BeginHorizontal();
-                GUILayout.Space(20);
                 body?.Invoke();
             }
             finally
@@ -55,7 +57,6 @@ namespace Editor.Utils.Layout
             try
             {
                 BeginVertical();
-                GUILayout.Space(20);
                 body?.Invoke();
             }
             finally
@@ -150,16 +151,46 @@ namespace Editor.Utils.Layout
 
         public static void Foldout(ref bool isShow , string name, Action OnRendering = null)
         {
-            isShow = EditorGUILayout.Foldout(isShow, name, true);
-            
-            EditorGUI.indentLevel++;
-            
-            Vertical(() =>
+            try
             {
-                OnRendering?.Invoke();
+                isShow = EditorGUILayout.Foldout(isShow, name, true);
                 
-            },isShow);
+                Push();
+                
+                Vertical(() =>
+                {
+                    OnRendering?.Invoke();
+                
+                },isShow);
+
+            }
+            finally
+            {
+               Pop();
+            }
+        }
+
+        public static void Popup(string label,ref int logLevel, string[] options)
+        {
+            BeginHorizontal();
             
+            Label(label);
+            
+            GUILayout.FlexibleSpace();
+            
+            logLevel = EditorGUILayout.Popup(logLevel,
+                    options,
+                    GUILayout.ExpandWidth(true),
+                    GUILayout.Height(DrawableWindow.FieldHeight),
+                    GUILayout.Width(DrawableWindow.FieldWidth + 15));    
+                
+            EndHorizontal();
+            
+        }
+
+        public static void SpaceLine()
+        {
+            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
         }
     }
 }

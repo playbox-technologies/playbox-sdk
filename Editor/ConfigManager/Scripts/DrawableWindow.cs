@@ -3,7 +3,6 @@
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
-using PGUI = Editor.Utils.Layout.PlayboxLayout;
 
 namespace Playbox.SdkWindow
 {

@@ -1,6 +1,7 @@
 ﻿#if UNITY_EDITOR
 using System;
 using System.IO;
+using Editor.Utils.Layout;
 using Facebook.Unity.Editor;
 using Facebook.Unity.Settings;
 using Playbox.SdkConfigurations;
@@ -25,45 +26,53 @@ namespace Playbox.SdkWindow
             
             Name = FacebookSdkConfiguration.Name;
         }
-        
+
+        public override void HasRenderToggle()
+        {
+            
+        }
+
         public override void Body()
         {
-            if (!Active)
-                return;
+            PGUI.SpaceLine();
             
-            prev_appLabel = appLabel;
-            prev_appId = appId;
-            prev_clientToken = clientToken;
+            PGUI.Foldout(ref Active, FacebookSdkConfiguration.AppLabel, () =>
+            {
+              prev_appLabel = appLabel;
+                          prev_appId = appId;
+                          prev_clientToken = clientToken;
+                          
+                          GUILayout.BeginHorizontal();
+                      
+                          GUILayout.Label("app Label : ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+                          appLabel = GUILayout.TextField(appLabel, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+                      
+                          GUILayout.EndHorizontal();
+                          
+                          EditorGUILayout.Separator();
+                          
+                          GUILayout.BeginHorizontal();
+                      
+                          GUILayout.Label("client Token : ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+                          clientToken = GUILayout.TextField(clientToken, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+                          
+                          GUILayout.EndHorizontal();
+                      
+                          EditorGUILayout.Separator();
+                          
+                          GUILayout.BeginHorizontal();
+                      
+                          GUILayout.Label("app id : ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+                          appId = GUILayout.TextField(appId, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+                      
+                          GUILayout.EndHorizontal();
+                      
+                          HasUnsavedChanges = !(string.Equals(prev_appLabel, appLabel, StringComparison.OrdinalIgnoreCase) && 
+                                                string.Equals(prev_appId, appId, StringComparison.OrdinalIgnoreCase) && 
+                                                string.Equals(prev_clientToken, clientToken, StringComparison.OrdinalIgnoreCase));  
+            });
             
-            GUILayout.BeginHorizontal();
-        
-            GUILayout.Label("app Label : ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-            appLabel = GUILayout.TextField(appLabel, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-        
-            GUILayout.EndHorizontal();
-            
-            EditorGUILayout.Separator();
-            
-            GUILayout.BeginHorizontal();
-        
-            GUILayout.Label("client Token : ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-            clientToken = GUILayout.TextField(clientToken, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-            
-            GUILayout.EndHorizontal();
-        
-            EditorGUILayout.Separator();
-            
-            GUILayout.BeginHorizontal();
-        
-            GUILayout.Label("app id : ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-            appId = GUILayout.TextField(appId, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-        
-            GUILayout.EndHorizontal();
-        
-            HasUnsavedChanges = !(string.Equals(prev_appLabel, appLabel, StringComparison.OrdinalIgnoreCase) && 
-                                  string.Equals(prev_appId, appId, StringComparison.OrdinalIgnoreCase) && 
-                                  string.Equals(prev_clientToken, clientToken, StringComparison.OrdinalIgnoreCase));
-        
+            PGUI.SpaceLine();
         }
 
         public override void Save()

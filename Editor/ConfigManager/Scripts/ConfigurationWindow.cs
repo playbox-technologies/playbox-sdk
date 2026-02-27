@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using ConfigManager.Scripts.ConfigManagers;
+using Editor.ConfigManager.Scripts.SdkWindow;
 using Playbox.SdkConfigurations;
 
 #if UNITY_EDITOR
@@ -11,11 +12,11 @@ namespace Playbox.SdkWindow
 {
     public class ConfigurationWindow : EditorWindow
     {
-        private List<DrawableWindow> drawableWindowList = new();
-        private Vector2 scrollPosition;
+        private readonly List<DrawableWindow> drawableWindowList = new();
+        private Vector2 _scrollPosition;
 
-        private float FieldHeight = EditorGUIUtility.singleLineHeight * 1.02f;
-        private float FieldWidth => position.width * 0.488f;
+        private readonly float _fieldHeight = EditorGUIUtility.singleLineHeight * 1.02f;
+        private float FieldWidth => position.width * 0.4f;
     
         [MenuItem("Playbox/Configuration")]
         public static void ShowWindow()
@@ -46,18 +47,19 @@ namespace Playbox.SdkWindow
         {
             GUILayout.BeginVertical();
 
-            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+            _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
             
             EditorGUILayout.Separator();
             
-            GUILayout.Label(titleContent, EditorStyles.boldLabel,GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+            GUILayout.Label(titleContent, EditorStyles.boldLabel,GUILayout.ExpandWidth(false),GUILayout.Height(_fieldHeight), GUILayout.Width(FieldWidth));
         
             EditorGUILayout.Separator();
             
+            DrawableWindow.FieldHeight = _fieldHeight;
+            DrawableWindow.FieldWidth = FieldWidth;
+            
             foreach (var item in drawableWindowList)
             {
-                DrawableWindow.FieldHeight = FieldHeight;
-                DrawableWindow.FieldWidth = FieldWidth;
                 
                 GUILayout.BeginVertical();
                 
@@ -75,9 +77,9 @@ namespace Playbox.SdkWindow
 
             GUILayout.BeginHorizontal();
             
-            GUILayout.Label("",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+            GUILayout.Label("",GUILayout.ExpandWidth(false),GUILayout.Height(_fieldHeight), GUILayout.Width(FieldWidth));
             
-            if (GUILayout.Button("Save Configuration",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth)))
+            if (GUILayout.Button("Save Configuration",GUILayout.ExpandWidth(false),GUILayout.Height(_fieldHeight), GUILayout.Width(FieldWidth)))
             {
                 GlobalPlayboxConfig.Clear();
             

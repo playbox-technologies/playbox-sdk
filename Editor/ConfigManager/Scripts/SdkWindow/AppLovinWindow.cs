@@ -1,25 +1,23 @@
-﻿using ConfigManager.Scripts.AppLovin;
-using Playbox.SdkConfigurations;
-using Utils.Tools.Extentions;
-
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
+using ConfigManager.Scripts.AppLovin;
 using Editor.Utils.Layout;
-using UnityEditor;
+using Playbox.SdkWindow;
 
-namespace Playbox.SdkWindow
+namespace Editor.ConfigManager.Scripts.SdkWindow
 {
-    using PGUI = PlayboxLayout;
-
     public class AppLovinWindow : DrawableWindow
     {
-        AppLovinData appLovinData;
-
-        private int index = 0;
-
+        private AppLovinData _appLovinData;
+        
         public override void InitName()
         {
             base.InitName();
 
+            if (_appLovinData == null)
+            {
+                _appLovinData = new AppLovinData();
+            }
+            
             Name = AppLovinConfiguration.Name;
         }
 
@@ -30,54 +28,45 @@ namespace Playbox.SdkWindow
 
         public override void Body()
         {
+            PGUI.SpaceLine();
+            
             PGUI.Foldout(ref Active,AppLovinConfiguration.Name,() =>
             {
-                EditorGUI.indentLevel++;
-                
-                PGUI.HorizontalToggle(ref appLovinData.isAsync, "Is Async");
+                PGUI.HorizontalToggle(ref _appLovinData.isAsync, "Is Async");
                 
                 PGUI.Separator();
                 
-                PGUI.HorizontalTextField(ref appLovinData.advertisementSdk,"Advertisement SDK key : ");
-
-                PGUI.Separator();
+                PGUI.HorizontalTextField(ref _appLovinData.advertisementSdk,"Advertisement SDK key : ");
                 
-                PGUI.HorizontalToggle(ref appLovinData.isUseReward, "Has Use Rewarded Ad : ");
-                
-                PGUI.Separator();
+                PGUI.HorizontalToggle(ref _appLovinData.isUseReward, "Has Use Rewarded Ad : ");
 
                 PGUI.DropdownList(() =>
                 {
-                    PGUI.HorizontalTextField(ref appLovinData.iosKeyRew,"IOS rewarded unit id : ");
+                    PGUI.HorizontalTextField(ref _appLovinData.iosKeyRew,"IOS rewarded unit id : ");
                     
                     PGUI.Separator();
 
-                    PGUI.HorizontalTextField(ref appLovinData.androidKeyRew,"Android rewarded unit id : ");
+                    PGUI.HorizontalTextField(ref _appLovinData.androidKeyRew,"Android rewarded unit id : ");
                     
-                }, appLovinData.isUseReward);
-
-                PGUI.Separator();
+                }, _appLovinData.isUseReward);
                 
-                PGUI.HorizontalToggle(ref appLovinData.isUseInterstitial, "Has Use Interstitial Ad : ");
+                PGUI.HorizontalToggle(ref _appLovinData.isUseInterstitial, "Has Use Interstitial Ad : ");
                 
-                PGUI.Separator();
-
                 PGUI.DropdownList(() =>
                 {
-                    PGUI.HorizontalTextField(ref appLovinData.iosKeyInter,"IOS interstitial unit id : ");
+                    PGUI.HorizontalTextField(ref _appLovinData.iosKeyInter,"IOS interstitial unit id : ");
                     PGUI.Separator();
-                    PGUI.HorizontalTextField(ref appLovinData.androidKeyInter,"Android interstitial unit id : ");
+                    PGUI.HorizontalTextField(ref _appLovinData.androidKeyInter,"Android interstitial unit id : ");
                     
-                }, appLovinData.isUseInterstitial);
-                
+                }, _appLovinData.isUseInterstitial);
             });
         }
 
         public override void Save()
         {
-            appLovinData.active = Active;
+            _appLovinData.active = Active;
 
-            AppLovinConfiguration.appLovinData = appLovinData;
+            AppLovinConfiguration.AppLovinData = _appLovinData;
 
             AppLovinConfiguration.SaveJsonConfig();
         }
@@ -86,8 +75,8 @@ namespace Playbox.SdkWindow
         {
             AppLovinConfiguration.LoadJsonConfig();
 
-            appLovinData = AppLovinConfiguration.appLovinData;
-            Active = appLovinData.active;
+            _appLovinData = AppLovinConfiguration.AppLovinData;
+            Active = _appLovinData.active;
 
             base.Load();
         }

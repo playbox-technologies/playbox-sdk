@@ -4,7 +4,7 @@ using UnityEditor;
 
 
 #if UNITY_EDITOR
-
+using Editor.Utils.Layout;
 using UnityEngine;
 
 namespace Playbox.SdkWindow
@@ -28,56 +28,65 @@ namespace Playbox.SdkWindow
             
             Name = AppsFlyerConfiguration.Name;
         }
-        
+
+        public override void HasRenderToggle()
+        {
+            
+        }
+
         public override void Body()
         {
-            if (!Active)
-                return;
- 
-            prev_ios_version = ios_key;
-            prev_android_version = android_key;
-        
-            GUILayout.BeginHorizontal();
-        
-            GUILayout.Label("ios sdk key: ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-            ios_key = GUILayout.TextField(ios_key, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-        
-            GUILayout.EndHorizontal();
+            PGUI.Foldout(ref Active, AppsFlyerConfiguration.Name, () =>
+            {
+                prev_ios_version = ios_key;
+                            prev_android_version = android_key;
+                        
+                            GUILayout.BeginHorizontal();
+                        
+                            GUILayout.Label("ios sdk key: ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+                            ios_key = GUILayout.TextField(ios_key, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+                        
+                            GUILayout.EndHorizontal();
+                            
+                            EditorGUILayout.Separator();
+                            
+                            GUILayout.BeginHorizontal();
+                        
+                            GUILayout.Label("ios app id : ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+                            ios_app_id = GUILayout.TextField(ios_app_id, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+                        
+                            GUILayout.EndHorizontal();
+                            
+                            EditorGUILayout.Separator();
+                        
+                            GUILayout.BeginHorizontal();
+                        
+                            GUILayout.Label("android sdk key: ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+                            android_key = GUILayout.TextField(android_key, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+                        
+                            GUILayout.EndHorizontal();
+                            
+                            EditorGUILayout.Separator();
+                            
+                            GUILayout.BeginHorizontal();
+                        
+                            GUILayout.Label("android app id : ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+                            android_app_id = GUILayout.TextField(android_app_id, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
+                        
+                            GUILayout.EndHorizontal();
+                            
+                            EditorGUILayout.Separator();
+                        
+                            HasUnsavedChanges = !(string.Equals(prev_ios_version, ios_key, StringComparison.OrdinalIgnoreCase) &&
+                                                  string.Equals(prev_android_version, android_key, StringComparison.OrdinalIgnoreCase) &&
+                                                  string.Equals(prev_ios_app_id, ios_app_id, StringComparison.OrdinalIgnoreCase) &&
+                                                  string.Equals(prev_android_app_id, android_app_id, StringComparison.OrdinalIgnoreCase)
+                                                  );
+                
+                
+            });
             
-            EditorGUILayout.Separator();
             
-            GUILayout.BeginHorizontal();
-        
-            GUILayout.Label("ios app id : ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-            ios_app_id = GUILayout.TextField(ios_app_id, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-        
-            GUILayout.EndHorizontal();
-            
-            EditorGUILayout.Separator();
-        
-            GUILayout.BeginHorizontal();
-        
-            GUILayout.Label("android sdk key: ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-            android_key = GUILayout.TextField(android_key, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-        
-            GUILayout.EndHorizontal();
-            
-            EditorGUILayout.Separator();
-            
-            GUILayout.BeginHorizontal();
-        
-            GUILayout.Label("android app id : ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-            android_app_id = GUILayout.TextField(android_app_id, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-        
-            GUILayout.EndHorizontal();
-            
-            EditorGUILayout.Separator();
-        
-            HasUnsavedChanges = !(string.Equals(prev_ios_version, ios_key, StringComparison.OrdinalIgnoreCase) &&
-                                  string.Equals(prev_android_version, android_key, StringComparison.OrdinalIgnoreCase) &&
-                                  string.Equals(prev_ios_app_id, ios_app_id, StringComparison.OrdinalIgnoreCase) &&
-                                  string.Equals(prev_android_app_id, android_app_id, StringComparison.OrdinalIgnoreCase)
-                                  );
         }
 
         public override void Save()

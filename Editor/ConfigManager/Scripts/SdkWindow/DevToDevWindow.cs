@@ -1,23 +1,17 @@
 ﻿using System;
-using Playbox.SdkConfigurations;
+using ConfigManager.Scripts.DevToDev;
+using Editor.Utils.Layout;
 
 #if UNITY_EDITOR
 using System.Collections.Generic;
 using DevToDev.Analytics;
-using UnityEditor;
-using UnityEngine;
 
 namespace Playbox.SdkWindow
 {
     public class DevToDevWindow : DrawableWindow
     {
-        private string ios_key = "";
-        private string android_key = "";
-    
-        private string prev_ios_version = "";
-        private string prev_android_version = "";
+        private DevToDevData _devToDevData;
         
-        DTDLogLevel         logLevel   = 0;
         private List<string> _options = new();
         
         public override void InitName()
@@ -30,56 +24,36 @@ namespace Playbox.SdkWindow
             {
                 _options.Add(item);
             }
-            
-            
+
+            if (_devToDevData == null)
+            {
+                _devToDevData = new DevToDevData();
+            }
+                
             Name = DevToDevConfiguration.Name;
+        }
+
+        public override void HasRenderToggle()
+        {
         }
 
         public override void Body()
         {
-            if (!Active)
-                return;
-            
-            prev_ios_version = ios_key;
-            prev_android_version = android_key;
-
-            GUILayout.BeginHorizontal();
-            
-            GUILayout.Label("LogLevel",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-            
-            logLevel = (DTDLogLevel)EditorGUILayout.Popup("", (int)logLevel, _options.ToArray(), GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-
-            GUILayout.EndHorizontal();
-            
-            EditorGUILayout.Separator();
-            
-            GUILayout.BeginHorizontal();
-        
-            GUILayout.Label("IOS : ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-            ios_key = GUILayout.TextField(ios_key, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-        
-            GUILayout.EndHorizontal();
-            
-            EditorGUILayout.Separator();
-        
-            GUILayout.BeginHorizontal();
-        
-            GUILayout.Label("Android : ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-            android_key = GUILayout.TextField(android_key, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-        
-            GUILayout.EndHorizontal();
-            
-            HasUnsavedChanges = !(string.Equals(prev_ios_version, ios_key, StringComparison.OrdinalIgnoreCase) &&
-                                  string.Equals(prev_android_version, android_key, StringComparison.OrdinalIgnoreCase));
-        
+            PGUI.SpaceLine();
+            PGUI.Foldout(ref _devToDevData.active, DevToDevConfiguration.Name,() =>
+            {
+                PGUI.Popup("Log Level", ref _devToDevData.logLevel, _options.ToArray());
+                PGUI.Separator();
+                PGUI.HorizontalTextField(ref _devToDevData.iosKey, "iOS Key :");
+                PGUI.Separator();
+                PGUI.HorizontalTextField(ref _devToDevData.androidKey, "Android Key :");
+         
+            });
         }
 
         public override void Save()
         {
-            DevToDevConfiguration.AndroidKey = android_key;
-            DevToDevConfiguration.IOSKey = ios_key;
-            DevToDevConfiguration.Active = Active;
-            DevToDevConfiguration.LOGLevel = logLevel;
+            DevToDevConfiguration.DevToDevData = _devToDevData;
             
             DevToDevConfiguration.SaveJsonConfig();
         }
@@ -87,12 +61,9 @@ namespace Playbox.SdkWindow
         public override void Load()
         {
             DevToDevConfiguration.LoadJsonConfig();
-        
-            android_key = DevToDevConfiguration.AndroidKey;
-            ios_key = DevToDevConfiguration.IOSKey;
-            Active = DevToDevConfiguration.Active;
-            logLevel = DevToDevConfiguration.LOGLevel;
-        
+            
+           _devToDevData = DevToDevConfiguration.DevToDevData;
+           
             base.Load();
         }
     }

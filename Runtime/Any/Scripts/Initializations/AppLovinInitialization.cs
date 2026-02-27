@@ -20,14 +20,14 @@ namespace Playbox
             
             AppLovinConfiguration.LoadJsonConfig();
             
-            if(!AppLovinConfiguration.appLovinData.active)
+            if(!AppLovinConfiguration.AppLovinData.active)
                 return;
 
             MaxSdkCallbacks.OnSdkInitializedEvent += OnSdkInitializedEvent;
             
             MaxSdk.SetHasUserConsent(ConsentData.HasUserConsent);
             
-            MaxSdk.SetSdkKey(AppLovinConfiguration.appLovinData.advertisementSdk);
+            MaxSdk.SetSdkKey(AppLovinConfiguration.AppLovinData.advertisementSdk);
         
             MaxSdk.InitializeSdk();
 
@@ -62,27 +62,27 @@ namespace Playbox
         private void OnSdkInitializedEvent(MaxSdkBase.SdkConfiguration sdkConfiguration)
         {
 
-            bool isInterstitial = AppLovinConfiguration.appLovinData.isUseInterstitial;
-            bool isReward = AppLovinConfiguration.appLovinData.isUseReward;
+            bool isInterstitial = AppLovinConfiguration.AppLovinData.isUseInterstitial;
+            bool isReward = AppLovinConfiguration.AppLovinData.isUseReward;
 
 #if UNITY_6000_0_OR_NEWER
             if (isReward)
             {
-                RewardedAd.RegisterUnitID(AppLovinConfiguration.appLovinData.androidKeyRew,AppLovinConfiguration.appLovinData.iosKeyRew);
+                RewardedAd.RegisterUnitID(AppLovinConfiguration.AppLovinData.androidKeyRew,AppLovinConfiguration.AppLovinData.iosKeyRew);
             }
 #endif
             if (RuntimePlatform.IPhonePlayer == Application.platform)
             {
-                if(isReward) Rewarded.RegisterUnitID(AppLovinConfiguration.appLovinData.iosKeyRew, this);
-                if(isInterstitial) InterstitialAd.RegisterUnitID(AppLovinConfiguration.appLovinData.iosKeyInter, this);
+                if(isReward) Rewarded.RegisterUnitID(AppLovinConfiguration.AppLovinData.iosKeyRew, this);
+                if(isInterstitial) InterstitialAd.RegisterUnitID(AppLovinConfiguration.AppLovinData.iosKeyInter, this);
                 
                 Debug.Log("AppLovin iPhone");
             }
 
             if (RuntimePlatform.Android == Application.platform)
             {
-                if(isReward) Rewarded.RegisterUnitID(AppLovinConfiguration.appLovinData.androidKeyRew, this);
-                if(isInterstitial) InterstitialAd.RegisterUnitID(AppLovinConfiguration.appLovinData.androidKeyInter, this);
+                if(isReward) Rewarded.RegisterUnitID(AppLovinConfiguration.AppLovinData.androidKeyRew, this);
+                if(isInterstitial) InterstitialAd.RegisterUnitID(AppLovinConfiguration.AppLovinData.androidKeyInter, this);
                 
                 Debug.Log("AppLovin Android");
             }
