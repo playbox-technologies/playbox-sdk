@@ -5,6 +5,7 @@ using Editor.Utils.Layout;
 #if UNITY_EDITOR
 using System.Collections.Generic;
 using DevToDev.Analytics;
+using UnityEngine;
 
 namespace Playbox.SdkWindow
 {
@@ -39,6 +40,12 @@ namespace Playbox.SdkWindow
 
         public override void Body()
         {
+            if (_devToDevData == null)
+            {
+                Debug.LogError("DevToDevData is null");
+                return;
+            }
+            
             PGUI.SpaceLine();
             PGUI.Foldout(ref _devToDevData.active, DevToDevConfiguration.Name,() =>
             {

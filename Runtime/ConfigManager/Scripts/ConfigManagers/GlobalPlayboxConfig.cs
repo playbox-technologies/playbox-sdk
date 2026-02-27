@@ -47,15 +47,17 @@ namespace ConfigManager.Scripts.ConfigManagers
             }
         }
         
-        public static void Load()
+        public static bool Load()
         {
             if (ExistsBinaryJson())
             {
                 _jsonConfig = JObject.Parse(PlayboxBinaryConfig.Load(ResourcesPath));   
+                return true;
             }
             else
             {
-                throw new Exception("The playbox config file does not exist.");
+                Debug.LogError("The playbox config file does not exist.");
+                return false;
             }
         }
         
@@ -76,8 +78,12 @@ namespace ConfigManager.Scripts.ConfigManagers
                     }   
                 }
             }
-            
-            throw new Exception("The playbox config file does not exist.");
+            else
+            {
+                throw new Exception("The playbox config file does not exist.");    
+            }
+
+            return null;
         }
     }
 }

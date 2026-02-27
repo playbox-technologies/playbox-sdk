@@ -35,8 +35,6 @@ namespace Editor.Utils.Layout
             if (!isRendering)
                 return;
             
-            BeginHorizontal();
-
             try
             {
                 BeginHorizontal();

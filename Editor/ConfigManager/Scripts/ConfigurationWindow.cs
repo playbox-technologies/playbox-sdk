@@ -4,7 +4,7 @@ using Editor.ConfigManager.Scripts.SdkWindow;
 using Playbox.SdkConfigurations;
 
 #if UNITY_EDITOR
-
+using Editor.Utils.Layout;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,6 +17,8 @@ namespace Playbox.SdkWindow
 
         private readonly float _fieldHeight = EditorGUIUtility.singleLineHeight * 1.02f;
         private float FieldWidth => position.width * 0.4f;
+        
+        private bool isLoadConfig = false;
     
         [MenuItem("Playbox/Configuration")]
         public static void ShowWindow()
@@ -32,72 +34,97 @@ namespace Playbox.SdkWindow
             drawableWindowList.Add(new AppLovinWindow());
             drawableWindowList.Add(new FacebookSdkWindow());
         
-            GlobalPlayboxConfig.Load();
-        
-            foreach (var item in drawableWindowList)
-            {
-                item.InitName();
-                item.Load();
-            }
-        
+           isLoadConfig = GlobalPlayboxConfig.Load();
+
+
+           if (isLoadConfig)
+           {
+               foreach (var item in drawableWindowList)
+               {
+                   item.InitName();
+                   item.Load();
+               }   
+           }
             hasUnsavedChanges = false;
         }
 
         private void OnGUI()
         {
-            GUILayout.BeginVertical();
-
-            _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
             
-            EditorGUILayout.Separator();
+            PGUI.Vertical((() =>
+            {
+                _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
+                
+                EditorGUILayout.Separator();
             
-            GUILayout.Label(titleContent, EditorStyles.boldLabel,GUILayout.ExpandWidth(false),GUILayout.Height(_fieldHeight), GUILayout.Width(FieldWidth));
+                GUILayout.Label(titleContent, EditorStyles.boldLabel,GUILayout.ExpandWidth(false),GUILayout.Height(_fieldHeight), GUILayout.Width(FieldWidth));
         
-            EditorGUILayout.Separator();
-            
-            DrawableWindow.FieldHeight = _fieldHeight;
-            DrawableWindow.FieldWidth = FieldWidth;
-            
-            foreach (var item in drawableWindowList)
-            {
+                EditorGUILayout.Separator();
                 
-                GUILayout.BeginVertical();
-                
-                item.HasRenderToggle();
-                
-                item.Title();
-                item.Header();
-                item.Body();
-                item.Footer();
+                DrawableWindow.FieldHeight = _fieldHeight;
+                DrawableWindow.FieldWidth = FieldWidth;
 
-                hasUnsavedChanges = hasUnsavedChanges || item.HasUnsavedChanges;
-                
-                GUILayout.EndVertical();
-            }
-
-            GUILayout.BeginHorizontal();
-            
-            GUILayout.Label("",GUILayout.ExpandWidth(false),GUILayout.Height(_fieldHeight), GUILayout.Width(FieldWidth));
-            
-            if (GUILayout.Button("Save Configuration",GUILayout.ExpandWidth(false),GUILayout.Height(_fieldHeight), GUILayout.Width(FieldWidth)))
-            {
-                GlobalPlayboxConfig.Clear();
-            
-                foreach (var item in drawableWindowList)
+                if (isLoadConfig)
                 {
-                    item.Save();
+                    foreach (var item in drawableWindowList)
+                    {
+                        item.HasRenderToggle();
+
+                        item.Title();
+                        item.Header();
+                        item.Body();
+                        item.Footer();
+
+                        hasUnsavedChanges = hasUnsavedChanges || item.HasUnsavedChanges;
+                    }
+                    
+                    PGUI.Horizontal(() =>
+                    {
+                        if (GUILayout.Button("Save Configuration",GUILayout.ExpandWidth(false),GUILayout.Height(_fieldHeight), GUILayout.Width(FieldWidth)))
+                        {
+                            GlobalPlayboxConfig.Clear();
+            
+                            foreach (var item in drawableWindowList)
+                            {
+                                item.Save();
+                            }
+            
+                            GlobalPlayboxConfig.Save();
+            
+                            hasUnsavedChanges = false;
+                        }
+                    });
+                    
                 }
-            
-                GlobalPlayboxConfig.Save();
-            
-                hasUnsavedChanges = false;
-            }
-            
-            GUILayout.EndHorizontal();
-            
-            EditorGUILayout.EndScrollView();
-            
-            GUILayout.EndVertical();
+                else
+                {
+                    PGUI.Vertical((() =>
+                    {
+                        PGUI.Label("Configuration file not found. Create a new file.");
+                        
+                        PGUI.Separator();
+                        
+                        if (GUILayout.Button("Create Configuration",GUILayout.ExpandWidth(false),GUILayout.Height(_fieldHeight), GUILayout.Width(FieldWidth)))
+                        {
+                            GlobalPlayboxConfig.Save();
+                            
+                            isLoadConfig = GlobalPlayboxConfig.Load();
+                            
+                            if (isLoadConfig)
+                            {
+                                foreach (var item in drawableWindowList)
+                                {
+                                    item.InitName();
+                                    item.Load();
+                                }   
+                            }
+                        }
+                    }));
+                }
+                
+                EditorGUILayout.EndScrollView();
+                
+            }));
         }
 
         public override void SaveChanges()

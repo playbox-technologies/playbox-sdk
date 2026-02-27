@@ -2,6 +2,7 @@
 using ConfigManager.Scripts.AppLovin;
 using Editor.Utils.Layout;
 using Playbox.SdkWindow;
+using UnityEngine;
 
 namespace Editor.ConfigManager.Scripts.SdkWindow
 {
@@ -28,6 +29,12 @@ namespace Editor.ConfigManager.Scripts.SdkWindow
 
         public override void Body()
         {
+            if (_appLovinData == null)
+            {
+                Debug.LogError("appLovinData is null");
+                return;
+            }
+            
             PGUI.SpaceLine();
             
             PGUI.Foldout(ref Active,AppLovinConfiguration.Name,() =>

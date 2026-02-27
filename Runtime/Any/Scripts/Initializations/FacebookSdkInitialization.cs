@@ -71,8 +71,8 @@ namespace Any.Scripts.Initializations
 
         private static void FB_Init(Action callback)
         {
-            FB.Init(FacebookSdkConfiguration.AppID,
-                FacebookSdkConfiguration.ClientToken,
+            FB.Init(FacebookSdkConfiguration.FacebookSDKData.appID,
+                FacebookSdkConfiguration.FacebookSDKData.clientToken,
                 true,
                 true,
                 true,

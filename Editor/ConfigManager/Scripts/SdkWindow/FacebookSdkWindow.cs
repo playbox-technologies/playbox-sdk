@@ -1,30 +1,22 @@
 ﻿#if UNITY_EDITOR
-using System;
-using System.IO;
 using Editor.Utils.Layout;
-using Facebook.Unity.Editor;
 using Facebook.Unity.Settings;
 using Playbox.SdkConfigurations;
-using UnityEditor;
+using Playbox.SdkWindow;
 using UnityEngine;
 
-namespace Playbox.SdkWindow
+namespace Editor.ConfigManager.Scripts.SdkWindow
 {
     public class FacebookSdkWindow : DrawableWindow
     {
-        private string appLabel = "";
-        private string appId = "";
-        private string clientToken = "";
-    
-        private string prev_appLabel = "";
-        private string prev_appId = "";
-        private string prev_clientToken = "";
-        
+        private FacebookSDKData _facebookSDKData;
         public override void InitName()
         {
             base.InitName();
             
             Name = FacebookSdkConfiguration.Name;
+            
+            _facebookSDKData = new FacebookSDKData();
         }
 
         public override void HasRenderToggle()
@@ -34,15 +26,21 @@ namespace Playbox.SdkWindow
 
         public override void Body()
         {
+            if (_facebookSDKData == null)
+            {
+                Debug.LogError("facebookSDKData is null");
+                return;
+            }
+            
             PGUI.SpaceLine();
             
-            PGUI.Foldout(ref Active, FacebookSdkConfiguration.AppLabel, () =>
+            PGUI.Foldout(ref _facebookSDKData.active, FacebookSdkConfiguration.Name, () =>
             {
-                PGUI.HorizontalTextField(ref appLabel, "App Label : ");
+                PGUI.HorizontalTextField(ref _facebookSDKData.appLabel, "App Label : ");
                 PGUI.Separator();
-                PGUI.HorizontalTextField(ref clientToken, "client Token : ");
+                PGUI.HorizontalTextField(ref _facebookSDKData.appID, "app id : ");
                 PGUI.Separator();
-                PGUI.HorizontalTextField(ref appId, "app id : ");
+                PGUI.HorizontalTextField(ref _facebookSDKData.clientToken, "client Token : ");
             });
             
             PGUI.SpaceLine();
@@ -52,10 +50,7 @@ namespace Playbox.SdkWindow
         {
             SaveToFacebookSettings();
             
-            FacebookSdkConfiguration.Active = Active;
-            FacebookSdkConfiguration.AppLabel = appLabel;
-            FacebookSdkConfiguration.AppID = appId;
-            FacebookSdkConfiguration.ClientToken = clientToken;
+            FacebookSdkConfiguration.FacebookSDKData = _facebookSDKData;
             
             FacebookSdkConfiguration.SaveJsonConfig();
             
@@ -66,10 +61,7 @@ namespace Playbox.SdkWindow
         {
             FacebookSdkConfiguration.LoadJsonConfig();
          
-            Active = FacebookSdkConfiguration.Active;
-            appLabel = FacebookSdkConfiguration.AppLabel;
-            appId = FacebookSdkConfiguration.AppID;
-            clientToken = FacebookSdkConfiguration.ClientToken;
+            _facebookSDKData = FacebookSdkConfiguration.FacebookSDKData;
             
             base.Load();
         }
@@ -82,29 +74,29 @@ namespace Playbox.SdkWindow
 
             if (labels.Count > 0)
             {
-                labels[0] = appLabel;
+                labels[0] = _facebookSDKData.appLabel;
             }
             else
             {
-                labels.Add(appLabel);
+                labels.Add(_facebookSDKData.appLabel);
             }
                 
             if (appIds.Count > 0)
             {
-                appIds[0] = appId;
+                appIds[0] = _facebookSDKData.appID;
             }
             else
             {
-                appIds.Add(appId);
+                appIds.Add(_facebookSDKData.appID);
             }
                 
             if (clientTokens.Count > 0)
             {
-                clientTokens[0] = clientToken;
+                clientTokens[0] = _facebookSDKData.clientToken;
             }
             else
             {
-                clientTokens.Add(clientToken);
+                clientTokens.Add(_facebookSDKData.clientToken);
             }
         }
     }

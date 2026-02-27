@@ -24,7 +24,9 @@ namespace ConfigManager.Scripts.DevToDev
         private static JObject GetJsonConfig()
         {
             if (DevToDevData == null)
-                throw new NullReferenceException("DevToDevData is null");
+            {
+                DevToDevData = new DevToDevData();
+            }
         
             return DevToDevData.GetJsonConfig();
         }

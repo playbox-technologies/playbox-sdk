@@ -13,7 +13,10 @@ namespace ConfigManager.Scripts.AppLovin
         public static JObject GetJsonConfig()
         {
             if (AppLovinData == null)
-                throw new NullReferenceException("AppLovinData is null");
+            {
+                AppLovinData = new AppLovinData();  
+                
+            }
             
             return AppLovinData.GetJsonConfig();
         }

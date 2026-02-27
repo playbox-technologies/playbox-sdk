@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Any.Scripts.Initializations;
 using ConfigManager.Scripts.ConfigManagers;
 using Playbox.Consent;
-using Playbox.SdkConfigurations;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
