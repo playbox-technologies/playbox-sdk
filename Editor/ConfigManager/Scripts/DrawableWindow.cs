@@ -16,7 +16,7 @@ namespace Playbox.SdkWindow
         public bool hasUnsavedChanges;
         
         protected static float field_width = 350;
-        protected static float field_height = 15;
+        protected static float field_height = 15; 
         protected static float footerSpace = 10;
         protected static float headerSpace = 10;
     
