@@ -1,53 +1,53 @@
 ﻿using Newtonsoft.Json.Linq;
 
 #if UNITY_EDITOR
-
 using UnityEditor;
 using UnityEngine;
-
 using PGUI = Editor.Utils.Layout.PlayboxLayout;
 
 namespace Playbox.SdkWindow
 {
     public class DrawableWindow
     {
-        public string name;
-        public bool active;
-        public bool hasUnsavedChanges;
-        
-        protected static float field_width = 350;
-        protected static float field_height = 15; 
-        protected static float footerSpace = 10;
-        protected static float headerSpace = 10;
-    
-        protected JObject configuration;
+        protected string Name;
+        protected bool Active;
+        public bool HasUnsavedChanges;
+
+        private static float _fieldWidth = 250;
+        private static float _fieldHeight = 15;
+        private const float footerSpace = 10;
+        private const float headerSpace = 10;
+
+        protected JObject Configuration;
 
         public static float FieldWidth
         {
-            get => field_width;
-            set => field_width = value;
+            get => _fieldWidth;
+            set => _fieldWidth = value;
         }
 
         public static float FieldHeight
         {
-            get => field_height;
-            set => field_height = value;
+            get => _fieldHeight;
+            set => _fieldHeight = value;
         }
 
         public virtual void InitName()
         {
-            configuration = new JObject();
+            Configuration = new JObject();
         }
 
         public virtual void HasRenderToggle()
         {
             GUILayout.BeginHorizontal();
-            
-            GUILayout.Label(name,GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-            active = EditorGUILayout.Toggle("", active,GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-            
+
+            GUILayout.Label(Name, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight),
+                GUILayout.Width(FieldWidth));
+            Active = EditorGUILayout.Toggle("", Active, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight),
+                GUILayout.Width(FieldWidth));
+
             GUILayout.EndHorizontal();
-            
+
             EditorGUILayout.Separator();
         }
 
@@ -62,13 +62,11 @@ namespace Playbox.SdkWindow
 
         public virtual void Body()
         {
-         
         }
 
         public virtual void Footer()
         {
             GUILayout.Space(footerSpace);
-          
         }
 
         public virtual void Save()

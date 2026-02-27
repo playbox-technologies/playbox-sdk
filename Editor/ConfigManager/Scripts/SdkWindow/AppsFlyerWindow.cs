@@ -26,12 +26,12 @@ namespace Playbox.SdkWindow
         {
             base.InitName();
             
-            name = AppsFlyerConfiguration.Name;
+            Name = AppsFlyerConfiguration.Name;
         }
         
         public override void Body()
         {
-            if (!active)
+            if (!Active)
                 return;
  
             prev_ios_version = ios_key;
@@ -73,7 +73,7 @@ namespace Playbox.SdkWindow
             
             EditorGUILayout.Separator();
         
-            hasUnsavedChanges = !(string.Equals(prev_ios_version, ios_key, StringComparison.OrdinalIgnoreCase) &&
+            HasUnsavedChanges = !(string.Equals(prev_ios_version, ios_key, StringComparison.OrdinalIgnoreCase) &&
                                   string.Equals(prev_android_version, android_key, StringComparison.OrdinalIgnoreCase) &&
                                   string.Equals(prev_ios_app_id, ios_app_id, StringComparison.OrdinalIgnoreCase) &&
                                   string.Equals(prev_android_app_id, android_app_id, StringComparison.OrdinalIgnoreCase)
@@ -84,7 +84,7 @@ namespace Playbox.SdkWindow
         {
             AppsFlyerConfiguration.AndroidKey = ios_key;
             AppsFlyerConfiguration.IOSKey = android_key;
-            AppsFlyerConfiguration.Active = active;
+            AppsFlyerConfiguration.Active = Active;
             AppsFlyerConfiguration.IOSAppId = ios_app_id;
             AppsFlyerConfiguration.AndroidAppId = android_app_id;
         
@@ -97,7 +97,7 @@ namespace Playbox.SdkWindow
         
             ios_key = AppsFlyerConfiguration.AndroidKey;
             android_key = AppsFlyerConfiguration.IOSKey;
-            active = AppsFlyerConfiguration.Active;
+            Active = AppsFlyerConfiguration.Active;
             ios_app_id = AppsFlyerConfiguration.IOSAppId;
             android_app_id = AppsFlyerConfiguration.AndroidAppId;
         

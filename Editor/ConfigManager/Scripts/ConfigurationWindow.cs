@@ -68,7 +68,7 @@ namespace Playbox.SdkWindow
                 item.Body();
                 item.Footer();
 
-                hasUnsavedChanges = hasUnsavedChanges || item.hasUnsavedChanges;
+                hasUnsavedChanges = hasUnsavedChanges || item.HasUnsavedChanges;
                 
                 GUILayout.EndVertical();
             }

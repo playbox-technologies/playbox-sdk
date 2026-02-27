@@ -83,8 +83,8 @@ namespace Editor.Utils.Layout
             if (!isRendering)
                 return;
             
-            bool val = EditorGUILayout.Toggle(label, value, GUILayout.ExpandWidth(false),
-                GUILayout.Height(DrawableWindow.FieldHeight), GUILayout.Width(DrawableWindow.FieldWidth));
+            bool val = EditorGUILayout.Toggle(label, value, 
+                GUILayout.Height(DrawableWindow.FieldHeight), GUILayout.Width(DrawableWindow.FieldWidth + 30));
             
             value = val;
             

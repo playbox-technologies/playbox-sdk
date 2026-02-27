@@ -23,12 +23,12 @@ namespace Playbox.SdkWindow
         {
             base.InitName();
             
-            name = FacebookSdkConfiguration.Name;
+            Name = FacebookSdkConfiguration.Name;
         }
         
         public override void Body()
         {
-            if (!active)
+            if (!Active)
                 return;
             
             prev_appLabel = appLabel;
@@ -60,7 +60,7 @@ namespace Playbox.SdkWindow
         
             GUILayout.EndHorizontal();
         
-            hasUnsavedChanges = !(string.Equals(prev_appLabel, appLabel, StringComparison.OrdinalIgnoreCase) && 
+            HasUnsavedChanges = !(string.Equals(prev_appLabel, appLabel, StringComparison.OrdinalIgnoreCase) && 
                                   string.Equals(prev_appId, appId, StringComparison.OrdinalIgnoreCase) && 
                                   string.Equals(prev_clientToken, clientToken, StringComparison.OrdinalIgnoreCase));
         
@@ -70,7 +70,7 @@ namespace Playbox.SdkWindow
         {
             SaveToFacebookSettings();
             
-            FacebookSdkConfiguration.Active = active;
+            FacebookSdkConfiguration.Active = Active;
             FacebookSdkConfiguration.AppLabel = appLabel;
             FacebookSdkConfiguration.AppID = appId;
             FacebookSdkConfiguration.ClientToken = clientToken;
@@ -84,7 +84,7 @@ namespace Playbox.SdkWindow
         {
             FacebookSdkConfiguration.LoadJsonConfig();
          
-            active = FacebookSdkConfiguration.Active;
+            Active = FacebookSdkConfiguration.Active;
             appLabel = FacebookSdkConfiguration.AppLabel;
             appId = FacebookSdkConfiguration.AppID;
             clientToken = FacebookSdkConfiguration.ClientToken;

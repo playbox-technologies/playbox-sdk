@@ -20,7 +20,7 @@ namespace Playbox.SdkWindow
         {
             base.InitName();
 
-            name = AppLovinConfiguration.Name;
+            Name = AppLovinConfiguration.Name;
         }
 
         public override void HasRenderToggle()
@@ -30,7 +30,7 @@ namespace Playbox.SdkWindow
 
         public override void Body()
         {
-            PGUI.Foldout(ref active,AppLovinConfiguration.Name,() =>
+            PGUI.Foldout(ref Active,AppLovinConfiguration.Name,() =>
             {
                 EditorGUI.indentLevel++;
                 
@@ -38,7 +38,7 @@ namespace Playbox.SdkWindow
                 
                 PGUI.Separator();
                 
-                PGUI.HorizontalTextField(ref appLovinData.advertisementSdk,"Advertisement SDK key (Only AppLovin Integration Manager) : ");
+                PGUI.HorizontalTextField(ref appLovinData.advertisementSdk,"Advertisement SDK key : ");
 
                 PGUI.Separator();
                 
@@ -75,7 +75,7 @@ namespace Playbox.SdkWindow
 
         public override void Save()
         {
-            appLovinData.active = active;
+            appLovinData.active = Active;
 
             AppLovinConfiguration.appLovinData = appLovinData;
 
@@ -87,7 +87,7 @@ namespace Playbox.SdkWindow
             AppLovinConfiguration.LoadJsonConfig();
 
             appLovinData = AppLovinConfiguration.appLovinData;
-            active = appLovinData.active;
+            Active = appLovinData.active;
 
             base.Load();
         }

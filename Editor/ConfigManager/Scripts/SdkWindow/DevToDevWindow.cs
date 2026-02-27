@@ -32,12 +32,12 @@ namespace Playbox.SdkWindow
             }
             
             
-            name = DevToDevConfiguration.Name;
+            Name = DevToDevConfiguration.Name;
         }
 
         public override void Body()
         {
-            if (!active)
+            if (!Active)
                 return;
             
             prev_ios_version = ios_key;
@@ -69,7 +69,7 @@ namespace Playbox.SdkWindow
         
             GUILayout.EndHorizontal();
             
-            hasUnsavedChanges = !(string.Equals(prev_ios_version, ios_key, StringComparison.OrdinalIgnoreCase) &&
+            HasUnsavedChanges = !(string.Equals(prev_ios_version, ios_key, StringComparison.OrdinalIgnoreCase) &&
                                   string.Equals(prev_android_version, android_key, StringComparison.OrdinalIgnoreCase));
         
         }
@@ -78,7 +78,7 @@ namespace Playbox.SdkWindow
         {
             DevToDevConfiguration.AndroidKey = android_key;
             DevToDevConfiguration.IOSKey = ios_key;
-            DevToDevConfiguration.Active = active;
+            DevToDevConfiguration.Active = Active;
             DevToDevConfiguration.LOGLevel = logLevel;
             
             DevToDevConfiguration.SaveJsonConfig();
@@ -90,7 +90,7 @@ namespace Playbox.SdkWindow
         
             android_key = DevToDevConfiguration.AndroidKey;
             ios_key = DevToDevConfiguration.IOSKey;
-            active = DevToDevConfiguration.Active;
+            Active = DevToDevConfiguration.Active;
             logLevel = DevToDevConfiguration.LOGLevel;
         
             base.Load();
