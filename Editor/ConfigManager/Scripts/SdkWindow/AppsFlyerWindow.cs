@@ -36,57 +36,18 @@ namespace Playbox.SdkWindow
 
         public override void Body()
         {
+            PGUI.SpaceLine();
+            
             PGUI.Foldout(ref Active, AppsFlyerConfiguration.Name, () =>
             {
-                prev_ios_version = ios_key;
-                            prev_android_version = android_key;
-                        
-                            GUILayout.BeginHorizontal();
-                        
-                            GUILayout.Label("ios sdk key: ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-                            ios_key = GUILayout.TextField(ios_key, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-                        
-                            GUILayout.EndHorizontal();
-                            
-                            EditorGUILayout.Separator();
-                            
-                            GUILayout.BeginHorizontal();
-                        
-                            GUILayout.Label("ios app id : ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-                            ios_app_id = GUILayout.TextField(ios_app_id, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-                        
-                            GUILayout.EndHorizontal();
-                            
-                            EditorGUILayout.Separator();
-                        
-                            GUILayout.BeginHorizontal();
-                        
-                            GUILayout.Label("android sdk key: ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-                            android_key = GUILayout.TextField(android_key, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-                        
-                            GUILayout.EndHorizontal();
-                            
-                            EditorGUILayout.Separator();
-                            
-                            GUILayout.BeginHorizontal();
-                        
-                            GUILayout.Label("android app id : ",GUILayout.ExpandWidth(false),GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-                            android_app_id = GUILayout.TextField(android_app_id, GUILayout.ExpandWidth(false), GUILayout.Height(FieldHeight), GUILayout.Width(FieldWidth));
-                        
-                            GUILayout.EndHorizontal();
-                            
-                            EditorGUILayout.Separator();
-                        
-                            HasUnsavedChanges = !(string.Equals(prev_ios_version, ios_key, StringComparison.OrdinalIgnoreCase) &&
-                                                  string.Equals(prev_android_version, android_key, StringComparison.OrdinalIgnoreCase) &&
-                                                  string.Equals(prev_ios_app_id, ios_app_id, StringComparison.OrdinalIgnoreCase) &&
-                                                  string.Equals(prev_android_app_id, android_app_id, StringComparison.OrdinalIgnoreCase)
-                                                  );
-                
-                
+                PGUI.HorizontalTextField(ref ios_key,"ios sdk key: ");
+                PGUI.Separator();
+                PGUI.HorizontalTextField(ref ios_app_id,"ios app id : ");
+                PGUI.Separator();
+                PGUI.HorizontalTextField(ref android_key,"android sdk key: ");
+                PGUI.Separator();
+                PGUI.HorizontalTextField(ref android_app_id,"android app id : ");
             });
-            
-            
         }
 
         public override void Save()
