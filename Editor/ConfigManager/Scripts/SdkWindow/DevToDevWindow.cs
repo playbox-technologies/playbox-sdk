@@ -1,8 +1,9 @@
-﻿using System;
+﻿#if UNITY_EDITOR
+
+using System;
 using ConfigManager.Scripts.DevToDev;
 using Editor.Utils.Layout;
 
-#if UNITY_EDITOR
 using System.Collections.Generic;
 using DevToDev.Analytics;
 using UnityEngine;

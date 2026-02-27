@@ -1,9 +1,8 @@
+#if UNITY_EDITOR
+
 using System.Collections.Generic;
 using ConfigManager.Scripts.ConfigManagers;
 using Editor.ConfigManager.Scripts.SdkWindow;
-using Playbox.SdkConfigurations;
-
-#if UNITY_EDITOR
 using Editor.Utils.Layout;
 using UnityEditor;
 using UnityEngine;

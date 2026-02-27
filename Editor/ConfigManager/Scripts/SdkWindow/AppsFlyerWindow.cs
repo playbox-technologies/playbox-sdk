@@ -1,13 +1,10 @@
-﻿using System;
-using Playbox.SdkConfigurations;
-using UnityEditor;
+﻿#if UNITY_EDITOR
 
-
-#if UNITY_EDITOR
 using Editor.Utils.Layout;
-using UnityEngine;
+using Playbox.SdkConfigurations;
+using Playbox.SdkWindow;
 
-namespace Playbox.SdkWindow
+namespace Editor.ConfigManager.Scripts.SdkWindow
 {
     public class AppsFlyerWindow : DrawableWindow
     {
