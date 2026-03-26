@@ -130,6 +130,20 @@ namespace Editor.Utils.Layout
             EditorGUIUtility.labelWidth = width;
         }
         
+        public static void LongLabel(string text, bool isRendering = true)
+        {
+            if (!isRendering)
+                return;
+
+            float width = EditorGUIUtility.labelWidth;
+            
+            EditorGUIUtility.labelWidth = 560;
+            
+            EditorGUILayout.PrefixLabel(text);
+            
+            EditorGUIUtility.labelWidth = width;
+        }
+        
         public static void HorizontalTextField(ref string value, string label = "", Action<string> action = null,
             bool isRendering = true)
         {
@@ -189,6 +203,19 @@ namespace Editor.Utils.Layout
         public static void SpaceLine()
         {
             EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+        }
+
+        public static void Button(string label, Action onClicked = null, bool isRendering = true)
+        {
+            if (!isRendering)
+                return;
+            
+            bool result = GUILayout.Button(label);
+
+            if (result)
+            {
+              onClicked?.Invoke();  
+            }
         }
     }
 }
