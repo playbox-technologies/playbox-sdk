@@ -9,7 +9,7 @@ namespace Playbox
     public class AppsFlyerInitialization : PlayboxBehaviour
     {
         
-        public override async void Initialization()
+        public override void Initialization()
         {
             base.Initialization();
 

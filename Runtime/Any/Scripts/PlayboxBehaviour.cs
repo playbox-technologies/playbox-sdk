@@ -33,12 +33,12 @@ namespace Playbox
         
         public ServiceType GetServiceType() => serviceType;
         
-        public virtual async void Initialization()
+        public virtual void Initialization()
         {
             serviceType = ServiceType.PlayboxBehaviour;
         }
 
-        public virtual async void GetInitStatus(Action OnInitComplete)
+        public virtual void GetInitStatus(Action OnInitComplete)
         {
             initCallback = OnInitComplete;
         }

@@ -8,16 +8,10 @@ namespace Editor.ConfigManager.Scripts.SdkWindow
 {
     public class AppsFlyerWindow : DrawableWindow
     {
-        private string ios_key = "";
-        private string android_key = "";
-        private string ios_app_id = "";
-        private string android_app_id = "";
-        
-        private string prev_ios_app_id = "";
-        private string prev_android_app_id = "";
-    
-        private string prev_ios_version;
-        private string prev_android_version;
+        private string _iosKey = "";
+        private string _androidKey = "";
+        private string _iosAppID = "";
+        private string _androidAppID = "";
         
         public override void InitName()
         {
@@ -37,23 +31,23 @@ namespace Editor.ConfigManager.Scripts.SdkWindow
             
             PGUI.Foldout(ref Active, AppsFlyerConfiguration.Name, () =>
             {
-                PGUI.HorizontalTextField(ref ios_key,"ios sdk key: ");
+                PGUI.HorizontalTextField(ref _iosKey,"ios sdk key: ");
                 PGUI.Separator();
-                PGUI.HorizontalTextField(ref ios_app_id,"ios app id : ");
+                PGUI.HorizontalTextField(ref _iosAppID,"ios app id : ");
                 PGUI.Separator();
-                PGUI.HorizontalTextField(ref android_key,"android sdk key: ");
+                PGUI.HorizontalTextField(ref _androidKey,"android sdk key: ");
                 PGUI.Separator();
-                PGUI.HorizontalTextField(ref android_app_id,"android app id : ");
+                PGUI.HorizontalTextField(ref _androidAppID,"android app id : ");
             });
         }
 
         public override void Save()
         {
-            AppsFlyerConfiguration.AndroidKey = ios_key;
-            AppsFlyerConfiguration.IOSKey = android_key;
+            AppsFlyerConfiguration.AndroidKey = _iosKey;
+            AppsFlyerConfiguration.IOSKey = _androidKey;
             AppsFlyerConfiguration.Active = Active;
-            AppsFlyerConfiguration.IOSAppId = ios_app_id;
-            AppsFlyerConfiguration.AndroidAppId = android_app_id;
+            AppsFlyerConfiguration.IOSAppId = _iosAppID;
+            AppsFlyerConfiguration.AndroidAppId = _androidAppID;
         
             AppsFlyerConfiguration.SaveJsonConfig();
         }
@@ -62,11 +56,11 @@ namespace Editor.ConfigManager.Scripts.SdkWindow
         {
             AppsFlyerConfiguration.LoadJsonConfig();
         
-            ios_key = AppsFlyerConfiguration.AndroidKey;
-            android_key = AppsFlyerConfiguration.IOSKey;
+            _iosKey = AppsFlyerConfiguration.AndroidKey;
+            _androidKey = AppsFlyerConfiguration.IOSKey;
             Active = AppsFlyerConfiguration.Active;
-            ios_app_id = AppsFlyerConfiguration.IOSAppId;
-            android_app_id = AppsFlyerConfiguration.AndroidAppId;
+            _iosAppID = AppsFlyerConfiguration.IOSAppId;
+            _androidAppID = AppsFlyerConfiguration.AndroidAppId;
         
             base.Load();
         }

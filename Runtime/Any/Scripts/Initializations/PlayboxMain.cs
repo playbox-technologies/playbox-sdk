@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Any.Scripts.Initializations;
 using ConfigManager.Scripts.ConfigManagers;
 using Playbox.Consent;
@@ -20,7 +21,7 @@ namespace Playbox
         public static Action PreInitialization = delegate { };
         
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void Start()
+        private async static void Start()
         {
             PB_ProxyClass.GetOrCreateMonoProxy();
             
@@ -39,7 +40,7 @@ namespace Playbox
             
             PreInitialization?.Invoke();
             
-            LLS.PlayerAsyncHelper.Delay(0.1f, Initialization);
+            await Initialization();
         }
 
         public static bool IsValidate(ServiceType serviceType)
@@ -47,7 +48,7 @@ namespace Playbox
             return InitStatus.Contains(serviceType);
         }
 
-        public static void Initialization()
+        public async static Task Initialization()
         {
             GlobalPlayboxConfig.Load();
             
@@ -73,7 +74,13 @@ namespace Playbox
                 }
             }
             
-            ConsentData.ShowConsent(PB_ProxyClass.GetOrCreateMonoProxy(), () =>
+            bool isConsent = false;
+            
+            ConsentData.ShowConsent(PB_ProxyClass.GetOrCreateMonoProxy(), () => isConsent = true);
+            
+            await LLS.PlayerAsyncHelper.WaitUntil(() => isConsent);
+
+            if (isConsent)
             {
                 foreach (var item in _behaviours)
                 {
@@ -84,7 +91,7 @@ namespace Playbox
                 }
                 
                 LLS.PlayerAsyncHelper.Delay(0.1f, PostInitialization);
-            });
+            }
             
             foreach (var item in _behaviours)
             {

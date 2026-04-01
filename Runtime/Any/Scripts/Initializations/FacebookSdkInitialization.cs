@@ -59,11 +59,11 @@ namespace Any.Scripts.Initializations
 
         private static void FB_Init(Action callback)
         {
-            if(string.IsNullOrEmpty(FacebookSdkConfiguration.FacebookSDKData.appID))
-                Debug.LogError("Facebook SDK configuration app ID is missing");
-            
-            if(string.IsNullOrEmpty(FacebookSdkConfiguration.FacebookSDKData.clientToken))
-                Debug.LogError("Facebook SDK configuration token is missing");
+            if (string.IsNullOrEmpty(FacebookSdkConfiguration.FacebookSDKData.appID) || string.IsNullOrEmpty(FacebookSdkConfiguration.FacebookSDKData.clientToken))
+            {
+                Debug.LogWarning("Facebook SDK configuration is missing");
+                return;
+            }
             
             FB.Init(FacebookSdkConfiguration.FacebookSDKData.appID,
                 FacebookSdkConfiguration.FacebookSDKData.clientToken,
@@ -87,7 +87,11 @@ namespace Any.Scripts.Initializations
         
         private void CheckActiveSDK()
         {
-            Debug.Log("Checking Active SDK...");
+            if (string.IsNullOrEmpty(FacebookSdkConfiguration.FacebookSDKData.appID) || string.IsNullOrEmpty(FacebookSdkConfiguration.FacebookSDKData.clientToken))
+            {
+                Debug.LogWarning("Facebook SDK configuration is missing");
+                return;
+            }
             
             if (FB.IsInitialized) {
                     FB.ActivateApp();
