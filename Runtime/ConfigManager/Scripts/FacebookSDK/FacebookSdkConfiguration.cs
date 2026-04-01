@@ -2,7 +2,7 @@
 using ConfigManager.Scripts.ConfigManagers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Utils.Tools.Extentions;
+using Playbox.Tools.Extentions;
 
 namespace Playbox.SdkConfigurations
 {

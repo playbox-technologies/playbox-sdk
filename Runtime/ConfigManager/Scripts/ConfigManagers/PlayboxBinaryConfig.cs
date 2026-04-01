@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text;
+using Playbox.Tools.Serializer;
 using UnityEngine;
-using Utils.Tools.Serializer;
 
 namespace ConfigManager.Scripts.ConfigManagers
 {

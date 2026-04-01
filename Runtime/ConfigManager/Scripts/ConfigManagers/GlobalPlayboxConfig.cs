@@ -85,5 +85,10 @@ namespace ConfigManager.Scripts.ConfigManagers
 
             return null;
         }
+        
+        public static string ShowJsonConfig()
+        {
+            return _jsonConfig.ToString();
+        }
     }
 }

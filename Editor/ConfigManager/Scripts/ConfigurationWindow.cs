@@ -19,11 +19,18 @@ namespace Playbox.SdkWindow
         
         private bool isLoadConfig = false;
     
-        [MenuItem("Playbox/Configuration")]
+        [MenuItem("Playbox/Configuration/Edit Configuration")]
         public static void ShowWindow()
         {
             var window = GetWindow<ConfigurationWindow>("Playbox Configuration");
             window.hasUnsavedChanges = true;
+        }
+        
+        [MenuItem("Playbox/Configuration/Show JSON Configuration")]
+        public static void ShowJsonConfig()
+        {
+            GlobalPlayboxConfig.Load();
+            Debug.Log(GlobalPlayboxConfig.ShowJsonConfig());
         }
 
         private void CreateGUI()
