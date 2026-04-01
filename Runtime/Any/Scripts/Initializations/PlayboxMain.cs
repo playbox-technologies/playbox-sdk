@@ -4,16 +4,11 @@ using Any.Scripts.Initializations;
 using ConfigManager.Scripts.ConfigManagers;
 using Playbox.Consent;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Playbox
 {
-    public static class MainInitialization
+    public static class PlayboxMain
     {
-        private static bool isAutoInitialize = true;
-        private static bool isDebugSplash;
-        private static UnityEvent OnPostInitializatioon;
-        
         private static List<BaseAnalyticsRegistrator> analyticsRegistrator = new();
         private static List<PlayboxBehaviour> _behaviours = new();
         
@@ -36,19 +31,15 @@ namespace Playbox
             
             PostInitialization += () =>
             {
-                OnPostInitializatioon?.Invoke();
-                
                 Analytics.RegisterAnalyticsCustomManagement();
                 
                 _adAnalytics.Initialize();
                 
             };
             
-            
             PreInitialization?.Invoke();
             
             LLS.PlayerAsyncHelper.Delay(0.1f, Initialization);
-
         }
 
         public static bool IsValidate(ServiceType serviceType)

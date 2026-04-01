@@ -30,10 +30,10 @@ namespace Playbox
     /// </summary>
     public static class Analytics
     {
-        public static bool IsAppsFlyerInit => MainInitialization.IsValidate(ServiceType.AppsFlyer);
-        public static bool IsDevToDevInit => MainInitialization.IsValidate(ServiceType.DevToDev);
-        public static bool IsFacebookInit => MainInitialization.IsValidate(ServiceType.Facebook);
-        public static bool IsFirebaseInit => MainInitialization.IsValidate(ServiceType.Firebase);
+        public static bool IsAppsFlyerInit => PlayboxMain.IsValidate(ServiceType.AppsFlyer);
+        public static bool IsDevToDevInit => PlayboxMain.IsValidate(ServiceType.DevToDev);
+        public static bool IsFacebookInit => PlayboxMain.IsValidate(ServiceType.Facebook);
+        public static bool IsFirebaseInit => PlayboxMain.IsValidate(ServiceType.Firebase);
         
         public static readonly AnalyticsCustomManagement AnalyticsCustomManagement = new();
 
