@@ -1,7 +1,6 @@
-﻿using System.Collections;
+﻿using System.Threading.Tasks;
 using ConfigManager.Scripts.AppLovin;
 using Playbox.Consent;
-using Playbox.SdkConfigurations;
 using UnityEngine;
 
 namespace Playbox
@@ -9,7 +8,7 @@ namespace Playbox
     public class AppLovinInitialization : PlayboxBehaviour
     {
 
-        public override void Initialization()
+        public override async void Initialization()
         {
             base.Initialization();
 
@@ -28,11 +27,8 @@ namespace Playbox
             MaxSdk.SetHasUserConsent(ConsentData.HasUserConsent);
             
             MaxSdk.SetSdkKey(AppLovinConfiguration.AppLovinData.advertisementSdk);
-        
-            MaxSdk.InitializeSdk();
 
-            StartCoroutine(initUpd());
-
+            await WaitSDKInitialized();
         }
 
         public override void Close()
@@ -41,56 +37,41 @@ namespace Playbox
             MaxSdkCallbacks.OnSdkInitializedEvent -= OnSdkInitializedEvent;
         }
 
-        private IEnumerator initUpd()
+        private async Task WaitSDKInitialized()
         {
-            while (true)
+            if (!MaxSdk.IsInitialized())
             {
-                if (MaxSdk.IsInitialized())
-                {
-                    ApproveInitialization();
-                    yield break;
-                }
-                else
-                {
-                    MaxSdk.InitializeSdk();
-                }
-
-                yield return new WaitForSeconds(1f);
+                MaxSdk.InitializeSdk();
             }
+            
+            await LLS.PlayerAsyncHelper.WaitUntil(() => MaxSdk.IsInitialized());
+            
+            ApproveInitialization();
         }
 
         private void OnSdkInitializedEvent(MaxSdkBase.SdkConfiguration sdkConfiguration)
         {
-
+#if UNITY_6000_0_OR_NEWER
+            
             bool isInterstitial = AppLovinConfiguration.AppLovinData.isUseInterstitial;
             bool isReward = AppLovinConfiguration.AppLovinData.isUseReward;
 
-#if UNITY_6000_0_OR_NEWER
+            
             if (isReward)
             {
                 RewardedAd.RegisterUnitID(AppLovinConfiguration.AppLovinData.androidKeyRew,AppLovinConfiguration.AppLovinData.iosKeyRew);
-            }
-#endif
-            if (RuntimePlatform.IPhonePlayer == Application.platform)
-            {
-                if(isReward) Rewarded.RegisterUnitID(AppLovinConfiguration.AppLovinData.iosKeyRew, this);
-                if(isInterstitial) InterstitialAd.RegisterUnitID(AppLovinConfiguration.AppLovinData.iosKeyInter, this);
                 
-                Debug.Log("AppLovin iPhone");
             }
-
-            if (RuntimePlatform.Android == Application.platform)
+            if (isInterstitial)
             {
-                if(isReward) Rewarded.RegisterUnitID(AppLovinConfiguration.AppLovinData.androidKeyRew, this);
-                if(isInterstitial) InterstitialAd.RegisterUnitID(AppLovinConfiguration.AppLovinData.androidKeyInter, this);
-                
-                Debug.Log("AppLovin Android");
+                InterstitialAd.RegisterUnitID(AppLovinConfiguration.AppLovinData.androidKeyInter,AppLovinConfiguration.AppLovinData.iosKeyInter);
             }
             
             Debug.Log("AppLovin initialized");
+            return;
+#endif
+            Debug.LogError("Unity < 6 is not supported!");
             
-            Rewarded.OnSdkInitializedEvent?.Invoke(sdkConfiguration.ToString());
-            InterstitialAd.OnSdkInitializedEvent?.Invoke(sdkConfiguration.ToString());
         }
         
     }

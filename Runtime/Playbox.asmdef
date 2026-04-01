@@ -10,7 +10,8 @@
         "Unity.Services.Core.Environments",
         "Unity.Advertisement.IosSupport",
         "Unity.Purchasing",
-        "Unity.Purchasing.Apple"
+        "Unity.Purchasing.Apple",
+        "PlayboxLowLevelSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

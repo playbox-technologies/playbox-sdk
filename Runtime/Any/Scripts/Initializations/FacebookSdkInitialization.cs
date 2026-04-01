@@ -9,24 +9,12 @@ namespace Any.Scripts.Initializations
 {
     public class FacebookSdkInitialization : PlayboxBehaviour
     {
-        private bool _isPostInit;
-        
-        private void Awake()
-        {
-            MainInitialization.PostInitialization += OnPostInit;
-        }
-
-        private void OnPostInit()
-        {
-            _isPostInit = true;
-            
-            MainInitialization.PostInitialization -= OnPostInit;
-        }
-
-        // ReSharper disable Unity.PerformanceAnalysis
         public override void Initialization()
         {
             base.Initialization();
+
+            PB_ProxyClass.OnPauseStatusChanged += OnApplicationPause;
+            PB_ProxyClass.OnFocusStatusChanged += OnApplicationFocus;
             
             serviceType = ServiceType.Facebook;
             
@@ -71,6 +59,12 @@ namespace Any.Scripts.Initializations
 
         private static void FB_Init(Action callback)
         {
+            if(string.IsNullOrEmpty(FacebookSdkConfiguration.FacebookSDKData.appID))
+                Debug.LogError("Facebook SDK configuration app ID is missing");
+            
+            if(string.IsNullOrEmpty(FacebookSdkConfiguration.FacebookSDKData.clientToken))
+                Debug.LogError("Facebook SDK configuration token is missing");
+            
             FB.Init(FacebookSdkConfiguration.FacebookSDKData.appID,
                 FacebookSdkConfiguration.FacebookSDKData.clientToken,
                 true,
@@ -93,8 +87,7 @@ namespace Any.Scripts.Initializations
         
         private void CheckActiveSDK()
         {
-            if (!_isPostInit)
-                return;
+            Debug.Log("Checking Active SDK...");
             
             if (FB.IsInitialized) {
                     FB.ActivateApp();

@@ -4,28 +4,36 @@ using UnityEngine;
 
 namespace Playbox
 {
-    public static class RewardedAd
+    public class InterstitialAdEvents
+    {
+        public Action<string> OnClicked;
+        public Action<string> OnDisplayed;
+        public Action<string> OnDisplayedFailed;
+        public Action<string> OnAdClosed;
+    }
+    
+    public static class InterstitialAd
     {
         private static string _unitId;
 
         private static bool IsInitialized => MaxSdk.IsInitialized();
-        private static void LoadAd() => MaxSdk.LoadRewardedAd(_unitId);
-        private static bool IsLoaded => MaxSdk.IsRewardedAdReady(_unitId);
+        private static void LoadAd() => MaxSdk.LoadInterstitial(_unitId);
+        private static bool IsLoaded => MaxSdk.IsInterstitialReady(_unitId);
 
-        public static RewardedAdEvents AdEvents
+        public static InterstitialAdEvents AdEvents
         {
-            get => _rewardedAdEvents;
-            private set => _rewardedAdEvents = value;
+            get => _interstitialAdEvents;
+            private set => _interstitialAdEvents = value;
         }
 
-        private static void ShowAd(string placement) => MaxSdk.ShowRewardedAd(_unitId, placement);
+        private static void ShowAd(string placement) => MaxSdk.ShowInterstitial(_unitId, placement);
         private static AwaitableCompletionSource<bool> _isLoadSource;
         
-        private static RewardedAdEvents _rewardedAdEvents;
+        private static InterstitialAdEvents _interstitialAdEvents;
 
         public static void RegisterUnitID(string androidID, string iOSID)
         {
-            _rewardedAdEvents = new RewardedAdEvents();
+            _interstitialAdEvents = new InterstitialAdEvents();
             
             _unitId = Application.platform switch
             {
@@ -35,14 +43,12 @@ namespace Playbox
             };
 
 
-            MaxSdkCallbacks.Rewarded.OnAdClickedEvent += OnClicked;
-            MaxSdkCallbacks.Rewarded.OnAdReceivedRewardEvent += OnPayedReward;
-            MaxSdkCallbacks.Rewarded.OnAdDisplayedEvent += OnDisplayed;
-            MaxSdkCallbacks.Rewarded.OnAdDisplayFailedEvent += OnDisplayFailed;
-            MaxSdkCallbacks.Rewarded.OnAdHiddenEvent += OnAdClosed;
+            MaxSdkCallbacks.Interstitial.OnAdClickedEvent += OnClicked;
+            MaxSdkCallbacks.Interstitial.OnAdDisplayedEvent += OnDisplayed;
+            MaxSdkCallbacks.Interstitial.OnAdDisplayFailedEvent += OnDisplayFailed;
+            MaxSdkCallbacks.Interstitial.OnAdHiddenEvent += OnAdClosed;
 
         }
-        
         
         public static async Awaitable<bool> LoadAsync()
         {
@@ -58,18 +64,17 @@ namespace Playbox
             
             _isLoadSource = new AwaitableCompletionSource<bool>();
 
-            MaxSdkCallbacks.Rewarded.OnAdLoadedEvent += OnAdLoaded;
-            MaxSdkCallbacks.Rewarded.OnAdLoadFailedEvent += OnAdLoadFailed;
+            MaxSdkCallbacks.Interstitial.OnAdLoadedEvent += OnAdLoaded;
+            MaxSdkCallbacks.Interstitial.OnAdLoadFailedEvent += OnAdLoadFailed;
             
             LoadAd();
 
             bool result = await _isLoadSource.Awaitable;
             
-            MaxSdkCallbacks.Rewarded.OnAdLoadedEvent -= OnAdLoaded;
-            MaxSdkCallbacks.Rewarded.OnAdLoadFailedEvent -= OnAdLoadFailed;
+            MaxSdkCallbacks.Interstitial.OnAdLoadedEvent -= OnAdLoaded;
+            MaxSdkCallbacks.Interstitial.OnAdLoadFailedEvent -= OnAdLoadFailed;
             
             return result;
-
         }
         
         public static async void Show(string placement = "default")
@@ -102,31 +107,6 @@ namespace Playbox
         private static void OnDisplayed(string id, MaxSdkBase.AdInfo arg2)
         {
             AdEvents.OnDisplayed?.Invoke(id);
-        }
-
-        private static void OnPayedReward(string id, MaxSdkBase.Reward arg2, MaxSdkBase.AdInfo arg3)
-        {
-            AdEvents.OnReceivedReward?.Invoke(id, arg2);
-            
-            const string adImpressionsCount = "ad_impressions_count";
-
-            if (PlayerPrefs.HasKey(adImpressionsCount))
-            {
-                int adImpressions = PlayerPrefs.GetInt(adImpressionsCount, 0);
-                
-                Analytics.Events.AdRewardCount(adImpressions);
-                
-                var division = Math.DivRem(adImpressions,30,out var remainder);
-                
-                if (division > 0 && remainder == 0)
-                {
-                    Analytics.Events.AdToCart(adImpressions);
-                }
-            }
-            else
-            {
-                PlayerPrefs.SetInt(adImpressionsCount, 1);
-            }
         }
 
         private static void OnClicked(string id, MaxSdkBase.AdInfo arg2)

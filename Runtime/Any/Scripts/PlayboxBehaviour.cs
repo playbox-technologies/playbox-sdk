@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 
 namespace Playbox
 {
-    public class PlayboxBehaviour : MonoBehaviour
+    public class PlayboxBehaviour
     {
         [SerializeField]
         protected bool isInitialized = false;
@@ -17,6 +16,7 @@ namespace Playbox
         [HideInInspector]
         public bool ConsentDependency = false;
         
+        /*
         public static PlayboxBehaviour AddToGameObject<T>(GameObject target, bool hasConsentDependency = false) where T : PlayboxBehaviour
         {
             if (target == null)
@@ -29,15 +29,16 @@ namespace Playbox
             return component;
          
         }
-
+        */
+        
         public ServiceType GetServiceType() => serviceType;
         
-        public virtual void Initialization()
+        public virtual async void Initialization()
         {
             serviceType = ServiceType.PlayboxBehaviour;
         }
 
-        public virtual void GetInitStatus(Action OnInitComplete)
+        public virtual async void GetInitStatus(Action OnInitComplete)
         {
             initCallback = OnInitComplete;
         }
@@ -54,19 +55,10 @@ namespace Playbox
         public virtual void Close()
         {
         }
-
+        
         public void DelayInvoke(Action action, float delay)
         {
-            StartCoroutine(Invoker(action, delay));
-        }
-
-        private IEnumerator Invoker(Action action, float delay = 0)
-        {
-            yield return new WaitForSeconds(delay);
-            
-            action?.Invoke();
-            
-            yield return null;
+            LLS.PlayerAsyncHelper.Delay(delay, action);
         }
     }
 }

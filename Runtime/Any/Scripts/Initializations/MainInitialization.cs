@@ -1,40 +1,36 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using Any.Scripts.Initializations;
 using ConfigManager.Scripts.ConfigManagers;
 using Playbox.Consent;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 
 namespace Playbox
 {
-    public class MainInitialization : PlayboxBehaviour
+    public static class MainInitialization
     {
-        [SerializeField] private bool isAutoInitialize = true;
-        [SerializeField] private bool isDebugSplash;
-        [SerializeField] private UnityEvent OnPostInitializatioon;
+        private static bool isAutoInitialize = true;
+        private static bool isDebugSplash;
+        private static UnityEvent OnPostInitializatioon;
         
-        [SerializeField] private List<BaseAnalyticsRegistrator> analyticsRegistrator = new();
-        [SerializeField] private List<PlayboxBehaviour> _behaviours = new();
+        private static List<BaseAnalyticsRegistrator> analyticsRegistrator = new();
+        private static List<PlayboxBehaviour> _behaviours = new();
         
-        private AdAnalytics.AdAnalytics _adAnalytics = new();
+        private static AdAnalytics.AdAnalytics _adAnalytics = new();
         
         private static readonly HashSet<ServiceType> InitStatus = new();
 
         public static Action PostInitialization = delegate { };
         public static Action PreInitialization = delegate { };
         
-        private void Awake()
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void Start()
         {
+            PB_ProxyClass.GetOrCreateMonoProxy();
+            
+            
             analyticsRegistrator.ForEach(a => a.Register());
-
-            var splasher = AddToGameObject<PlayboxSplashUGUILogger>(gameObject, isDebugSplash);
-            
-            if(isDebugSplash)
-                splasher.Initialization();
-            
             
             AddComponentsToInitialization();
             
@@ -48,27 +44,11 @@ namespace Playbox
                 
             };
             
-            SceneManager.sceneLoaded += OnSceneLoaded;
-        }
-
-        private void Start()
-        {
-            if (!isAutoInitialize)
-                return;
             
             PreInitialization?.Invoke();
             
-            StartCoroutine(InitializationAfterFrame());
+            LLS.PlayerAsyncHelper.Delay(0.1f, Initialization);
 
-        }
-        
-        private IEnumerator InitializationAfterFrame()
-        {
-            yield return null;
-            yield return new WaitForEndOfFrame();
-            
-            Initialization();
-            
         }
 
         public static bool IsValidate(ServiceType serviceType)
@@ -76,13 +56,9 @@ namespace Playbox
             return InitStatus.Contains(serviceType);
         }
 
-        public override void Initialization()
+        public static void Initialization()
         {
             GlobalPlayboxConfig.Load();
-            
-            
-            if(Application.isPlaying)
-                DontDestroyOnLoad(gameObject);
             
             foreach (var item in _behaviours)
             {
@@ -90,8 +66,6 @@ namespace Playbox
                 
                 var currentItem = item;
                 ServiceType st = currentItem.GetServiceType();
-                
-                Debug.Log(st);
                 
                 if (!InitStatus.Contains(st))
                 {
@@ -108,7 +82,7 @@ namespace Playbox
                 }
             }
             
-            ConsentData.ShowConsent(this, () =>
+            ConsentData.ShowConsent(PB_ProxyClass.GetOrCreateMonoProxy(), () =>
             {
                 foreach (var item in _behaviours)
                 {
@@ -118,9 +92,7 @@ namespace Playbox
                     }
                 }
                 
-                Debug.Log("Start Post Initialization");
-                
-                StartCoroutine(PostInit());
+                LLS.PlayerAsyncHelper.Delay(0.1f, PostInitialization);
             });
             
             foreach (var item in _behaviours)
@@ -134,15 +106,9 @@ namespace Playbox
                 }
             }
         }
+        
 
-        private IEnumerator PostInit()
-        {
-            yield return new WaitForSeconds(1);
-
-            PostInitialization?.Invoke();
-        }
-
-        private void AddComponentsToInitialization()
+        private static void AddComponentsToInitialization()
         {
             AddService<FirebaseInitialization>();
             AddService<DevToDevInitialization>(true);
@@ -151,12 +117,15 @@ namespace Playbox
             AddService<FacebookSdkInitialization>(true);
         }
 
-        private void AddService<T>(bool isWaitConsent = false) where T : PlayboxBehaviour
+        private static void AddService<T>(bool isWaitConsent = false) where T : PlayboxBehaviour, new()
         {
-            _behaviours.Add(AddToGameObject<T>(gameObject, isWaitConsent));
+            PlayboxBehaviour service = new T();
+            service.ConsentDependency = isWaitConsent;
+            
+            _behaviours.Add(service);
         }
 
-        private void OnDestroy()
+        private static void OnDestroy()
         {
             _adAnalytics.Dispose();
             
@@ -166,17 +135,5 @@ namespace Playbox
                     item.Close();   
             }
         }
-        
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-        {
-            var initializators = FindObjectsByType<MainInitialization>(FindObjectsInactive.Exclude,FindObjectsSortMode.None);
-
-            foreach (var item in initializators)
-            {
-                if(item != this && item != null)
-                    Destroy(item.gameObject);
-            }
-        }
-        
     }
 }
