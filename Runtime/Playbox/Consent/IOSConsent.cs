@@ -3,42 +3,43 @@
 using System;
 using System.Collections;
 using AppsFlyerSDK;
+using Playbox.Tools.Extentions;
 using Unity.Advertisement.IosSupport;
 using UnityEngine;
-using Utils.Tools.Extentions;
 
 namespace Playbox.Consent
 {
     public class IOSConsent
     {
-        public static void ShowATTUI(MonoBehaviour mono, Action<bool> onComplete)
+        public static void ShowAttui(MonoBehaviour mono, Action<bool> onComplete)
         {
-            mono.StartCoroutine(IosATTStatus(status =>
+            mono.StartCoroutine(IosAttStatus(status =>
             {
-                if (status == ATTrackingStatusBinding.AuthorizationTrackingStatus.AUTHORIZED)
+                switch (status)
                 {
-                    onComplete?.Invoke(true);
-                    "ATT: AUTHORIZED".PlayboxSplashLogUGUI();
-                }
+                    case ATTrackingStatusBinding.AuthorizationTrackingStatus.AUTHORIZED:
+                        onComplete?.Invoke(true);
+                        "ATT: AUTHORIZED".PlayboxSplashLogUGUI();
+                        break;
 
-                if (status == ATTrackingStatusBinding.AuthorizationTrackingStatus.DENIED)
-                {
-                    onComplete?.Invoke(false);
-                    "ATT: DENIED".PlayboxSplashLogUGUI();
+                    case ATTrackingStatusBinding.AuthorizationTrackingStatus.NOT_DETERMINED:
+                        "ATT: NOT_DETERMINED".PlayboxSplashLogUGUI();
+                        break;
+                    case ATTrackingStatusBinding.AuthorizationTrackingStatus.RESTRICTED:
+                        onComplete?.Invoke(false);
+                        "ATT: RESTRICTED".PlayboxSplashLogUGUI();
+                        break;
+                    case ATTrackingStatusBinding.AuthorizationTrackingStatus.DENIED:
+                        onComplete?.Invoke(false);
+                        "ATT: DENIED".PlayboxSplashLogUGUI();
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(status), status, null);
                 }
-
-                if (status == ATTrackingStatusBinding.AuthorizationTrackingStatus.RESTRICTED)
-                {
-                    onComplete?.Invoke(false);
-                    "ATT: RESTRICTED".PlayboxSplashLogUGUI();
-                }
-
-                if (status == ATTrackingStatusBinding.AuthorizationTrackingStatus.NOT_DETERMINED)
-                    "ATT: NOT_DETERMINED".PlayboxSplashLogUGUI();
             }));
         }
 
-        private static IEnumerator IosATTStatus(Action<ATTrackingStatusBinding.AuthorizationTrackingStatus> action)
+        private static IEnumerator IosAttStatus(Action<ATTrackingStatusBinding.AuthorizationTrackingStatus> action)
         {
             yield return new WaitForSeconds(0.4f);
 

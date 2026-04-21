@@ -104,7 +104,7 @@ namespace Playbox.Consent
 
                 bool isAttComplete = false;
                 
-                IOSConsent.ShowATTUI(mono, (result) =>
+                IOSConsent.ShowAttui(mono, (result) =>
                 {
                     isAttComplete = true;
                     callback?.Invoke();

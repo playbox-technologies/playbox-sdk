@@ -50,7 +50,6 @@ namespace Playbox
             
             if(IsDevToDevInit)
                     DTDAnalytics.CustomEvent(eventName, arguments.ToCustomParameters());
-            
             //if (isFirebaseInit)
             //        FirebaseAnalytics.LogEvent(eventName,new Parameter(eventName,JsonUtility.ToJson(arguments)));
             
