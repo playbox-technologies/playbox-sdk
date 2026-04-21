@@ -11,7 +11,6 @@ namespace Playbox.CrossPromo
 {
     public static class CrossPromo
     {
-
         /// <summary>
         /// Recorm Cross Promo
         /// </summary>
@@ -23,37 +22,34 @@ namespace Playbox.CrossPromo
             if (Analytics.IsAppsFlyerInit) AppsFlyer.recordCrossPromoteImpression(promotedID,campaign,parameters);
         }
 
+        private static bool IsAppsflyerInit()
+        {
+            return Analytics.IsAppsFlyerInit || Application.isEditor;
+        }
+        
         public static void OpenStore(string afLink)
         {
-#if !UNITY_EDITOR
-            if (Analytics.IsAppsFlyerInit)
+            if (IsAppsflyerInit())
             {
-#endif
                 AppsFlyerConfiguration.LoadJsonConfig();
-                
+
                 Application.OpenURL(afLink);
-#if !UNITY_EDITOR
             }
-#endif
         }
         
         public static async Task LoadLinkAndOpenStore(string promotedID, string placementID = "main")
         {
-           
-#if !UNITY_EDITOR
-            if (Analytics.IsAppsFlyerInit)
+            if (IsAppsflyerInit())
             {
-#endif
                 string os = GetOS();
 
                 string afLink = await GetPromoURL(promotedID, os, placementID);
           
                 Application.OpenURL(afLink);
-#if !UNITY_EDITOR
             }
-#endif
         }
-        
+
+
         public static async Task<string> GetPromoURL(string bundleID, string os,string placementID = "main")
         {
             using var client = new HttpClient();
