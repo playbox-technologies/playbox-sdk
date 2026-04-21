@@ -11,39 +11,7 @@ namespace Playbox.Tools.Extentions
         private static Stack<string> _prefixes = new();
         
         private static string currentPrefix = "";
-        
-        public static void BeginPrefixZone(string prefix)
-        {
-            if(!string.IsNullOrEmpty(currentPrefix)) _prefixes.Push(currentPrefix);
-         
-            currentPrefix = prefix;
-            
-        }
-        
-        public static void EndPrefixZone()
-        {
-            if (_prefixes.Count == 0)
-            {
-                currentPrefix = "";
-                return;
-            }
-            
-            if (_prefixes.TryPop(out var prefix))
-            {
-                currentPrefix = prefix;
-            }
-            else
-            {
-                currentPrefix = "";
-            }
-        }
 
-        public static void ClearPrefixes()
-        {
-            currentPrefix = "";
-            _prefixes.Clear();
-        }
-        
         [HideInCallstack]
         public static void PlayboxSplashLogUGUI(this object obj)
         {
@@ -101,12 +69,6 @@ namespace Playbox.Tools.Extentions
         public static void PbInfo(this object text, string description = "",[CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
         {
              PlayboxLogger(text,"Info",description, LogType.Log);
-        }
-        
-        [HideInCallstack]
-        public static void PbWarning(this object text, string description = "",[CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
-        {
-            PlayboxLogger(text,"Warning",description, LogType.Warning);
         }
     }
 }
