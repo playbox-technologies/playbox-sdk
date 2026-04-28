@@ -10,6 +10,8 @@ namespace Playbox.Services
 {
     public static class PlayboxMain
     {
+        public static bool IsInitialized { get; private set; }
+        
         private static readonly List<BaseAnalyticsRegistrator> AnalyticsRegistrator = new();
         private static readonly List<PlayboxService> _behaviours = new();
 
@@ -34,6 +36,8 @@ namespace Playbox.Services
                 Analytics.RegisterAnalyticsCustomManagement();
 
                 _adAnalytics.Initialize();
+                
+                IsInitialized = true;
             };
 
             PreInitialization?.Invoke();
