@@ -18,7 +18,7 @@ namespace Playbox
 
         private static bool IsInitialized => MaxSdk.IsInitialized();
         private static void LoadAd() => MaxSdk.LoadInterstitial(_unitId);
-        private static bool IsLoaded => MaxSdk.IsInterstitialReady(_unitId);
+        public static bool IsLoaded => MaxSdk.IsInterstitialReady(_unitId);
 
         public static InterstitialAdEvents AdEvents
         {

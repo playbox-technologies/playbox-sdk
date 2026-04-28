@@ -10,7 +10,7 @@ namespace Playbox
 
         private static bool IsInitialized => MaxSdk.IsInitialized();
         private static void LoadAd() => MaxSdk.LoadRewardedAd(_unitId);
-        private static bool IsLoaded => MaxSdk.IsRewardedAdReady(_unitId);
+        public static bool IsLoaded => MaxSdk.IsRewardedAdReady(_unitId);
 
         public static RewardedAdEvents AdEvents
         {
